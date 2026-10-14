@@ -44,7 +44,7 @@ def experimentos(dados):
         f"<tr><td>{escape(nome[g])}</td><td class=n>{v['pedidos']}</td><td class=n>{v['avisos_distintos']}</td>"
         f"<td>{selo(v['reenvios'], 'r' if v['reenvios'] == 0 else 'g')}</td></tr>" for g, v in e.items())
     corpo = f"""<div class="sub"><strong>Medição real, no ambiente de teste (sandbox) da plataforma, em 14/10/2026.</strong>
-75 pedidos com Pix de teste. O receptor de avisos foi programado para se comportar de um jeito diferente em cada grupo
+80 pedidos com Pix de teste. O receptor de avisos foi programado para se comportar de um jeito diferente em cada grupo
 de pedidos: normal, fora do ar, respondendo erro ou demorando para responder.</div>
 
 <section id="deteccao">
