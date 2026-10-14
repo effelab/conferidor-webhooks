@@ -80,3 +80,23 @@ class TestSiteV2(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Sessoes(unittest.TestCase):
+    def test_cinco_sessoes_com_menu_e_links_validos(self):
+        import re
+        from conferidor import site_v2
+        paginas = site_v2.gerar_sessoes()
+        self.assertEqual(sorted(paginas), sorted(a for a, _, _ in site_v2.SESSOES))
+        ids = {arq: set(re.findall(r'id="([^"]+)"', html)) for arq, html in paginas.items()}
+        for arq, html in paginas.items():
+            self.assertEqual(html.count('aria-current="page"'), 1, arq)
+            self.assertIn("Projeto independente", html)
+            for href in re.findall(r'href="([^"]+)"', html):
+                if href.startswith("http"):
+                    continue
+                alvo, _, ancora = href.partition("#")
+                alvo = alvo or arq
+                self.assertIn(alvo, paginas, (arq, href))
+                if ancora:
+                    self.assertIn(ancora, ids[alvo], (arq, href))

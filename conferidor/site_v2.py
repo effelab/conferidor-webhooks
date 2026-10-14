@@ -945,21 +945,18 @@ b.type='button';b.className='copiar';b.textContent='Copiar';b.addEventListener('
 c.querySelector('code').textContent).then(function(){b.textContent='Copiado';setTimeout(function(){b.textContent='Copiar'},1600)})});c.appendChild(b);c.classList.add('tem-copiar')});"""
 
 
-def gerar(dados=None):
-    d = dados if dados is not None else carregar()
-    corpo = "\n".join([barra_superior(), "<main>", topo(d), problema(), conferidor(d), testador(d),
-                       como_usar(d), limites(d), "</main>", rodape()])
+def _documento(titulo, corpo):
     html = f"""<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Conferidor de avisos</title>
+<title>{escape(titulo)}</title>
 <meta name="description" content="Projeto independente: conferidor de avisos de pagamento e testador de cenários, medidos no sandbox do próprio app do autor.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap">
-<style>{CSS}</style>
+<style>{CSS}{CSS_SESSOES}</style>
 </head>
 <body>
 {corpo}
@@ -972,12 +969,111 @@ def gerar(dados=None):
     return html
 
 
+def gerar(dados=None):
+    """Versao de pagina unica (mantida para os testes e para quem preferir rolar)."""
+    d = dados if dados is not None else carregar()
+    corpo = "\n".join([barra_superior(), "<main>", topo(d), problema(), conferidor(d), testador(d),
+                       como_usar(d), limites(d), "</main>", rodape()])
+    return _documento("Conferidor de avisos", corpo)
+
+
+# ---------------------------------------------------------------- sessoes, uma pagina por assunto
+
+SESSOES = [  # (arquivo, ancora da secao, rotulo no menu)
+    ("index.html", "problema", "Início"),
+    ("conferidor.html", "conferidor", "Conferidor"),
+    ("testador.html", "testador", "Testador"),
+    ("como-usar.html", "como-usar", "Como usar"),
+    ("limites.html", "limites", "Limites"),
+]
+
+CSS_SESSOES = """
+.barra nav a[aria-current=page]{color:var(--roxo-esc,#7444E6);font-weight:600;border-bottom:2px solid currentColor;padding-bottom:2px}
+.seguir{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 0 40px}
+.seguir a{flex:1 1 220px;max-width:360px}
+.seguir .vazio{flex:1 1 220px}
+.seguir .prox{text-align:right;margin-left:auto}
+"""
+
+
+ATUAL = ' aria-current="page"'
+
+
+def _barra(atual):
+    links = "".join(
+        f'<li><a href="{arq}"{ATUAL if arq == atual else ""}>{rot}</a></li>'
+        for arq, _, rot in SESSOES)
+    return f"""<p class="aviso-topo">Projeto independente, sem vínculo com a plataforma. Medido no {termo("sandbox", "sandbox")} do próprio app do autor, sem dado de cliente.</p>
+<header class="barra">
+<div class="w barra-in">
+<a class="nome" href="index.html">Conferidor de avisos</a>
+<nav aria-label="Sessões"><ul>{links}</ul></nav>
+<a class="btn" href="como-usar.html">Como usar</a>
+</div>
+</header>"""
+
+
+def _seguir(i):
+    anterior = (f'<a class="card" href="{SESSOES[i - 1][0]}"><span class="tag">Anterior</span><h3>{SESSOES[i - 1][2]}</h3></a>'
+                if i > 0 else '<span class="vazio"></span>')
+    proxima = (f'<a class="card prox" href="{SESSOES[i + 1][0]}"><span class="tag">Próxima</span><h3>{SESSOES[i + 1][2]}</h3></a>'
+               if i < len(SESSOES) - 1 else "")
+    return f'<nav class="w seguir" aria-label="Navegação entre sessões">{anterior}{proxima}</nav>'
+
+
+def _religar(paginas):
+    """Troca os links internos (#ancora) pelo arquivo onde a ancora mora agora."""
+    onde = {}
+    for arquivo, html in paginas.items():
+        for ancora in re.findall(r'id="([^"]+)"', html):
+            onde.setdefault(ancora, arquivo)
+    for arq, ancora, _ in SESSOES:
+        onde[ancora] = arq  # a raiz de cada sessao abre a pagina, sem ancora
+    if "topo" in onde:
+        onde["topo"] = "index.html"
+
+    def trocar(arquivo):
+        def f(m):
+            ancora = m.group(1)
+            destino = onde.get(ancora)
+            if destino is None or (destino == arquivo and ancora not in {a for _, a, _ in SESSOES}):
+                return m.group(0)
+            if ancora in {a for _, a, _ in SESSOES} or ancora == "topo":
+                return f'href="{destino}"'
+            return f'href="{destino}#{ancora}"' if destino != arquivo else m.group(0)
+        return f
+
+    return {arq: re.sub(r'href="#([^"]+)"', trocar(arq), html) for arq, html in paginas.items()}
+
+
+def gerar_sessoes(dados=None):
+    d = dados if dados is not None else carregar()
+    conteudo = {
+        "index.html": topo(d) + problema(),
+        "conferidor.html": conferidor(d),
+        "testador.html": testador(d),
+        "como-usar.html": como_usar(d),
+        "limites.html": limites(d),
+    }
+    titulos = {"index.html": "Conferidor de avisos", "conferidor.html": "Conferidor · resultados",
+               "testador.html": "Testador · resultados", "como-usar.html": "Como usar",
+               "limites.html": "Limites e glossário"}
+    paginas = {}
+    for i, (arq, _, _) in enumerate(SESSOES):
+        corpo = "\n".join([_barra(arq), "<main>", conteudo[arq], _seguir(i), "</main>", rodape()])
+        paginas[arq] = corpo
+    paginas = _religar(paginas)
+    return {arq: _documento(titulos[arq], corpo) for arq, corpo in paginas.items()}
+
+
 def montar():
     SAIDA.mkdir(exist_ok=True)
-    destino = SAIDA / "index.html"
-    destino.write_text(gerar(), encoding="utf-8")
-    print("Site v2 montado em", destino)
-    return destino
+    for antigo in SAIDA.glob("*.html"):
+        antigo.unlink()
+    for arquivo, html in gerar_sessoes().items():
+        (SAIDA / arquivo).write_text(html, encoding="utf-8")
+    print("Site v2 montado em", SAIDA, "com", len(SESSOES), "sessões")
+    return SAIDA
 
 
 if __name__ == "__main__":
