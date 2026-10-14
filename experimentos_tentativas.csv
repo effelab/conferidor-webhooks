@@ -1,0 +1,175 @@
+recebido_em,order_id,evento,comportamento,resposta,segundos_desde_a_primeira
+2026-10-14T11:19:32,27649,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:19:36,27650,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:19:39,27649,order_paid,derrubar,sem resposta,0
+2026-10-14T11:19:40,27649,order_approved,derrubar,sem resposta,0
+2026-10-14T11:19:41,27649,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:19:44,27650,order_paid,derrubar,sem resposta,0
+2026-10-14T11:19:45,27650,order_approved,derrubar,sem resposta,0
+2026-10-14T11:19:47,27650,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:19:51,27651,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:19:55,27652,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:19:57,27651,order_paid,derrubar,sem resposta,0
+2026-10-14T11:19:57,27651,order_approved,derrubar,sem resposta,0
+2026-10-14T11:19:58,27653,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:19:59,27651,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:20:00,27652,order_paid,derrubar,sem resposta,0
+2026-10-14T11:20:00,27652,order_approved,derrubar,sem resposta,0
+2026-10-14T11:20:01,27652,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:20:04,27653,order_paid,derrubar,sem resposta,0
+2026-10-14T11:20:05,27653,order_approved,derrubar,sem resposta,0
+2026-10-14T11:20:06,27653,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:20:06,27654,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:20:08,27655,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:20:09,27654,order_paid,derrubar,sem resposta,0
+2026-10-14T11:20:09,27654,order_approved,derrubar,sem resposta,0
+2026-10-14T11:20:10,27654,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:20:12,27656,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:20:13,27655,order_paid,derrubar,sem resposta,0
+2026-10-14T11:20:13,27655,order_approved,derrubar,sem resposta,0
+2026-10-14T11:20:13,27657,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:20:15,27655,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:20:18,27658,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:20:18,27656,order_paid,derrubar,sem resposta,0
+2026-10-14T11:20:19,27656,order_approved,derrubar,sem resposta,0
+2026-10-14T11:20:20,27656,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:20:21,27657,order_paid,derrubar,sem resposta,0
+2026-10-14T11:20:22,27657,order_approved,derrubar,sem resposta,0
+2026-10-14T11:20:22,27657,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:20:24,27658,order_paid,derrubar,sem resposta,0
+2026-10-14T11:20:24,27658,order_approved,derrubar,sem resposta,0
+2026-10-14T11:20:25,27658,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:29,27669,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:32,27670,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:33,27669,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:34,27669,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:35,27669,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:35,27671,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:35,27670,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:36,27670,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:37,27672,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:38,27670,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:38,27671,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:39,27671,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:39,27671,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:41,27673,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:43,27672,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:43,27672,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:44,27672,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:45,27674,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:45,27673,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:46,27673,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:46,27673,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:50,27675,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:51,27674,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:52,27674,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:52,27674,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:53,27676,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:54,27675,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:54,27675,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:55,27675,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:21:56,27676,order_paid,derrubar,sem resposta,0
+2026-10-14T11:21:56,27676,order_approved,derrubar,sem resposta,0
+2026-10-14T11:21:58,27677,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:21:59,27676,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:22:04,27678,order_pix_created,derrubar,sem resposta,0
+2026-10-14T11:22:06,27677,order_paid,derrubar,sem resposta,0
+2026-10-14T11:22:06,27677,order_approved,derrubar,sem resposta,0
+2026-10-14T11:22:07,27677,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:22:08,27678,order_paid,derrubar,sem resposta,0
+2026-10-14T11:22:08,27678,order_approved,derrubar,sem resposta,0
+2026-10-14T11:22:09,27678,order_paid_by_pix,derrubar,sem resposta,0
+2026-10-14T11:23:34,27694,order_pix_created,falhar,500,0
+2026-10-14T11:23:37,27695,order_pix_created,falhar,500,0
+2026-10-14T11:23:39,27694,order_paid,falhar,500,0
+2026-10-14T11:23:40,27694,order_approved,falhar,500,0
+2026-10-14T11:23:42,27696,order_pix_created,falhar,500,0
+2026-10-14T11:23:42,27694,order_paid_by_pix,falhar,500,0
+2026-10-14T11:23:43,27695,order_paid,falhar,500,0
+2026-10-14T11:23:43,27695,order_approved,falhar,500,0
+2026-10-14T11:23:44,27695,order_paid_by_pix,falhar,500,0
+2026-10-14T11:23:47,27697,order_pix_created,falhar,500,0
+2026-10-14T11:23:47,27696,order_paid,falhar,500,0
+2026-10-14T11:23:48,27696,order_approved,falhar,500,0
+2026-10-14T11:23:49,27696,order_paid_by_pix,falhar,500,0
+2026-10-14T11:23:49,27698,order_pix_created,falhar,500,0
+2026-10-14T11:23:51,27697,order_paid,falhar,500,0
+2026-10-14T11:23:52,27697,order_approved,falhar,500,0
+2026-10-14T11:23:52,27697,order_paid_by_pix,falhar,500,0
+2026-10-14T11:23:54,27699,order_pix_created,falhar,500,0
+2026-10-14T11:23:56,27698,order_paid,falhar,500,0
+2026-10-14T11:23:56,27698,order_approved,falhar,500,0
+2026-10-14T11:23:57,27698,order_paid_by_pix,falhar,500,0
+2026-10-14T11:23:58,27700,order_pix_created,falhar,500,0
+2026-10-14T11:23:59,27699,order_paid,falhar,500,0
+2026-10-14T11:24:00,27699,order_approved,falhar,500,0
+2026-10-14T11:24:00,27699,order_paid_by_pix,falhar,500,0
+2026-10-14T11:24:01,27701,order_pix_created,falhar,500,0
+2026-10-14T11:24:03,27700,order_paid,falhar,500,0
+2026-10-14T11:24:04,27700,order_approved,falhar,500,0
+2026-10-14T11:24:05,27700,order_paid_by_pix,falhar,500,0
+2026-10-14T11:24:05,27702,order_pix_created,falhar,500,0
+2026-10-14T11:24:08,27701,order_paid,falhar,500,0
+2026-10-14T11:24:09,27701,order_approved,falhar,500,0
+2026-10-14T11:24:10,27701,order_paid_by_pix,falhar,500,0
+2026-10-14T11:24:10,27703,order_pix_created,falhar,500,0
+2026-10-14T11:24:12,27702,order_paid,falhar,500,0
+2026-10-14T11:24:12,27702,order_approved,falhar,500,0
+2026-10-14T11:24:14,27704,order_pix_created,demorar:7,200,0
+2026-10-14T11:24:22,27702,order_paid_by_pix,falhar,500,0
+2026-10-14T11:24:22,27703,order_paid,falhar,500,0
+2026-10-14T11:24:23,27703,order_approved,falhar,500,0
+2026-10-14T11:24:23,27703,order_paid_by_pix,falhar,500,0
+2026-10-14T11:24:24,27705,order_pix_created,demorar:7,200,0
+2026-10-14T11:24:31,27704,order_paid,demorar:7,200,0
+2026-10-14T11:24:38,27704,order_approved,demorar:7,200,0
+2026-10-14T11:25:22,27708,order_pix_created,demorar:7,200,0
+2026-10-14T11:25:34,27706,order_paid,demorar:7,200,0
+2026-10-14T11:25:42,27706,order_approved,demorar:7,200,0
+2026-10-14T11:25:49,27706,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:25:57,27707,order_paid,demorar:7,200,0
+2026-10-14T11:26:04,27709,order_pix_created,demorar:7,200,0
+2026-10-14T11:26:13,27707,order_approved,demorar:7,200,0
+2026-10-14T11:26:20,27707,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:26:28,27708,order_paid,demorar:7,200,0
+2026-10-14T11:26:35,27708,order_approved,demorar:7,200,0
+2026-10-14T11:26:43,27708,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:26:50,27710,order_pix_created,demorar:7,200,0
+2026-10-14T11:26:58,27709,order_paid,demorar:7,200,0
+2026-10-14T11:27:06,27709,order_approved,demorar:7,200,0
+2026-10-14T11:27:14,27709,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:27:21,27711,order_pix_created,demorar:7,200,0
+2026-10-14T11:27:29,27710,order_paid,demorar:7,200,0
+2026-10-14T11:27:36,27710,order_approved,demorar:7,200,0
+2026-10-14T11:27:44,27710,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:27:51,27712,order_pix_created,demorar:7,200,0
+2026-10-14T11:27:59,27711,order_paid,demorar:7,200,0
+2026-10-14T11:28:07,27711,order_approved,demorar:7,200,0
+2026-10-14T11:28:14,27711,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:28:22,27713,order_pix_created,demorar:7,200,0
+2026-10-14T11:28:29,27714,order_pix_created,demorar:12,200,0
+2026-10-14T11:28:42,27712,order_paid,demorar:7,200,0
+2026-10-14T11:28:49,27712,order_approved,demorar:7,200,0
+2026-10-14T11:28:57,27712,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:29:05,27713,order_paid,demorar:7,200,0
+2026-10-14T11:29:13,27713,order_approved,demorar:7,200,0
+2026-10-14T11:29:21,27713,order_paid_by_pix,demorar:7,200,0
+2026-10-14T11:29:28,27715,order_pix_created,demorar:12,200,0
+2026-10-14T11:29:41,27714,order_paid,demorar:12,200,0
+2026-10-14T11:29:53,27714,order_approved,demorar:12,200,0
+2026-10-14T11:30:05,27716,order_pix_created,demorar:12,200,0
+2026-10-14T11:30:18,27714,order_paid_by_pix,demorar:12,200,0
+2026-10-14T11:30:31,27715,order_paid,demorar:12,200,0
+2026-10-14T11:30:43,27715,order_approved,demorar:12,200,0
+2026-10-14T11:30:56,27717,order_pix_created,demorar:12,200,0
+2026-10-14T11:31:08,27715,order_paid_by_pix,demorar:12,200,0
+2026-10-14T11:31:20,27716,order_paid,demorar:12,200,0
+2026-10-14T11:31:33,27716,order_approved,demorar:12,200,0
+2026-10-14T11:31:45,27716,order_paid_by_pix,demorar:12,200,0
+2026-10-14T11:31:58,27718,order_pix_created,demorar:12,200,0
+2026-10-14T11:32:11,27717,order_paid,demorar:12,200,0
+2026-10-14T11:32:23,27717,order_approved,demorar:12,200,0
+2026-10-14T11:32:36,27717,order_paid_by_pix,demorar:12,200,0
+2026-10-14T11:32:48,27718,order_paid,demorar:12,200,0
+2026-10-14T11:33:01,27718,order_approved,demorar:12,200,0
+2026-10-14T11:33:14,27718,order_paid_by_pix,demorar:12,200,0

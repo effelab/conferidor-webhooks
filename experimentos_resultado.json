@@ -1,0 +1,1336 @@
+{
+ "resumo": {
+  "avaliado_em": "2026-10-14T11:42:23",
+  "horas_desde_a_criacao": 0.38,
+  "consultas_a_api": 80,
+  "deteccao": {
+   "derrubados": 20,
+   "derrubados_pagos_na_api": 20,
+   "derrubados_apontados": 20,
+   "normais_e_pendentes": 35,
+   "normais_apontados_por_engano": 0,
+   "derrubados_que_receberam_aviso_depois": 0
+  },
+  "reentrega": {
+   "derrubar": {
+    "pedidos": 20,
+    "avisos_distintos": 80,
+    "reenvios": 0
+   },
+   "falhar": {
+    "pedidos": 10,
+    "avisos_distintos": 40,
+    "reenvios": 0
+   },
+   "demorar:7": {
+    "pedidos": 10,
+    "avisos_distintos": 34,
+    "reenvios": 0
+   },
+   "demorar:12": {
+    "pedidos": 5,
+    "avisos_distintos": 20,
+    "reenvios": 0
+   }
+  }
+ },
+ "pedidos": [
+  {
+   "order_id": 27639,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27640,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27641,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27642,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27643,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27644,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27645,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27646,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27647,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27648,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27649,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27650,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27651,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27652,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27653,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27654,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27655,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27656,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27657,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27658,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27659,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27660,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27661,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27662,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27663,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27664,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27665,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27666,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27667,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27668,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27669,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27670,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27671,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27672,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27673,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27674,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27675,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27676,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27677,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27678,
+   "grupo": "derrubar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27679,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27680,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27681,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27682,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27683,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27684,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27685,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27686,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27687,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27688,
+   "grupo": "normal",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27689,
+   "grupo": "pendente",
+   "status_api": "pendente",
+   "recebidos": [
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27690,
+   "grupo": "pendente",
+   "status_api": "pendente",
+   "recebidos": [
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27691,
+   "grupo": "pendente",
+   "status_api": "pendente",
+   "recebidos": [
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27692,
+   "grupo": "pendente",
+   "status_api": "pendente",
+   "recebidos": [
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27693,
+   "grupo": "pendente",
+   "status_api": "pendente",
+   "recebidos": [
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {},
+   "reenvios": 0
+  },
+  {
+   "order_id": 27694,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27695,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27696,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27697,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27698,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27699,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27700,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27701,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27702,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27703,
+   "grupo": "falhar",
+   "status_api": "aprovado",
+   "recebidos": [],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27704,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_pix_created"
+   ],
+   "apontados": [
+    "order_paid_by_pix"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27705,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_pix_created"
+   ],
+   "apontados": [
+    "order_approved",
+    "order_paid_by_pix"
+   ],
+   "envios_por_evento": {
+    "order_pix_created": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27706,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix"
+   ],
+   "apontados": [
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27707,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix"
+   ],
+   "apontados": [
+    "order_pix_created"
+   ],
+   "envios_por_evento": {
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27708,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27709,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27710,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27711,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27712,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27713,
+   "grupo": "demorar:7",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27714,
+   "grupo": "demorar:12",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27715,
+   "grupo": "demorar:12",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27716,
+   "grupo": "demorar:12",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27717,
+   "grupo": "demorar:12",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  },
+  {
+   "order_id": 27718,
+   "grupo": "demorar:12",
+   "status_api": "aprovado",
+   "recebidos": [
+    "order_approved",
+    "order_paid",
+    "order_paid_by_pix",
+    "order_pix_created"
+   ],
+   "apontados": [],
+   "envios_por_evento": {
+    "order_pix_created": 1,
+    "order_paid": 1,
+    "order_approved": 1,
+    "order_paid_by_pix": 1
+   },
+   "reenvios": 0
+  }
+ ]
+}

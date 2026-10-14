@@ -1,0 +1,325 @@
+{
+ "pedidos": {
+  "27639": {
+   "grupo": "normal",
+   "criado_em": 1791987518.8025916
+  },
+  "27640": {
+   "grupo": "normal",
+   "criado_em": 1791987521.9357522
+  },
+  "27641": {
+   "grupo": "normal",
+   "criado_em": 1791987524.879065
+  },
+  "27642": {
+   "grupo": "normal",
+   "criado_em": 1791987528.6495595
+  },
+  "27643": {
+   "grupo": "normal",
+   "criado_em": 1791987531.9952383
+  },
+  "27644": {
+   "grupo": "normal",
+   "criado_em": 1791987536.5077333
+  },
+  "27645": {
+   "grupo": "normal",
+   "criado_em": 1791987539.6022835
+  },
+  "27646": {
+   "grupo": "normal",
+   "criado_em": 1791987542.880055
+  },
+  "27647": {
+   "grupo": "normal",
+   "criado_em": 1791987545.9163294
+  },
+  "27648": {
+   "grupo": "normal",
+   "criado_em": 1791987548.7131925
+  },
+  "27649": {
+   "grupo": "derrubar",
+   "criado_em": 1791987556.7561624
+  },
+  "27650": {
+   "grupo": "derrubar",
+   "criado_em": 1791987559.693795
+  },
+  "27651": {
+   "grupo": "derrubar",
+   "criado_em": 1791987568.009638
+  },
+  "27652": {
+   "grupo": "derrubar",
+   "criado_em": 1791987570.641268
+  },
+  "27653": {
+   "grupo": "derrubar",
+   "criado_em": 1791987573.4297748
+  },
+  "27654": {
+   "grupo": "derrubar",
+   "criado_em": 1791987581.0878146
+  },
+  "27655": {
+   "grupo": "derrubar",
+   "criado_em": 1791987584.1003954
+  },
+  "27656": {
+   "grupo": "derrubar",
+   "criado_em": 1791987586.937477
+  },
+  "27657": {
+   "grupo": "derrubar",
+   "criado_em": 1791987589.6281595
+  },
+  "27658": {
+   "grupo": "derrubar",
+   "criado_em": 1791987592.1855319
+  },
+  "27659": {
+   "grupo": "normal",
+   "criado_em": 1791987615.4666586
+  },
+  "27660": {
+   "grupo": "normal",
+   "criado_em": 1791987626.4647186
+  },
+  "27661": {
+   "grupo": "normal",
+   "criado_em": 1791987629.0439708
+  },
+  "27662": {
+   "grupo": "normal",
+   "criado_em": 1791987632.1227698
+  },
+  "27663": {
+   "grupo": "normal",
+   "criado_em": 1791987634.7689035
+  },
+  "27664": {
+   "grupo": "normal",
+   "criado_em": 1791987637.4180226
+  },
+  "27665": {
+   "grupo": "normal",
+   "criado_em": 1791987640.5100195
+  },
+  "27666": {
+   "grupo": "normal",
+   "criado_em": 1791987643.4101448
+  },
+  "27667": {
+   "grupo": "normal",
+   "criado_em": 1791987646.700696
+  },
+  "27668": {
+   "grupo": "normal",
+   "criado_em": 1791987649.2146606
+  },
+  "27669": {
+   "grupo": "derrubar",
+   "criado_em": 1791987652.0562642
+  },
+  "27670": {
+   "grupo": "derrubar",
+   "criado_em": 1791987654.9380634
+  },
+  "27671": {
+   "grupo": "derrubar",
+   "criado_em": 1791987657.794729
+  },
+  "27672": {
+   "grupo": "derrubar",
+   "criado_em": 1791987660.7027898
+  },
+  "27673": {
+   "grupo": "derrubar",
+   "criado_em": 1791987664.2163346
+  },
+  "27674": {
+   "grupo": "derrubar",
+   "criado_em": 1791987667.354467
+  },
+  "27675": {
+   "grupo": "derrubar",
+   "criado_em": 1791987670.4140642
+  },
+  "27676": {
+   "grupo": "derrubar",
+   "criado_em": 1791987673.1684048
+  },
+  "27677": {
+   "grupo": "derrubar",
+   "criado_em": 1791987678.5461352
+  },
+  "27678": {
+   "grupo": "derrubar",
+   "criado_em": 1791987681.7832997
+  },
+  "27679": {
+   "grupo": "normal",
+   "criado_em": 1791987704.7173035
+  },
+  "27680": {
+   "grupo": "normal",
+   "criado_em": 1791987707.691864
+  },
+  "27681": {
+   "grupo": "normal",
+   "criado_em": 1791987710.3530781
+  },
+  "27682": {
+   "grupo": "normal",
+   "criado_em": 1791987714.267204
+  },
+  "27683": {
+   "grupo": "normal",
+   "criado_em": 1791987717.246853
+  },
+  "27684": {
+   "grupo": "normal",
+   "criado_em": 1791987719.8791022
+  },
+  "27685": {
+   "grupo": "normal",
+   "criado_em": 1791987722.8186357
+  },
+  "27686": {
+   "grupo": "normal",
+   "criado_em": 1791987726.0611832
+  },
+  "27687": {
+   "grupo": "normal",
+   "criado_em": 1791987729.2862527
+  },
+  "27688": {
+   "grupo": "normal",
+   "criado_em": 1791987732.2433767
+  },
+  "27689": {
+   "grupo": "pendente",
+   "criado_em": 1791987735.0253506
+  },
+  "27690": {
+   "grupo": "pendente",
+   "criado_em": 1791987737.6837223
+  },
+  "27691": {
+   "grupo": "pendente",
+   "criado_em": 1791987740.2579103
+  },
+  "27692": {
+   "grupo": "pendente",
+   "criado_em": 1791987743.2105606
+  },
+  "27693": {
+   "grupo": "pendente",
+   "criado_em": 1791987745.9207091
+  },
+  "27694": {
+   "grupo": "falhar",
+   "criado_em": 1791987751.1589878
+  },
+  "27695": {
+   "grupo": "falhar",
+   "criado_em": 1791987753.7180128
+  },
+  "27696": {
+   "grupo": "falhar",
+   "criado_em": 1791987756.7674963
+  },
+  "27697": {
+   "grupo": "falhar",
+   "criado_em": 1791987759.5514667
+  },
+  "27698": {
+   "grupo": "falhar",
+   "criado_em": 1791987762.603711
+  },
+  "27699": {
+   "grupo": "falhar",
+   "criado_em": 1791987765.9853227
+  },
+  "27700": {
+   "grupo": "falhar",
+   "criado_em": 1791987769.304426
+  },
+  "27701": {
+   "grupo": "falhar",
+   "criado_em": 1791987772.2174442
+  },
+  "27702": {
+   "grupo": "falhar",
+   "criado_em": 1791987775.0355113
+  },
+  "27703": {
+   "grupo": "falhar",
+   "criado_em": 1791987777.749324
+  },
+  "27704": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987781.089298
+  },
+  "27705": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987784.1394937
+  },
+  "27706": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987791.5375109
+  },
+  "27707": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987793.934626
+  },
+  "27708": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987796.4469051
+  },
+  "27709": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987799.3145773
+  },
+  "27710": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987801.992788
+  },
+  "27711": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987804.7162483
+  },
+  "27712": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987807.5586958
+  },
+  "27713": {
+   "grupo": "demorar:7",
+   "criado_em": 1791987810.2483592
+  },
+  "27714": {
+   "grupo": "demorar:12",
+   "criado_em": 1791987812.9067972
+  },
+  "27715": {
+   "grupo": "demorar:12",
+   "criado_em": 1791987815.7935812
+  },
+  "27716": {
+   "grupo": "demorar:12",
+   "criado_em": 1791987818.525855
+  },
+  "27717": {
+   "grupo": "demorar:12",
+   "criado_em": 1791987821.31625
+  },
+  "27718": {
+   "grupo": "demorar:12",
+   "criado_em": 1791987824.9097586
+  }
+ },
+ "criado_em": "2026-10-14T11:18:33"
+}

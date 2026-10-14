@@ -8,6 +8,13 @@ Atende tres coisas:
     GET  /callback    para onde o navegador volta depois que voce autoriza a instalacao
     POST /webhook     os avisos de pedido (qualquer outro caminho tambem serve)
 
+Experimentos: se existir o arquivo comportamento.json ({"order_id": "derrubar" |
+"falhar" | "demorar:7"}), o receptor trata os avisos daquele pedido assim:
+derrubar fecha a conexao sem responder (o tunel devolve 502, como servidor fora
+do ar), falhar responde 500, demorar:N grava o aviso, espera N segundos e responde
+200. Cada aviso desses pedidos vai para experimentos_tentativas.csv, o que mostra
+reentregas. Pedidos fora do arquivo seguem o modo normal.
+
 O modo --falhar existe para medir, no sandbox, os horarios reais das
 retentativas: a documentacao lista +30 min, +2 h e +4 h sem dizer se contam
 da primeira tentativa ou da anterior. As tentativas ficam em tentativas.csv.
@@ -18,10 +25,11 @@ HTTPS publico. Use somente com o SEU app, no ambiente de sandbox.
 import argparse
 import csv
 import json
+import threading
 import time
 import uuid
 from datetime import datetime
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 from . import config
@@ -29,6 +37,18 @@ from .registro import Registro
 
 BANCO = config.RAIZ / "eventos.db"
 TENTATIVAS = config.RAIZ / "tentativas.csv"
+COMPORTAMENTO = config.RAIZ / "comportamento.json"
+EXPERIMENTOS = config.RAIZ / "experimentos_tentativas.csv"
+
+
+def comportamento(order_id):
+    """O que fazer com os avisos deste pedido, segundo comportamento.json. None = normal."""
+    if order_id is None or not COMPORTAMENTO.exists():
+        return None
+    try:
+        return json.loads(COMPORTAMENTO.read_text(encoding="utf-8")).get(str(order_id))
+    except (json.JSONDecodeError, OSError):
+        return None
 
 
 def _hora(instante):
@@ -37,6 +57,20 @@ def _hora(instante):
 
 def criar_handler(registro, falhar):
     primeira_tentativa = {}
+    trava = threading.Lock()
+
+    def anotar(agora, order_id, evento, regra, resposta):
+        with trava:
+            desde = agora - primeira_tentativa.setdefault((order_id, evento), agora)
+            novo = not EXPERIMENTOS.exists()
+            with open(EXPERIMENTOS, "a", newline="", encoding="utf-8") as f:
+                escritor = csv.writer(f)
+                if novo:
+                    escritor.writerow(["recebido_em", "order_id", "evento", "comportamento", "resposta",
+                                       "segundos_desde_a_primeira"])
+                escritor.writerow([datetime.fromtimestamp(agora).isoformat(timespec="seconds"),
+                                   order_id, evento, regra, resposta, round(desde)])
+        print(f"{_hora(agora)}  {evento}  pedido {order_id}  [{regra}]  +{desde / 60:.1f} min  -> {resposta}", flush=True)
 
     class Handler(BaseHTTPRequestHandler):
         def _responder(self, codigo, corpo, tipo="application/json"):
@@ -81,6 +115,14 @@ def criar_handler(registro, falhar):
 
             dados = aviso.get("data") or {}
             evento, order_id = aviso.get("event", "?"), dados.get("order_id")
+            regra = comportamento(order_id)
+            if regra == "derrubar":
+                anotar(agora, order_id, evento, regra, "sem resposta")
+                self.close_connection = True
+                return
+            if regra == "falhar":
+                anotar(agora, order_id, evento, regra, 500)
+                return self._responder(500, {})
             if falhar:
                 desde = agora - primeira_tentativa.setdefault((order_id, evento), agora)
                 with open(TENTATIVAS, "a", newline="", encoding="utf-8") as f:
@@ -90,8 +132,12 @@ def criar_handler(registro, falhar):
                 return self._responder(500, {})
             novo = False
             if order_id is not None:
-                novo = registro.registrar_evento(int(order_id), evento, dados.get("status"), agora, aviso)
-                registro.db.commit()
+                with trava:
+                    novo = registro.registrar_evento(int(order_id), evento, dados.get("status"), agora, aviso)
+                    registro.db.commit()
+            if regra and regra.startswith("demorar:"):
+                anotar(agora, order_id, evento, regra, 200)
+                time.sleep(float(regra.split(":", 1)[1]))
             print(f"{_hora(agora)}  {evento}  pedido {order_id}  {'gravado' if novo else 'repetido, ignorado'}  -> 200", flush=True)
             self._responder(200, {})
 
@@ -111,8 +157,8 @@ def main():
     if args.falhar and not TENTATIVAS.exists():
         TENTATIVAS.write_text("recebido_em,order_id,evento,segundos_desde_a_primeira\n", encoding="utf-8")
     registro = None if args.falhar else Registro(args.banco)
-    # uma thread so: o SQLite fica na thread que o abriu e o handler responde na hora
-    servidor = HTTPServer(("0.0.0.0", args.porta), criar_handler(registro, args.falhar))
+    # varias threads (um aviso demorado nao trava os outros); o SQLite fica atras de uma trava
+    servidor = ThreadingHTTPServer(("0.0.0.0", args.porta), criar_handler(registro, args.falhar))
     print(f"Escutando na porta {args.porta}. Modo: {'falhar de proposito' if args.falhar else 'gravar e responder 200'}.", flush=True)
     try:
         servidor.serve_forever()

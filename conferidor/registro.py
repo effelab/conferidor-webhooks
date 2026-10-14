@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS apontados (
 
 class Registro:
     def __init__(self, caminho=":memory:"):
-        self.db = sqlite3.connect(caminho)
+        self.db = sqlite3.connect(caminho, check_same_thread=False)  # o receptor responde em varias threads, com trava
         self.db.row_factory = sqlite3.Row
         self.db.executescript(_ESQUEMA)
         self.duplicados = 0
