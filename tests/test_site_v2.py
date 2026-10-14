@@ -93,10 +93,15 @@ class Sessoes(unittest.TestCase):
             self.assertEqual(html.count('aria-current="page"'), 1, arq)
             self.assertIn("Projeto independente", html)
             for href in re.findall(r'href="([^"]+)"', html):
-                if href.startswith("http"):
+                if href.startswith("http") or href.endswith((".ico", ".png")):
                     continue
                 alvo, _, ancora = href.partition("#")
                 alvo = alvo or arq
                 self.assertIn(alvo, paginas, (arq, href))
                 if ancora:
                     self.assertIn(ancora, ids[alvo], (arq, href))
+
+    def test_icones_existem_para_a_copia(self):
+        from conferidor import site_v2
+        nomes = {p.name for p in (site_v2.RAIZ / "assets").glob("*")}
+        self.assertTrue({"favicon.ico", "icone-32.png", "icone-180.png"} <= nomes)

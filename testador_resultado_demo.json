@@ -1,0 +1,35 @@
+{
+  "executado_em": "14/10/2026 14:02",
+  "modo": "direto",
+  "espera_s": 180,
+  "chamadas": 4,
+  "linhas": [
+    {
+      "id": "pix-cpf-compra",
+      "nome": "Compra · Pix · CPF",
+      "order_id": 27744,
+      "status_api": "aprovado",
+      "execucao": {
+        "cenario": "pix-cpf-compra",
+        "order_id": 27744,
+        "pago_em": 1791997339.3527925,
+        "estornado_em": null,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_pix_created": 6.5625081062316895,
+        "order_paid_by_pix": 10.59691572189331,
+        "order_approved": 10.294478416442871
+      },
+      "extras": [
+        "order_paid"
+      ]
+    }
+  ],
+  "resumo": "1 de 1 cenários passaram, 0 falharam, 0 ficaram inconclusivos e 0 não foram executados. todos os cenários passou.",
+  "origem_resumo": "google/gemini-2.5-flash-lite",
+  "custo_resumo_usd": 2.15e-05
+}

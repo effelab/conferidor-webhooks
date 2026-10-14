@@ -66,6 +66,8 @@ def escrever(linhas, abrir=urllib.request.urlopen):
     chave, modelo = dados.get("OPENROUTER_API_KEY"), dados.get("MODELO_RESUMO") or MODELO_PADRAO
     if not chave:
         return texto_fixo(linhas), "texto fixo (sem OPENROUTER_API_KEY no .env)", 0.0
+    if not any(x["motivos"] for x in linhas):  # nada a explicar: nao vale chamar o modelo
+        return f"{contagem(linhas)} Todos os avisos esperados chegaram.", "texto fixo (nada a explicar)", 0.0
     tabela = agrupar(linhas)
     corpo = {"model": modelo, "max_tokens": 400, "temperature": 0.2, "usage": {"include": True},
              "messages": [{"role": "system", "content": INSTRUCAO},

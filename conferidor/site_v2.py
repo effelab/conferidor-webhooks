@@ -12,6 +12,7 @@ Python puro, sem dependencia nova. Nao mexe em site/ nem em nenhum resultado.
 import csv
 import json
 import re
+import shutil
 import sys
 from collections import Counter
 from datetime import datetime
@@ -636,37 +637,58 @@ def estado_vazio(ancora, titulo, texto):
 <div class="card vazio">{icone("neutro")}<p>{texto}</p><a class="btn" href="#como-usar">Ver como usar</a></div></div></section>"""
 
 
-def como_usar(d):
-    passos = [
-        ("1", "Instalar", "<p>Copie <code>.env.exemplo</code> para <code>.env</code> e preencha o endereço do túnel e os dados do seu app. Depois:</p>"
-         + comando("python -m conferidor.receptor\npython -m conferidor.sandbox instalar"),
-         "O primeiro comando fica rodando e recebe os avisos (deixe esse terminal aberto). O segundo instala o seu app numa loja de teste."),
-        ("2", "Rodar", "<p>Em outro terminal:</p>" + comando("python -m testador rodar"),
-         f"Ele cria {len(d['rodadas'][0]['linhas']) if d['rodadas'] else 12} pedidos de teste (Pix e cartão 1x, CPF e CNPJ, compra e estornos) e espera até 10 minutos pelos avisos."
-         "</p><p>Para boleto e cartão parcelado:</p>" + comando("python -m testador rodar --meios boleto,cartao_parcelado --nome boleto_3x")
-         + "<p>Para ver o conferidor achando um aviso perdido: crie Pix de teste, pare o receptor, crie mais pedidos e confira.</p>"
-         + comando("python -m conferidor.sandbox pix --quantos 3\npython -m conferidor.sandbox conferir")),
-        ("3", "Ler o resultado", comando("python -m testador relatorio"),
-         "Um relatório em HTML com um selo por cenário. Se algum ficou inconclusivo, espere a plataforma processar e confira de novo, sem criar pedidos:"
-         "</p>" + comando("python -m testador rejulgar")),
-    ]
-    blocos = "".join(
+def _passos(lista):
+    return "".join(
         f'<li class="card passo"><span class="bola g">{n}</span><div class="passo-c"><h3>{verbo}</h3>{cmd}'
         f'<p class="esperar"><strong>O que esperar:</strong> {esperar}</p></div></li>'
-        for n, verbo, cmd, esperar in passos)
-    extra = detalhe("Teste extra: o seu endereço aguenta aviso repetido e fora de ordem?",
+        for n, verbo, cmd, esperar in lista)
+
+
+def como_usar(d):
+    preparo = [
+        ("1", "Prepare o ambiente (uma vez só)",
+         "<p>Crie um app no sandbox da plataforma, copie <code>.env.exemplo</code> para <code>.env</code> e preencha os dados do app e o endereço do túnel. Depois instale o app numa loja de teste:</p>"
+         + comando("python -m conferidor.sandbox instalar"),
+         "a loja de teste passa a mandar avisos para o seu computador."),
+        ("2", "Ligue o receptor (sempre, antes de usar qualquer ferramenta)",
+         "<p>Num terminal que fica aberto:</p>" + comando("python -m conferidor.receptor"),
+         "cada aviso que chega aparece numa linha. Os dois usos abaixo dependem dele."),
+    ]
+    n_rodada = len(d['rodadas'][0]['linhas']) if d['rodadas'] else 12
+    conferidor_passos = [
+        ("A", "Crie pedidos de teste", comando("python -m conferidor.sandbox pix --quantos 3"),
+         "três Pix de teste, aprovados sozinhos em cerca de 5 segundos. Para simular aviso perdido, pare o receptor e crie mais alguns."),
+        ("B", "Confira", comando("python -m conferidor.sandbox conferir"),
+         "para cada pedido: o que a loja sabia, o que a API informa e quais avisos não chegaram."),
+        ("C", "Leia o painel", "<p>Abra <code>painel.html</code> no navegador.</p>",
+         "os pedidos pagos sem aviso aparecem em vermelho."),
+    ]
+    testador_passos = [
+        ("A", "Teste rápido (1 minuto)", comando("python -m testador rodar --meios pix --documentos cpf --acoes compra --espera 3"),
+         "uma compra com Pix e o selo do resultado. Bom para conferir se está tudo ligado."),
+        ("B", "Rodada completa", comando("python -m testador rodar"),
+         f"{n_rodada} cenários (Pix e cartão 1x, CPF e CNPJ, compra e estornos), até 10 minutos de espera pelos avisos. Boleto e cartão 3x: "
+         "<code>--meios boleto,cartao_parcelado --nome boleto_3x</code>."),
+        ("C", "Leia e reconfira", "<p>Abra <code>testador.html</code> no navegador. Mais tarde, sem criar pedidos:</p>" + comando("python -m testador rejulgar"),
+         "um selo por cenário. Inconclusivo vira resultado final quando a plataforma termina de processar."),
+    ]
+    extra = detalhe("Teste extra do testador: o seu endereço aguenta aviso repetido e fora de ordem?",
                     comando("python -m testador resistencia --alvo URL")
                     + "<p>Rode contra um segundo receptor (<code>--porta 8081 --banco outro.db</code>) para não misturar pedidos fictícios.</p>")
     return f"""<section class="sec cinza" id="como-usar">
 <div class="w">
 <p class="olho">Como usar</p>
-<h2>Como usar em 3 passos</h2>
-<p class="sub">Instalar, rodar, ler o resultado.</p>
-<p class="pre"><strong>Antes de começar:</strong> Python 3.10 ou mais novo, nenhuma dependência. Um app próprio no {termo("sandbox", "sandbox")} da plataforma.
-Um túnel que deixe o seu computador receber avisos da internet.</p>
+<h2>Prepare uma vez, depois use cada ferramenta</h2>
+<p class="sub">Os dois primeiros passos valem para as duas ferramentas. Depois, cada uma tem o seu caminho.</p>
+<p class="pre"><strong>Você precisa de:</strong> Python 3.10 ou mais novo (nenhuma dependência), um app próprio no {termo("sandbox", "sandbox")} da plataforma
+e um túnel que deixe o seu computador receber avisos da internet.</p>
 <p class="fixo alerta">{icone("atencao")}<span>Use só com o seu próprio app, no sandbox. Nunca aponte para a produção de terceiros.</span></p>
-<ol class="passos">{blocos}</ol>
-{extra}
+<h3 class="titulo-bloco">Preparar (vale para as duas)</h3>
+<ol class="passos">{_passos(preparo)}</ol>
+<div class="duas-col">
+<div><h3 class="titulo-bloco">Usar o conferidor</h3><p class="sub">Descobre os pedidos pagos de que a loja não soube.</p><ol class="passos">{_passos(conferidor_passos)}</ol></div>
+<div><h3 class="titulo-bloco">Usar o testador</h3><p class="sub">Roda a lista de cenários de homologação e dá um selo para cada um.</p><ol class="passos">{_passos(testador_passos)}</ol>{extra}</div>
+</div>
 <p class="nota">O repositório do código é privado. Código disponível sob pedido ao autor.</p>
 </div>
 </section>"""
@@ -953,6 +975,9 @@ def _documento(titulo, corpo):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(titulo)}</title>
 <meta name="description" content="Projeto independente: conferidor de avisos de pagamento e testador de cenários, medidos no sandbox do próprio app do autor.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icone-32.png">
+<link rel="apple-touch-icon" href="icone-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap">
@@ -993,6 +1018,10 @@ CSS_SESSOES = """
 .seguir a{flex:1 1 220px;max-width:360px}
 .seguir .vazio{flex:1 1 220px}
 .seguir .prox{text-align:right;margin-left:auto}
+.titulo-bloco{margin:28px 0 10px}
+.duas-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.duas-col>div{min-width:0}
+@media (max-width:860px){.duas-col{grid-template-columns:1fr}}
 """
 
 
@@ -1072,6 +1101,8 @@ def montar():
         antigo.unlink()
     for arquivo, html in gerar_sessoes().items():
         (SAIDA / arquivo).write_text(html, encoding="utf-8")
+    for icone_arquivo in (RAIZ / "assets").glob("*"):  # icone do autor (aba do navegador e celular)
+        shutil.copyfile(icone_arquivo, SAIDA / icone_arquivo.name)
     print("Site v2 montado em", SAIDA, "com", len(SESSOES), "sessões")
     return SAIDA
 

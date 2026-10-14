@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Conferidor de avisos</title>
 <meta name="description" content="Projeto independente: conferidor de avisos de pagamento e testador de cenários, medidos no sandbox do próprio app do autor.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icone-32.png">
+<link rel="apple-touch-icon" href="icone-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap">
@@ -238,6 +241,10 @@ table.resp td.n::before{display:inline;font-size:13px}
 .seguir a{flex:1 1 220px;max-width:360px}
 .seguir .vazio{flex:1 1 220px}
 .seguir .prox{text-align:right;margin-left:auto}
+.titulo-bloco{margin:28px 0 10px}
+.duas-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.duas-col>div{min-width:0}
+@media (max-width:860px){.duas-col{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
