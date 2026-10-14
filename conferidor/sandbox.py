@@ -1,5 +1,6 @@
 """Comandos para usar o conferidor com um app proprio, no ambiente de sandbox.
 
+    python -m conferidor.sandbox verificar          diz o que esta pronto e o que falta, passo a passo
     python -m conferidor.sandbox instalar           instala o app numa loja de teste
     python -m conferidor.sandbox pix                cria um pedido e paga com Pix de teste
     python -m conferidor.sandbox pix --quantos 5    cria cinco de uma vez
@@ -39,7 +40,8 @@ def instalar(_):
         "url_callback": base + "/callback",
     })
     hash_de_autorizacao = resposta["data"]["token"]
-    link = f"{app.urls['URL_PAINEL']}/appstore/integration/{hash_de_autorizacao}"
+    painel = app.urls["URL_PAINEL"].rstrip("/") or config.exigir("URL_PAINEL")["URL_PAINEL"].rstrip("/")
+    link = f"{painel}/appstore/integration/{hash_de_autorizacao}"
     print("2/3  Abra este endereco, entre com a sua conta e autorize a instalacao:\n     " + link)
     webbrowser.open(link)
 
@@ -118,11 +120,63 @@ def conferir(_):
     print(f"\n{len(pedidos)} pedidos conferidos, {com_falta} com aviso faltando, {conciliador.consultas} consultas a API.")
 
 
+def verificar(_):
+    """Confere a configuracao na ordem do guia PRIMEIROS-PASSOS.md e diz o proximo passo."""
+    import urllib.request
+    dados, faltas = config.ler(), 0
+
+    def item(ok, texto, dica=""):
+        nonlocal faltas
+        faltas += 0 if ok else 1
+        print(f"  [{'ok' if ok else 'FALTA'}] {texto}" + ("" if ok or not dica else f"\n         -> {dica}"))
+        return ok
+
+    def responde(url):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "verificar"}), timeout=10) as r:
+                return r.status == 200
+        except Exception:
+            return False
+
+    print("Configuração (arquivo .env):")
+    item(config.ARQUIVO.exists(), "arquivo .env existe", "copie .env.exemplo para .env (passo 4 do guia)")
+    for chave, dica in (("APP_UUID", "copie do painel do app, em Consultar Aplicativo > Desenvolver (passo 3)"),
+                        ("APP_CLIENT_ID", "idem, credenciais do app (passo 3)"),
+                        ("APP_CLIENT_SECRET", "idem, credenciais do app (passo 3)"),
+                        ("URL_PAINEL", "endereço da sua loja de teste, por exemplo https://minhaloja.sandboxappmax.com.br (passo 3)"),
+                        ("URL_PUBLICA", "endereço que o túnel mostrou, terminado em trycloudflare.com (passo 5)")):
+        item(bool(dados.get(chave)), f"{chave} preenchido", dica)
+
+    print("\nPeças ligadas:")
+    item(responde("http://127.0.0.1:8080/"), "receptor ligado na porta 8080",
+         "abra outro PowerShell, entre na pasta e rode: python -m conferidor.receptor (passo 6)")
+    if dados.get("URL_PUBLICA"):
+        item(responde(dados["URL_PUBLICA"].rstrip("/") + "/"), "túnel no ar e chegando ao receptor",
+             "ligue o túnel (passo 5); se ele reiniciou, o endereço mudou: atualize URL_PUBLICA e as URLs no painel do app")
+
+    print("\nLoja de teste:")
+    if item(bool(dados.get("MERCHANT_CLIENT_ID") and dados.get("MERCHANT_CLIENT_SECRET")),
+            "app instalado numa loja de teste", "rode: python -m conferidor.sandbox instalar (passo 7)"):
+        try:
+            ClienteDaAPI.do_merchant()._autenticar()
+            item(True, "a plataforma aceitou as credenciais da loja")
+        except Exception as erro:
+            item(False, "a plataforma aceitou as credenciais da loja",
+                 f"ela respondeu: {str(erro)[:120]}. Se você reinstalou o app, rode instalar de novo")
+
+    print("\nOpcional:")
+    print(f"  [{'ok' if dados.get('OPENROUTER_API_KEY') else 'sem'}] chave da OpenRouter para o resumo por IA"
+          " (sem ela, o resumo sai de texto fixo)")
+    print("\n" + ("Tudo pronto. Faça o teste rápido: python -m testador rodar --meios pix --documentos cpf --acoes compra --espera 3 --nome rapido"
+                  if not faltas else f"{faltas} item(ns) faltando. Resolva de cima para baixo e rode verificar de novo."))
+
+
 def main():
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     opcoes = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     comandos = opcoes.add_subparsers(dest="comando", required=True)
+    comandos.add_parser("verificar").set_defaults(acao=verificar)
     comandos.add_parser("instalar").set_defaults(acao=instalar)
     comando_pix = comandos.add_parser("pix")
     comando_pix.add_argument("--quantos", type=int, default=1)

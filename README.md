@@ -5,6 +5,8 @@
 
 Um exercício: descobrir quais avisos de pagamento uma loja deixou de receber, cruzando o que chegou com o que a plataforma informa.
 
+**Primeira vez aqui?** Siga o [guia de primeiros passos](PRIMEIROS-PASSOS.md): do zero (instalar o Python, criar a conta de desenvolvedor e o app no sandbox, ligar o túnel) até o primeiro teste. Para conferir a configuração a qualquer momento: `python -m conferidor.sandbox verificar`. Para só ver o que o conferidor faz, sem instalar nada, use a sessão Experimente do site.
+
 ## O ponto de partida
 
 A [documentação pública de webhooks](https://docs.appmax.com.br/guides/webhooks) descreve o seguinte, nas seções "Política de Retry" e "Erros e Troubleshooting":

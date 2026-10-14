@@ -1,0 +1,35 @@
+{
+  "executado_em": "14/10/2026 14:20",
+  "modo": "direto",
+  "espera_s": 180,
+  "chamadas": 4,
+  "linhas": [
+    {
+      "id": "pix-cpf-compra",
+      "nome": "Compra · Pix · CPF",
+      "order_id": 27755,
+      "status_api": "aprovado",
+      "execucao": {
+        "cenario": "pix-cpf-compra",
+        "order_id": 27755,
+        "pago_em": 1791998383.162918,
+        "estornado_em": null,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_pix_created": 4.9126622676849365,
+        "order_paid_by_pix": 9.51645040512085,
+        "order_approved": 8.727503061294556
+      },
+      "extras": [
+        "order_paid"
+      ]
+    }
+  ],
+  "resumo": "1 de 1 cenários passaram, 0 falharam, 0 ficaram inconclusivos e 0 não foram executados. Todos os avisos esperados chegaram.",
+  "origem_resumo": "texto fixo (nada a explicar)",
+  "custo_resumo_usd": 0.0
+}

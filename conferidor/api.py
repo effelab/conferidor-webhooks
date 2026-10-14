@@ -20,7 +20,7 @@ from .contrato import LIMITE_REQ_POR_S
 SANDBOX = {
     "URL_AUTH": "https://auth.sandboxappmax.com.br",
     "URL_API": "https://api.sandboxappmax.com.br",
-    "URL_PAINEL": "https://breakingcode.sandboxappmax.com.br",
+    "URL_PAINEL": "",  # o endereco da SUA loja de teste vem do .env (cada pessoa tem o seu)
 }
 # SUPOSICAO: `updated_at` vem em horario de Brasilia. A documentacao nao informa o fuso.
 FUSO = timezone(timedelta(hours=-3))

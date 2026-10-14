@@ -67,9 +67,9 @@ class TestSiteV2(unittest.TestCase):
                        "Causa desconhecida", "Segundo a documentação pública", "suposição"):
             self.assertIn(trecho, self.texto)
 
-    def test_sem_link_externo_alem_das_fontes(self):
+    def test_sem_link_externo_alem_das_fontes_e_do_codigo(self):
         externos = set(re.findall(r'(?:href|src)="(https?://[^"/]+)', self.html))
-        self.assertEqual(externos, {"https://fonts.googleapis.com", "https://fonts.gstatic.com"})
+        self.assertEqual(externos, {"https://fonts.googleapis.com", "https://fonts.gstatic.com", "https://github.com"})
 
     def test_estado_vazio_sem_resultados(self):
         with tempfile.TemporaryDirectory() as pasta:

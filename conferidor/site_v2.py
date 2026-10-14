@@ -19,6 +19,7 @@ from datetime import datetime
 from html import escape
 from pathlib import Path
 
+from conferidor import site_experimente
 from conferidor.relatorio import NOMES_DE_EVENTO, reais
 from testador.cenarios import NAO_CONFERIVEIS
 
@@ -664,7 +665,7 @@ def como_usar(d):
          "os pedidos pagos sem aviso aparecem em vermelho."),
     ]
     testador_passos = [
-        ("A", "Teste rápido (1 minuto)", comando("python -m testador rodar --meios pix --documentos cpf --acoes compra --espera 3"),
+        ("A", "Teste rápido (1 minuto)", comando("python -m testador rodar --meios pix --documentos cpf --acoes compra --espera 3 --nome rapido"),
          "uma compra com Pix e o selo do resultado. Bom para conferir se está tudo ligado."),
         ("B", "Rodada completa", comando("python -m testador rodar"),
          f"{n_rodada} cenários (Pix e cartão 1x, CPF e CNPJ, compra e estornos), até 10 minutos de espera pelos avisos. Boleto e cartão 3x: "
@@ -689,7 +690,7 @@ e um túnel que deixe o seu computador receber avisos da internet.</p>
 <div><h3 class="titulo-bloco">Usar o conferidor</h3><p class="sub">Descobre os pedidos pagos de que a loja não soube.</p><ol class="passos">{_passos(conferidor_passos)}</ol></div>
 <div><h3 class="titulo-bloco">Usar o testador</h3><p class="sub">Roda a lista de cenários de homologação e dá um selo para cada um.</p><ol class="passos">{_passos(testador_passos)}</ol>{extra}</div>
 </div>
-<p class="nota">O repositório do código é privado. Código disponível sob pedido ao autor.</p>
+<p class="nota"><strong>Primeira vez?</strong> O <a href="https://github.com/effelab/conferidor-webhooks/blob/main/PRIMEIROS-PASSOS.md">guia de primeiros passos</a> leva do zero ao primeiro teste, incluindo criar a conta de desenvolvedor, o app no sandbox e o túnel. Código aberto em <a href="https://github.com/effelab/conferidor-webhooks">github.com/effelab/conferidor-webhooks</a>. Para ver só o que o conferidor faz, sem instalar nada, use a sessão <a href="experimente.html">Experimente</a>.</p>
 </div>
 </section>"""
 
@@ -981,11 +982,11 @@ def _documento(titulo, corpo):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap">
-<style>{CSS}{CSS_SESSOES}</style>
+<style>{CSS}{CSS_SESSOES}{site_experimente.CSS}</style>
 </head>
 <body>
 {corpo}
-<script>{SCRIPT}</script>
+<script>{SCRIPT}{site_experimente.SCRIPT}</script>
 </body>
 </html>
 """
@@ -1008,6 +1009,7 @@ SESSOES = [  # (arquivo, ancora da secao, rotulo no menu)
     ("index.html", "problema", "Início"),
     ("conferidor.html", "conferidor", "Conferidor"),
     ("testador.html", "testador", "Testador"),
+    ("experimente.html", "experimente", "Experimente"),
     ("como-usar.html", "como-usar", "Como usar"),
     ("limites.html", "limites", "Limites"),
 ]
@@ -1081,11 +1083,12 @@ def gerar_sessoes(dados=None):
         "index.html": topo(d) + problema(),
         "conferidor.html": conferidor(d),
         "testador.html": testador(d),
+        "experimente.html": site_experimente.experimente(icone),
         "como-usar.html": como_usar(d),
         "limites.html": limites(d),
     }
     titulos = {"index.html": "Conferidor de avisos", "conferidor.html": "Conferidor · resultados",
-               "testador.html": "Testador · resultados", "como-usar.html": "Como usar",
+               "testador.html": "Testador · resultados", "experimente.html": "Experimente", "como-usar.html": "Como usar",
                "limites.html": "Limites e glossário"}
     paginas = {}
     for i, (arq, _, _) in enumerate(SESSOES):
