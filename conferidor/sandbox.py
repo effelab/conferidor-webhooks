@@ -1,0 +1,141 @@
+"""Comandos para usar o conferidor com um app proprio, no ambiente de sandbox.
+
+    python -m conferidor.sandbox instalar           instala o app numa loja de teste
+    python -m conferidor.sandbox pix                cria um pedido e paga com Pix de teste
+    python -m conferidor.sandbox pix --quantos 5    cria cinco de uma vez
+    python -m conferidor.sandbox pix --pendente     cria um Pix que fica sem pagamento
+    python -m conferidor.sandbox conferir           cruza os avisos recebidos com a API
+
+AINDA NAO TESTADO contra o sandbox real: foi escrito pela documentacao e
+testado so contra uma plataforma falsa local. Se algum passo responder
+diferente do esperado, o comando mostra a resposta para ajustarmos.
+"""
+import argparse
+import sys
+import time
+import webbrowser
+
+from . import config, painel
+from .api import ClienteDaAPI, ErroDaAPI
+from .conciliador import Conciliador
+from .receptor import BANCO
+from .registro import Registro
+from .relatorio import NOMES_DE_EVENTO, reais
+
+CPF_QUE_APROVA = "19100000000"   # sandbox: aprovado sozinho em cerca de 5 segundos
+CPF_QUE_PENDE = "40827365144"    # sandbox: fica pendente, o pagamento nao e confirmado
+
+
+def instalar(_):
+    dados = config.exigir("APP_UUID", "APP_CLIENT_ID", "APP_CLIENT_SECRET", "URL_PUBLICA")
+    base = dados["URL_PUBLICA"].rstrip("/")
+    app = ClienteDaAPI.do_aplicativo()
+    config.gravar("TOKEN_INSTALACAO", "")
+
+    print("1/3  Pedindo a autorizacao de instalacao...")
+    resposta = app.chamar("POST", "/app/authorize", {
+        "app_id": dados["APP_UUID"],            # o UUID do app, nunca o ID numerico
+        "external_key": "conferidor-teste",
+        "url_callback": base + "/callback",
+    })
+    hash_de_autorizacao = resposta["data"]["token"]
+    link = f"{app.urls['URL_PAINEL']}/appstore/integration/{hash_de_autorizacao}"
+    print("2/3  Abra este endereco, entre com a sua conta e autorize a instalacao:\n     " + link)
+    webbrowser.open(link)
+
+    print("     Esperando voce autorizar (ate 15 minutos; o receptor precisa estar rodando)...")
+    token, limite = "", time.time() + 15 * 60
+    while not token and time.time() < limite:
+        time.sleep(2)
+        token = config.ler().get("TOKEN_INSTALACAO", "")
+    if not token:
+        print("     O callback nao chegou. Tentando com o hash da autorizacao.")
+        token = hash_de_autorizacao
+
+    print("3/3  Gerando as credenciais da loja (a plataforma vai chamar /validacao no receptor)...")
+    cliente = app.chamar("POST", "/app/client/generate", {"token": token})["data"]["client"]
+    config.gravar("MERCHANT_CLIENT_ID", cliente["client_id"])
+    config.gravar("MERCHANT_CLIENT_SECRET", cliente["client_secret"])
+    print("Instalado. As credenciais da loja foram gravadas no .env (nao aparecem na tela).")
+
+
+def pix(args):
+    api, registro = ClienteDaAPI.do_merchant(), Registro(BANCO)
+    documento = CPF_QUE_PENDE if args.pendente else CPF_QUE_APROVA
+    for _ in range(args.quantos):
+        cliente = api.chamar("POST", "/v1/customers", {
+            "first_name": "Cliente", "last_name": "Teste", "email": "cliente.teste@example.com",
+            "phone": "51999999999", "ip": "127.0.0.1"})
+        pedido = api.chamar("POST", "/v1/orders", {
+            "customer_id": cliente["data"]["customer"]["id"],
+            "products": [{"sku": "TESTE-001", "name": "Pedido de teste do conferidor",
+                          "quantity": 1, "unit_value": args.valor, "type": "digital"}]})
+        order_id = int(pedido["data"]["order"]["id"])
+        registro.registrar_pedido(order_id, "pix", time.time(), valor_centavos=args.valor)
+        registro.db.commit()
+        api.chamar("POST", "/v1/payments/pix", {
+            "order_id": order_id, "payment_data": {"pix": {"document_number": documento}}})
+        print(f"Pedido {order_id} criado, Pix de {reais(args.valor)} gerado"
+              f" ({'vai ficar pendente' if args.pendente else 'deve aprovar em uns 5 segundos'}).")
+
+
+def conferir(_):
+    registro = Registro(BANCO)
+    conciliador = Conciliador(registro, ClienteDaAPI.do_merchant())
+    pedidos = registro.db.execute("SELECT * FROM pedidos ORDER BY order_id").fetchall()
+    if not pedidos:
+        raise SystemExit("Nenhum pedido registrado ainda. Crie um com: python -m conferidor.sandbox pix")
+    agora, com_falta, linhas = time.time(), 0, []
+    for pedido in pedidos:
+        order_id = pedido["order_id"]
+        conciliador.conferir(pedido, agora)
+        recebidos = registro.eventos_recebidos(order_id)
+        apontados = registro.db.execute(
+            "SELECT evento, tipo FROM apontados WHERE order_id=?", (order_id,)).fetchall()
+        faltando = [(e, t) for e, t in apontados if e not in recebidos]
+        status_api = registro.pedido(order_id)["status"]
+        linhas.append({"order_id": order_id, "valor": pedido["valor_centavos"], "status_api": status_api,
+                       "recebidos": len(recebidos), "fonte": registro.pedido(order_id)["fonte_status"],
+                       "faltando": faltando})
+        print(f"\nPedido {order_id}  ({reais(pedido['valor_centavos'])})")
+        origem = {"api": " (soube pelo conferidor, nao por aviso)", "webhook": " (soube por aviso)"}
+        print(f"  a loja sabia ......... {pedido['status'] or 'nada, nenhum aviso chegou'}"
+              f"{origem.get(pedido['fonte_status'], '') if pedido['status'] else ''}")
+        print(f"  a API informa ........ {status_api}")
+        print(f"  avisos recebidos ..... {len(recebidos)}")
+        if faltando:
+            com_falta += 1
+            for evento, tipo in faltando:
+                situacao = "PERDIDO, a janela de retentativa ja fechou" if tipo == "aviso_perdido" else "ainda pode chegar por retentativa"
+                print(f"  faltando ............. {NOMES_DE_EVENTO.get(evento, evento)} ({evento}): {situacao}")
+        else:
+            print("  faltando ............. nada")
+    registro.db.commit()
+    arquivo = config.RAIZ / "painel.html"
+    arquivo.write_text(painel.gerar(linhas, conciliador.consultas), encoding="utf-8")
+    print("")
+    print(f"Painel gravado em: {arquivo}")
+    print(f"\n{len(pedidos)} pedidos conferidos, {com_falta} com aviso faltando, {conciliador.consultas} consultas a API.")
+
+
+def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    opcoes = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    comandos = opcoes.add_subparsers(dest="comando", required=True)
+    comandos.add_parser("instalar").set_defaults(acao=instalar)
+    comando_pix = comandos.add_parser("pix")
+    comando_pix.add_argument("--quantos", type=int, default=1)
+    comando_pix.add_argument("--valor", type=int, default=12300, help="em centavos")
+    comando_pix.add_argument("--pendente", action="store_true")
+    comando_pix.set_defaults(acao=pix)
+    comandos.add_parser("conferir").set_defaults(acao=conferir)
+    args = opcoes.parse_args()
+    try:
+        args.acao(args)
+    except ErroDaAPI as erro:
+        raise SystemExit(f"\nA plataforma respondeu diferente do esperado:\n  {erro}")
+
+
+if __name__ == "__main__":
+    main()

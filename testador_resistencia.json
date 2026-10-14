@@ -1,0 +1,28 @@
+{
+  "alvo": "http://127.0.0.1:8081/webhook",
+  "pedidos_sinteticos": "900458393 a 900458415",
+  "provas": [
+    {
+      "nome": "Tempo de resposta (20 avisos)",
+      "passou": true,
+      "detalhe": "20 de 20 com 2xx; mediana 0.01 s, pior 0.04 s; 0 acima de 5 s (limite da documentação; o painel do app fala em 10 s)"
+    },
+    {
+      "nome": "Aviso repetido (reentrega)",
+      "passou": true,
+      "detalhe": "primeiro envio: 200; repetição: 200. Responder 2xx à repetição evita retentativa à toa. Se o app processa duas vezes por dentro, isso não é visível daqui."
+    },
+    {
+      "nome": "Avisos fora de ordem",
+      "passou": true,
+      "detalhe": "integrado, aprovado, pago e só depois Pix gerado: respostas 200, 200, 200, 200"
+    },
+    {
+      "nome": "Tipo de aviso que o app talvez não trate (saque)",
+      "passou": true,
+      "informativo": true,
+      "detalhe": "resposta 200. Não é exigência da documentação; responder erro faz a plataforma retentar."
+    }
+  ],
+  "executado_em": "14/10/2026 10:11"
+}

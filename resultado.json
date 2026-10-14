@@ -1,0 +1,509 @@
+[
+  {
+    "chave": "normal",
+    "nome": "Operação normal",
+    "descricao": "Seis oscilações de 3 a 20 minutos no mês e 0,5% de respostas lentas.",
+    "leitura": "anterior",
+    "janela_h": 6.5,
+    "horas_fora_do_ar": 1.013136766771398,
+    "pedidos": 20000,
+    "eventos_emitidos": 68994,
+    "duplicados_absorvidos": 313,
+    "avisos_perdidos": 0,
+    "perdidos_por_evento": {},
+    "pedidos_pagos_sem_aviso": 0,
+    "valor_pago_sem_aviso": 0,
+    "errados_sem_conferidor": 0,
+    "invisiveis_sem_conferidor": 0,
+    "valor_invisivel_sem_conferidor": 0,
+    "errados_com_conferidor": 0,
+    "apontados": 0,
+    "precisao": null,
+    "cobertura": null,
+    "nao_apontados_por_evento": {},
+    "atraso_mediano_min": null,
+    "atraso_p95_min": null,
+    "atraso_mediano_por_metodo_min": {},
+    "sem_conferidor_nunca_souberam": 0,
+    "sem_conferidor_atraso_mediano_min": null,
+    "com_conferidor_ainda_sem_saber": 0,
+    "recuperados_por_retentativa": 27,
+    "consultas": 17361,
+    "consultas_pct_da_quota": 0.17361,
+    "consultas_varredura_ingenua": 7241877,
+    "pedidos_yampi": 1144,
+    "avisos_suprimidos_yampi": 3901,
+    "alarmes_falsos_evitados": 3877,
+    "avisos_ainda_em_retentativa": 0,
+    "para_o_suporte": [],
+    "segundos": 1.1
+  },
+  {
+    "chave": "incidente",
+    "nome": "Incidente de 8 horas",
+    "descricao": "O mesmo mês, mais uma madrugada com o endpoint de webhook fora do ar por 8 horas. Retentativas contadas da tentativa anterior (janela de 6h30).",
+    "leitura": "anterior",
+    "janela_h": 6.5,
+    "horas_fora_do_ar": 9.013136766771398,
+    "pedidos": 20000,
+    "eventos_emitidos": 68994,
+    "duplicados_absorvidos": 309,
+    "avisos_perdidos": 116,
+    "perdidos_por_evento": {
+      "order_integrated": 35,
+      "order_approved": 25,
+      "order_paid": 18,
+      "order_authorized": 14,
+      "order_paid_by_pix": 7,
+      "order_pix_created": 7,
+      "order_pix_expired": 5,
+      "order_refund": 1,
+      "order_billet_overdue": 1,
+      "order_pending_integration": 1,
+      "order_billet_created": 1,
+      "payment_not_authorized": 1
+    },
+    "pedidos_pagos_sem_aviso": 25,
+    "valor_pago_sem_aviso": 511327,
+    "errados_sem_conferidor": 42,
+    "invisiveis_sem_conferidor": 6,
+    "valor_invisivel_sem_conferidor": 102862,
+    "errados_com_conferidor": 0,
+    "apontados": 114,
+    "precisao": 1.0,
+    "cobertura": 0.9827586206896551,
+    "nao_apontados_por_evento": {
+      "order_approved": 1,
+      "order_paid": 1
+    },
+    "atraso_mediano_min": 12.81039570760525,
+    "atraso_p95_min": 427.2865177717797,
+    "atraso_mediano_por_metodo_min": {
+      "boleto": 659.2230283288653,
+      "cartao": 11.58231445007162,
+      "pix": 29.213813784867913
+    },
+    "sem_conferidor_nunca_souberam": 6,
+    "sem_conferidor_atraso_mediano_min": 510.4598310059111,
+    "com_conferidor_ainda_sem_saber": 0,
+    "recuperados_por_retentativa": 479,
+    "consultas": 17660,
+    "consultas_pct_da_quota": 0.1766,
+    "consultas_varredura_ingenua": 7241877,
+    "pedidos_yampi": 1144,
+    "avisos_suprimidos_yampi": 3901,
+    "alarmes_falsos_evitados": 3877,
+    "avisos_ainda_em_retentativa": 0,
+    "para_o_suporte": [
+      {
+        "order_id": 107541,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid"
+        ],
+        "valor": 90298,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107532,
+        "eventos": [
+          "order_pix_created",
+          "order_paid_by_pix",
+          "order_approved"
+        ],
+        "valor": 88917,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107512,
+        "eventos": [
+          "order_pix_expired"
+        ],
+        "valor": 68618,
+        "status": "cancelado"
+      },
+      {
+        "order_id": 107519,
+        "eventos": [
+          "order_integrated"
+        ],
+        "valor": 39408,
+        "status": "integrado"
+      },
+      {
+        "order_id": 104477,
+        "eventos": [
+          "order_refund"
+        ],
+        "valor": 37064,
+        "status": "estornado"
+      },
+      {
+        "order_id": 106555,
+        "eventos": [
+          "order_paid",
+          "order_approved",
+          "order_integrated"
+        ],
+        "valor": 30029,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107480,
+        "eventos": [
+          "order_integrated"
+        ],
+        "valor": 28311,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107522,
+        "eventos": [
+          "order_paid_by_pix",
+          "order_approved",
+          "order_integrated"
+        ],
+        "valor": 27732,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107495,
+        "eventos": [
+          "order_integrated"
+        ],
+        "valor": 27698,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107536,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid"
+        ],
+        "valor": 27263,
+        "status": "integrado"
+      }
+    ],
+    "segundos": 1.1
+  },
+  {
+    "chave": "incidente_4h",
+    "nome": "Incidente de 8 horas, janela de 4 h",
+    "descricao": "O mesmo incidente, com as retentativas contadas da tentativa original (janela de 4 horas). A documentação não diz qual das duas leituras vale.",
+    "leitura": "original",
+    "janela_h": 4.0,
+    "horas_fora_do_ar": 9.013136766771398,
+    "pedidos": 20000,
+    "eventos_emitidos": 68994,
+    "duplicados_absorvidos": 309,
+    "avisos_perdidos": 357,
+    "perdidos_por_evento": {
+      "order_integrated": 82,
+      "order_approved": 80,
+      "order_paid": 50,
+      "order_authorized": 46,
+      "order_pix_created": 38,
+      "order_paid_by_pix": 30,
+      "order_pix_expired": 12,
+      "order_billet_created": 8,
+      "payment_not_authorized": 4,
+      "order_refund": 2,
+      "order_pending_integration": 2,
+      "order_refused_by_risk": 2,
+      "order_billet_overdue": 1
+    },
+    "pedidos_pagos_sem_aviso": 80,
+    "valor_pago_sem_aviso": 1531511,
+    "errados_sem_conferidor": 100,
+    "invisiveis_sem_conferidor": 40,
+    "valor_invisivel_sem_conferidor": 761402,
+    "errados_com_conferidor": 1,
+    "apontados": 355,
+    "precisao": 1.0,
+    "cobertura": 0.9943977591036415,
+    "nao_apontados_por_evento": {
+      "order_pix_created": 1,
+      "order_refund": 1
+    },
+    "atraso_mediano_min": 13.543761148830527,
+    "atraso_p95_min": 624.0224186326668,
+    "atraso_mediano_por_metodo_min": {
+      "boleto": 891.1595388859511,
+      "cartao": 12.81039570760525,
+      "pix": 14.362878726923373
+    },
+    "sem_conferidor_nunca_souberam": 40,
+    "sem_conferidor_atraso_mediano_min": 361.80489163699775,
+    "com_conferidor_ainda_sem_saber": 0,
+    "recuperados_por_retentativa": 277,
+    "consultas": 17713,
+    "consultas_pct_da_quota": 0.17713,
+    "consultas_varredura_ingenua": 7241877,
+    "pedidos_yampi": 1144,
+    "avisos_suprimidos_yampi": 3901,
+    "alarmes_falsos_evitados": 3877,
+    "avisos_ainda_em_retentativa": 0,
+    "para_o_suporte": [
+      {
+        "order_id": 107551,
+        "eventos": [
+          "order_pix_created",
+          "order_pix_expired"
+        ],
+        "valor": 91885,
+        "status": "cancelado"
+      },
+      {
+        "order_id": 107541,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid",
+          "order_integrated"
+        ],
+        "valor": 90298,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107532,
+        "eventos": [
+          "order_pix_created",
+          "order_paid_by_pix",
+          "order_approved",
+          "order_integrated"
+        ],
+        "valor": 88917,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107512,
+        "eventos": [
+          "order_pix_expired"
+        ],
+        "valor": 68618,
+        "status": "cancelado"
+      },
+      {
+        "order_id": 107617,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid"
+        ],
+        "valor": 58871,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107584,
+        "eventos": [
+          "order_pix_created",
+          "order_paid_by_pix",
+          "order_approved"
+        ],
+        "valor": 55376,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107621,
+        "eventos": [
+          "order_pix_created",
+          "order_paid_by_pix",
+          "order_approved"
+        ],
+        "valor": 55146,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107580,
+        "eventos": [
+          "payment_not_authorized"
+        ],
+        "valor": 49784,
+        "status": "cancelado"
+      },
+      {
+        "order_id": 107629,
+        "eventos": [
+          "order_authorized"
+        ],
+        "valor": 47207,
+        "status": "integrado"
+      },
+      {
+        "order_id": 107619,
+        "eventos": [
+          "order_pix_created",
+          "order_paid_by_pix",
+          "order_approved"
+        ],
+        "valor": 46086,
+        "status": "integrado"
+      }
+    ],
+    "segundos": 1.2
+  },
+  {
+    "chave": "fim_de_semana",
+    "nome": "Fim de semana sem plantão",
+    "descricao": "O endpoint cai no sábado à noite e só volta 30 horas depois.",
+    "leitura": "anterior",
+    "janela_h": 6.5,
+    "horas_fora_do_ar": 31.0131367667714,
+    "pedidos": 20000,
+    "eventos_emitidos": 68994,
+    "duplicados_absorvidos": 301,
+    "avisos_perdidos": 2122,
+    "perdidos_por_evento": {
+      "order_approved": 459,
+      "order_integrated": 449,
+      "order_pix_created": 273,
+      "order_paid": 259,
+      "order_authorized": 243,
+      "order_paid_by_pix": 200,
+      "order_pix_expired": 71,
+      "order_billet_created": 61,
+      "payment_not_authorized": 48,
+      "order_billet_overdue": 35,
+      "order_refund": 12,
+      "order_refused_by_risk": 7,
+      "order_pending_integration": 5
+    },
+    "pedidos_pagos_sem_aviso": 459,
+    "valor_pago_sem_aviso": 10823309,
+    "errados_sem_conferidor": 580,
+    "invisiveis_sem_conferidor": 412,
+    "valor_invisivel_sem_conferidor": 9714955,
+    "errados_com_conferidor": 4,
+    "apontados": 2114,
+    "precisao": 1.0,
+    "cobertura": 0.9962299717247879,
+    "nao_apontados_por_evento": {
+      "order_refund": 4,
+      "order_pix_created": 3,
+      "order_pending_integration": 1
+    },
+    "atraso_mediano_min": 13.402898550018048,
+    "atraso_p95_min": 89.2266765657269,
+    "atraso_mediano_por_metodo_min": {
+      "boleto": 453.18459160745067,
+      "cartao": 13.0191913191947,
+      "pix": 12.011092554733235
+    },
+    "sem_conferidor_nunca_souberam": 412,
+    "sem_conferidor_atraso_mediano_min": 524.9783435320481,
+    "com_conferidor_ainda_sem_saber": 0,
+    "recuperados_por_retentativa": 471,
+    "consultas": 19036,
+    "consultas_pct_da_quota": 0.19036,
+    "consultas_varredura_ingenua": 7241877,
+    "pedidos_yampi": 1144,
+    "avisos_suprimidos_yampi": 3901,
+    "alarmes_falsos_evitados": 3877,
+    "avisos_ainda_em_retentativa": 0,
+    "para_o_suporte": [
+      {
+        "order_id": 113451,
+        "eventos": [
+          "payment_not_authorized"
+        ],
+        "valor": 154922,
+        "status": "cancelado"
+      },
+      {
+        "order_id": 113809,
+        "eventos": [
+          "order_pix_created",
+          "order_paid_by_pix",
+          "order_approved",
+          "order_integrated"
+        ],
+        "valor": 150175,
+        "status": "integrado"
+      },
+      {
+        "order_id": 113678,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid",
+          "order_integrated"
+        ],
+        "valor": 146630,
+        "status": "integrado"
+      },
+      {
+        "order_id": 113628,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid",
+          "order_integrated"
+        ],
+        "valor": 112459,
+        "status": "estornado"
+      },
+      {
+        "order_id": 113901,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid",
+          "order_integrated"
+        ],
+        "valor": 108382,
+        "status": "integrado"
+      },
+      {
+        "order_id": 113234,
+        "eventos": [
+          "order_integrated"
+        ],
+        "valor": 104466,
+        "status": "integrado"
+      },
+      {
+        "order_id": 113889,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid"
+        ],
+        "valor": 101109,
+        "status": "integrado"
+      },
+      {
+        "order_id": 113448,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid",
+          "order_integrated"
+        ],
+        "valor": 97768,
+        "status": "integrado"
+      },
+      {
+        "order_id": 113843,
+        "eventos": [
+          "payment_not_authorized"
+        ],
+        "valor": 84305,
+        "status": "cancelado"
+      },
+      {
+        "order_id": 113303,
+        "eventos": [
+          "order_authorized",
+          "order_approved",
+          "order_paid",
+          "order_integrated"
+        ],
+        "valor": 83916,
+        "status": "integrado"
+      }
+    ],
+    "segundos": 1.3
+  }
+]

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conferidor de Webhooks</title><style>
+:root{color-scheme:light;--bg:#f5f6fa;--pn:#fff;--pn2:#f3f4f9;--ln:#e4e6ee;--tx:#171a23;--tx2:#565d70;
+--tx3:#8b92a4;--ac:#6d4aff;--acb:#f4f1ff;--acl:#d9cfff;--tl:#0d9488;--tlb:#effcfa;--tll:#a7e8df;
+--bd:#c92a2a;--bdb:#fff1f1;--bdl:#f5c6c6;--gd:#15803d;--gdb:#f0fdf4;--gdl:#bbe7c9;--wn:#b45309;
+--wnb:#fff8eb;--wnl:#f3ddb0;--mono:ui-monospace,Menlo,Consolas,monospace;--lat:248px;
+--sm:0 1px 2px rgba(23,26,35,.04),0 1px 3px rgba(23,26,35,.04)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;
+font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.lat{position:fixed;top:0;bottom:0;left:0;width:var(--lat);z-index:20;background:var(--pn);
+border-right:1px solid var(--ln);display:flex;flex-direction:column;padding:20px 14px;overflow-y:auto}
+.marca{display:flex;align-items:center;gap:11px;padding:0 8px 18px;margin-bottom:14px;border-bottom:1px solid var(--ln);
+color:inherit;text-decoration:none}
+.marca svg{width:34px;height:34px;flex:none}
+.marca b{display:block;font-size:16px;line-height:1.2;letter-spacing:-.2px}
+.marca small{display:block;font-size:11.5px;line-height:1.3;color:var(--tx3)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .t{font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3);padding:4px 10px 6px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--tx2);
+text-decoration:none;font-size:13.5px;font-weight:500;line-height:1.3;white-space:nowrap}
+.nav a::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acl);flex:none}
+.nav a:hover,.nav a:focus-visible{background:var(--acb);color:var(--ac);outline:0}
+.nav a:hover::before,.nav a:focus-visible::before{background:var(--ac)}
+.pr{margin-left:var(--lat);min-width:0}
+.topo{position:sticky;top:0;z-index:10;background:var(--pn);border-bottom:1px solid var(--ln);
+display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;padding:14px 28px}
+h1{margin:0;font-size:18px;line-height:1.3;letter-spacing:-.2px}
+.data{font-size:12.5px;color:var(--tx2);background:var(--pn2);border:1px solid var(--ln);border-radius:999px;padding:3px 12px}
+.w{max-width:1120px;margin:0 auto;padding:22px 28px 64px}
+.sub{color:var(--tx2);font-size:14.5px;max-width:760px;margin-top:14px}
+section{scroll-margin-top:72px}
+h2{font-size:17px;line-height:1.3;letter-spacing:-.2px;color:var(--tx);margin:38px 0 14px}
+h3{font-size:15.5px;margin:0 0 8px}
+p{margin:0 0 11px}
+.aviso{background:var(--wnb);border:1px solid var(--wnl);border-left:4px solid var(--wn);border-radius:10px;
+padding:13px 16px;font-size:13.5px;color:#6b3a06}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px}
+.kpi{background:var(--pn);border:1px solid var(--ln);border-top:3px solid var(--ac);border-radius:12px;padding:16px;box-shadow:var(--sm)}
+.kpi .n{font-size:25px;font-weight:680;letter-spacing:-.6px;color:var(--ac);line-height:1.2}
+.kpi .l{font-size:12.5px;color:var(--tx2);margin-top:5px;line-height:1.45}
+.kpi.r{border-top-color:var(--bd)}.kpi.g{border-top-color:var(--gd)}
+.kpi.r .n{color:var(--bd)}.kpi.g .n{color:var(--gd)}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:var(--sm)}
+.card p{font-size:14px;color:var(--tx2)}.card p:last-child{margin:0}
+.card.ac{border-left:3px solid var(--ac)}.card.g{border-left:3px solid var(--gd)}.card.r{border-left:3px solid var(--bd)}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr));gap:14px}
+.g2>*{min-width:0}
+.tw{overflow-x:auto;background:var(--pn);border:1px solid var(--ln);border-radius:12px;box-shadow:var(--sm)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+.tw.lg table{min-width:820px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--ln);vertical-align:top}
+th{background:var(--pn2);color:var(--tx2);font-size:10.5px;text-transform:uppercase;letter-spacing:1px}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#fafaff}
+td.n,th.n{text-align:right;font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.selo{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;
+line-height:1.5;white-space:nowrap;color:var(--tx2);background:var(--pn2);border:1px solid var(--ln)}
+.selo::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.selo.g{color:var(--gd);background:var(--gdb);border-color:var(--gdl)}
+.selo.r{color:var(--bd);background:var(--bdb);border-color:var(--bdl)}
+.selo.w{color:var(--wn);background:var(--wnb);border-color:var(--wnl)}
+.selo.a{color:var(--ac);background:var(--acb);border-color:var(--acl)}
+.ped{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:600;white-space:nowrap}
+.ped::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gd)}
+.ped.r::before{background:var(--bd)}
+code{font-family:var(--mono);font-size:12.5px;background:var(--pn2);border:1px solid var(--ln);border-radius:4px;padding:1px 5px}
+pre{background:#12141c;color:#e7e9f0;border-radius:8px;padding:14px;overflow-x:auto;font-family:var(--mono);font-size:13px}
+ul{margin:0 0 10px;padding-left:20px;color:var(--tx2);font-size:14px}li{margin-bottom:6px}li strong{color:var(--tx)}
+.fig{overflow-x:auto}.fig svg{display:block;width:100%;height:auto;min-width:560px}
+svg text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.rot{font-size:12.5px;fill:#171a23}.val{font-size:12px;fill:#565d70;font-family:ui-monospace,Menlo,Consolas,monospace}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--ln);font-size:12.5px;color:var(--tx3)}
+@media (max-width:900px){
+.lat{position:sticky;bottom:auto;width:auto;flex-direction:row;align-items:center;gap:14px;padding:8px 12px;
+border-right:0;border-bottom:1px solid var(--ln);overflow:visible}
+.marca{padding:0;margin:0;border:0;flex:none}
+.marca svg{width:30px;height:30px}
+.nav{flex-direction:row;flex:1;min-width:0;overflow-x:auto;gap:4px}
+.nav .t{display:none}
+.nav a{padding:7px 10px}
+.pr{margin-left:0}
+.topo{position:static;padding:12px 16px}
+.w{padding:16px 16px 56px}
+section{scroll-margin-top:62px}
+h2{margin-top:30px}
+}
+</style></head><body>
+<div class="pr" id="topo" style="margin-left:0">
+<header class="topo"><h1>Conferidor de webhooks</h1></header>
+<main class="w">
+<div class="aviso"><strong>Isto é uma simulação.</strong> Os números abaixo vêm de uma bancada de teste com dado 100% sintético, que reproduz o comportamento descrito na documentação pública da plataforma. Não são medições do sistema real. A medição real, feita no ambiente de teste, está na página <a href="sandbox.html">Resultado no sandbox</a>.</div>
+<div class="sub">Um exercício: descobrir quais avisos de pagamento a loja deixou de receber, cruzando o que chegou com o que a plataforma informa.</div>
+
+<section id="resultado">
+<h2>O resultado em um incidente de 8 horas</h2>
+<div class="kpis">
+<div class="kpi r"><div class="n">116</div><div class="l">avisos descartados sem notificação, em 20.000 pedidos no mês</div></div>
+<div class="kpi r"><div class="n">25</div><div class="l">pedidos pagos cujo aviso de pagamento nunca chegou, somando R$ 5.113,27</div></div>
+<div class="kpi g"><div class="n">98,3%</div><div class="l">dos avisos perdidos foram apontados pelo conferidor</div></div>
+<div class="kpi g"><div class="n">13 min</div><div class="l">é o tempo mediano até a loja saber de um pagamento cujo aviso se perdeu</div></div>
+<div class="kpi"><div class="n">18%</div><div class="l">da quota mensal de API consumida, com 17.660 consultas</div></div>
+</div>
+</section>
+
+<section id="pergunta">
+<h2>A pergunta</h2>
+<div class="card ac">
+<p>A documentação pública diz que um aviso de pagamento (webhook) é tentado quatro vezes e depois descartado sem notificação, e que a recuperação é pedindo reenvio ao suporte.</p>
+<p><strong>Para pedir o reenvio, a loja precisa saber o que perdeu.</strong> O conferidor responde a essa pergunta: ele compara os avisos recebidos com o status de cada pedido na API e aponta as divergências.</p>
+</div>
+</section>
+
+<section id="cenarios">
+<h2>Os quatro cenários</h2>
+<div class="tw lg"><table>
+<thead><tr><th>Cenário</th><th class=n>Avisos perdidos</th><th class=n>Pedidos pagos sem aviso</th><th class=n>Valor</th>
+<th class=n>Estado errado sem conferidor</th><th class=n>Com conferidor</th><th class=n>Cobertura</th><th class=n>Atraso mediano</th><th class=n>Consultas</th></tr></thead>
+<tbody><tr><td style='white-space:nowrap'><strong>Operação normal</strong></td><td class=n>0</td><td class=n>0</td><td class=n>R$ 0,00</td><td class=n>0</td><td class=n>0</td><td class=n>n/d</td><td class=n>n/d</td><td class=n>17.361</td></tr><tr><td style='white-space:nowrap'><strong>Incidente de 8 horas</strong></td><td class=n>116</td><td class=n>25</td><td class=n>R$ 5.113,27</td><td class=n>42</td><td class=n>0</td><td class=n>98,3%</td><td class=n>13 min</td><td class=n>17.660</td></tr><tr><td style='white-space:nowrap'><strong>Incidente de 8 horas, janela de 4 h</strong></td><td class=n>357</td><td class=n>80</td><td class=n>R$ 15.315,11</td><td class=n>100</td><td class=n>1</td><td class=n>99,4%</td><td class=n>14 min</td><td class=n>17.713</td></tr><tr><td style='white-space:nowrap'><strong>Fim de semana sem plantão</strong></td><td class=n>2.122</td><td class=n>459</td><td class=n>R$ 108.233,09</td><td class=n>580</td><td class=n>4</td><td class=n>99,6%</td><td class=n>13 min</td><td class=n>19.036</td></tr></tbody></table></div>
+<p style="font-size:13px;color:var(--tx3);margin-top:10px">Estado errado: pedidos em que, no fim do mês, a loja acredita em um status diferente do real. Cobertura: parcela dos avisos perdidos que o conferidor apontou, entre os que já podiam ser confirmados.</p>
+<div class="card" style="margin-top:14px"><h3>O que é cada cenário</h3><ul><li><strong>Operação normal:</strong> Seis oscilações de 3 a 20 minutos no mês e 0,5% de respostas lentas.</li><li><strong>Incidente de 8 horas:</strong> O mesmo mês, mais uma madrugada com o endpoint de webhook fora do ar por 8 horas. Retentativas contadas da tentativa anterior (janela de 6h30).</li><li><strong>Incidente de 8 horas, janela de 4 h:</strong> O mesmo incidente, com as retentativas contadas da tentativa original (janela de 4 horas). A documentação não diz qual das duas leituras vale.</li><li><strong>Fim de semana sem plantão:</strong> O endpoint cai no sábado à noite e só volta 30 horas depois.</li></ul></div>
+</section>
+
+<section id="perda">
+<h2>Quanto se perde</h2>
+<div class="card"><div class="fig"><svg viewBox="0 0 880 152" role="img"><text class="rot" x="0" y="24">Operação normal</text><rect x="250" y="10" width="2" height="20" rx="4" fill="#15803d"/><text class="val" x="260" y="24">0 avisos, 0 pedidos pagos</text><text class="rot" x="0" y="58">Incidente de 8 horas</text><rect x="250" y="44" width="24" height="20" rx="4" fill="#c92a2a"/><text class="val" x="282" y="58">116 avisos, 25 pedidos pagos</text><text class="rot" x="0" y="92">Incidente de 8 horas, janela de 4 h</text><rect x="250" y="78" width="74" height="20" rx="4" fill="#c92a2a"/><text class="val" x="332" y="92">357 avisos, 80 pedidos pagos</text><text class="rot" x="0" y="126">Fim de semana sem plantão</text><rect x="250" y="112" width="440" height="20" rx="4" fill="#c92a2a"/><text class="val" x="698" y="126">2.122 avisos, 459 pedidos pagos</text></svg></div></div>
+<div class="g2">
+<div class="card g"><h3>Em operação normal, a perda foi zero</h3>
+<p>Com oscilações de até 20 minutos, a política de retentativa da plataforma recuperou tudo sozinha. No cenário de incidente ela ainda recuperou <strong>479 avisos</strong> que o conferidor tinha visto faltar.</p>
+<p>O problema não é a retentativa ser ruim. É o que acontece quando a queda dura mais que a janela.</p></div>
+<div class="card r"><h3>A mesma queda perde 116 ou 357 avisos</h3>
+<p>A documentação lista os intervalos de retentativa (+30 min, +2 h, +4 h) sem dizer se contam da tentativa anterior ou da primeira. Na primeira leitura a janela é de 6h30, na segunda é de 4 horas.</p>
+<p>Para o mesmo incidente de 8 horas, isso muda a perda em <strong>3,1 vezes</strong>. É uma pergunta que só quem opera a plataforma responde.</p></div>
+</div>
+</section>
+
+<section id="conferidor">
+<h2>O que muda com o conferidor</h2>
+<div class="card"><div class="fig"><svg viewBox="0 0 880 152" role="img"><text class="rot" x="0" y="24">Incidente de 8 h, sem conferidor</text><rect x="250" y="10" width="32" height="20" rx="4" fill="#c92a2a"/><text class="val" x="290" y="24">42 pedidos</text><text class="rot" x="0" y="58">Incidente de 8 h, com conferidor</text><rect x="250" y="44" width="2" height="20" rx="4" fill="#15803d"/><text class="val" x="260" y="58">0 pedidos</text><text class="rot" x="0" y="92">Fim de semana, sem conferidor</text><rect x="250" y="78" width="440" height="20" rx="4" fill="#c92a2a"/><text class="val" x="698" y="92">580 pedidos</text><text class="rot" x="0" y="126">Fim de semana, com conferidor</text><rect x="250" y="112" width="3" height="20" rx="4" fill="#15803d"/><text class="val" x="261" y="126">4 pedidos</text></svg></div></div>
+<div class="g2">
+<div class="card"><h3>Tempo até a loja saber do pagamento</h3>
+<div class="tw" style="box-shadow:none"><table><thead><tr><th>Meio</th><th class=n>Incidente de 8 h</th><th class=n>Fim de semana</th></tr></thead>
+<tbody><tr><td>Pix</td><td class=n>29 min</td><td class=n>12 min</td></tr><tr><td>Cartão</td><td class=n>12 min</td><td class=n>13 min</td></tr><tr><td>Boleto</td><td class=n>11,0 h</td><td class=n>7,6 h</td></tr></tbody></table></div>
+<p style="margin-top:10px">Mediana entre o pagamento real e a loja ficar sabendo, só para pedidos cujo aviso de pagamento foi descartado. O boleto é mais lento porque é conferido uma vez por dia, uma escolha de custo.</p>
+<p><strong>Sem o conferidor</strong>, no incidente de 8 horas, 6 dos 25 pedidos terminam o mês sem a loja saber que foram pagos, e os demais ela só descobre por um aviso posterior, em mediana de 8,5 h. No fim de semana, 412 de 459 nunca chegam ao conhecimento dela.</p></div>
+<div class="card"><h3>Como ele decide quem consultar</h3>
+<ul>
+<li><strong>Pedido que recebe os avisos no prazo nunca é consultado.</strong> O gatilho é o silêncio: um Pix sem novidade 45 minutos depois de gerado, por exemplo.</li>
+<li><strong>Na consulta, o status da API vira a verdade da loja na hora.</strong> Ela libera o pedido sem esperar o aviso.</li>
+<li><strong>Um aviso só é declarado perdido depois que a janela de retentativa fechou.</strong> Antes disso ele ainda pode chegar sozinho.</li>
+</ul>
+<p>Nenhum modelo de linguagem participa. É comparação de conjuntos e relógio.</p></div>
+</div>
+</section>
+
+<section id="custo">
+<h2>O custo em chamadas de API</h2>
+<div class="card"><div class="fig"><svg viewBox="0 0 880 152" role="img"><text class="rot" x="0" y="24">Quota mensal documentada</text><rect x="250" y="10" width="419" height="20" rx="4" fill="#b6a6ff"/><text class="val" x="677" y="24">100.000</text><text class="rot" x="0" y="58">Operação da loja (estimativa)</text><rect x="250" y="44" width="251" height="20" rx="4" fill="#cfd4e0"/><text class="val" x="509" y="58">60.000</text><text class="rot" x="0" y="92">Conferidor, no pior cenário</text><rect x="250" y="78" width="80" height="20" rx="4" fill="#6d4aff"/><text class="val" x="338" y="92">19.036 (19% da quota)</text><text class="rot" x="0" y="126">Conferir tudo de hora em hora</text><rect x="250" y="112" width="440" height="20" rx="4" fill="#c92a2a"/><text class="val" x="698" y="126">7.241.877 (72x a quota)</text></svg></div>
+<p style="margin-top:12px">A quota documentada é de 100.000 requisições por mês por credencial. Uma loja com 20.000 pedidos já consome perto de 60.000 só para operar (estimativa de 3 chamadas por pedido). <strong>Conferir todos os pedidos de hora em hora estouraria a quota 72 vezes.</strong> Consultando só o que está em silêncio, o conferidor cabe no que sobra.</p></div>
+</section>
+
+<section id="suporte">
+<h2>A lista para pedir reenvio ao suporte</h2>
+<div class="tw"><table><thead><tr><th class=n>Pedido</th><th>Status na API</th><th>Avisos que não chegaram</th><th class=n>Valor</th></tr></thead>
+<tbody><tr><td class=n>107541</td><td><span class="selo g">integrado</span></td><td>cartão autorizado, pedido aprovado, pedido pago</td><td class=n>R$ 902,98</td></tr><tr><td class=n>107532</td><td><span class="selo g">integrado</span></td><td>Pix gerado, Pix pago, pedido aprovado</td><td class=n>R$ 889,17</td></tr><tr><td class=n>107512</td><td><span class="selo r">cancelado</span></td><td>Pix expirado</td><td class=n>R$ 686,18</td></tr><tr><td class=n>107519</td><td><span class="selo g">integrado</span></td><td>pedido integrado</td><td class=n>R$ 394,08</td></tr><tr><td class=n>104477</td><td><span class="selo r">estornado</span></td><td>estorno</td><td class=n>R$ 370,64</td></tr><tr><td class=n>106555</td><td><span class="selo g">integrado</span></td><td>pedido pago, pedido aprovado, pedido integrado</td><td class=n>R$ 300,29</td></tr><tr><td class=n>107480</td><td><span class="selo g">integrado</span></td><td>pedido integrado</td><td class=n>R$ 283,11</td></tr><tr><td class=n>107522</td><td><span class="selo g">integrado</span></td><td>Pix pago, pedido aprovado, pedido integrado</td><td class=n>R$ 277,32</td></tr><tr><td class=n>107495</td><td><span class="selo g">integrado</span></td><td>pedido integrado</td><td class=n>R$ 276,98</td></tr><tr><td class=n>107536</td><td><span class="selo g">integrado</span></td><td>cartão autorizado, pedido aprovado, pedido pago</td><td class=n>R$ 272,63</td></tr></tbody></table></div>
+<p style="font-size:13px;color:var(--tx3);margin-top:10px">Os dez maiores do cenário de incidente. Identificadores e valores são sintéticos.</p>
+</section>
+
+<section id="alarme-falso">
+<h2>Uma regra que evita alarme falso</h2>
+<div class="card"><p>A documentação registra que pedidos originados na Yampi não geram webhook, de propósito. No mês simulado isso representou 3.901 avisos de 1.144 pedidos. O conferidor acompanha esses pedidos por consulta e <strong>deixa de emitir 3.877 alarmes falsos</strong> que um monitor desavisado emitiria.</p></div>
+</section>
+
+<section id="limites">
+<h2>Limites deste resultado</h2>
+<div class="card"><ul>
+<li><strong>É simulação.</strong> A plataforma da bancada é a minha leitura da documentação pública, não o sistema real. O volume, o mix de meios de pagamento e as taxas de aprovação são suposições declaradas no código.</li>
+<li><strong>A precisão de 100% não prova muito.</strong> O conferidor e o simulador seguem a mesma leitura do contrato, então era esperado que concordassem. A cobertura, o atraso e o custo dependem do desenho e são os números que importam.</li>
+<li><strong>A cobertura não é total.</strong> No pior cenário ficaram sem apontar: estorno (4), Pix gerado (3), integração pendente (1). São avisos cuja perda foi encoberta por um aviso posterior que chegou, ou que só a auditoria de 7 dias alcança. Nesses casos a loja costuma ter o status certo, mas o histórico fica incompleto.</li>
+<li><strong>Os prazos de silêncio são suposição.</strong> Quanto tempo uma integração leva, ou quando um boleto vence, precisa ser calibrado com dado real.</li>
+<li><strong>Ainda não foi testado contra o sandbox.</strong> O adaptador para a API real está escrito e o próximo passo é rodá-lo lá, inclusive para medir os horários reais das retentativas.</li>
+</ul></div>
+</section>
+
+<section id="reproduzir">
+<h2>Como reproduzir</h2>
+<div class="card"><p>Python 3.10 ou mais novo, sem nenhuma dependência.</p>
+<pre>python -m conferidor.demo
+python -m unittest</pre>
+<p>O primeiro comando roda os quatro cenários em poucos segundos e regrava este relatório. A semente é fixa, então os números se repetem.</p></div>
+</section>
+
+<footer>Simulação construída sobre documentação pública e dado sintético. Jonas Victor Vieira Silva.</footer>
+</main></div></body></html>

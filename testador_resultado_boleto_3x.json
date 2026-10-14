@@ -1,0 +1,282 @@
+{
+  "executado_em": "14/10/2026 10:23",
+  "modo": "direto",
+  "espera_s": 600,
+  "chamadas": 98,
+  "linhas": [
+    {
+      "id": "boleto-cpf-compra",
+      "nome": "Compra · Boleto · CPF",
+      "order_id": 27620,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "boleto-cpf-compra",
+        "order_id": 27620,
+        "pago_em": 1791983549.0509999,
+        "estornado_em": null,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_billet_created": 7.490094184875488,
+        "order_paid": 11.30034351348877,
+        "order_approved": 11.95815896987915
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "boleto-cpf-estorno_total",
+      "nome": "Estorno total · Boleto · CPF",
+      "order_id": 27621,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "boleto-cpf-estorno_total",
+        "order_id": 27621,
+        "pago_em": 1791983552.8252733,
+        "estornado_em": 1791983559.9278114,
+        "erro": "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}",
+        "etapa": "estorno"
+      },
+      "resultado": "não executado",
+      "motivos": [
+        "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}"
+      ],
+      "atrasos": {},
+      "extras": []
+    },
+    {
+      "id": "boleto-cpf-estorno_parcial",
+      "nome": "Estorno parcial · Boleto · CPF",
+      "order_id": 27622,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "boleto-cpf-estorno_parcial",
+        "order_id": 27622,
+        "pago_em": 1791983563.4657357,
+        "estornado_em": 1791983570.3636744,
+        "erro": "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}",
+        "etapa": "estorno"
+      },
+      "resultado": "não executado",
+      "motivos": [
+        "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}"
+      ],
+      "atrasos": {},
+      "extras": []
+    },
+    {
+      "id": "boleto-cnpj-compra",
+      "nome": "Compra · Boleto · CNPJ",
+      "order_id": 27623,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "boleto-cnpj-compra",
+        "order_id": 27623,
+        "pago_em": 1791983573.252225,
+        "estornado_em": null,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_billet_created": 3.1281301975250244,
+        "order_paid": 9.824326515197754,
+        "order_approved": 10.463099956512451
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "boleto-cnpj-estorno_total",
+      "nome": "Estorno total · Boleto · CNPJ",
+      "order_id": 27624,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "boleto-cnpj-estorno_total",
+        "order_id": 27624,
+        "pago_em": 1791983575.69388,
+        "estornado_em": 1791983582.652583,
+        "erro": "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}",
+        "etapa": "estorno"
+      },
+      "resultado": "não executado",
+      "motivos": [
+        "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}"
+      ],
+      "atrasos": {},
+      "extras": []
+    },
+    {
+      "id": "boleto-cnpj-estorno_parcial",
+      "nome": "Estorno parcial · Boleto · CNPJ",
+      "order_id": 27625,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "boleto-cnpj-estorno_parcial",
+        "order_id": 27625,
+        "pago_em": 1791983585.9301913,
+        "estornado_em": 1791983593.4709017,
+        "erro": "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}",
+        "etapa": "estorno"
+      },
+      "resultado": "não executado",
+      "motivos": [
+        "estorno: POST /v1/orders/refund-request respondeu HTTP 400: {\"errors\":{\"message\":\"Orders with boleto as a payment method are unavailable for refund request through the API. Please request the refund manually.\"}}"
+      ],
+      "atrasos": {},
+      "extras": []
+    },
+    {
+      "id": "cartao_parcelado-cpf-compra",
+      "nome": "Compra · Cartão 3x · CPF",
+      "order_id": 27626,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "cartao_parcelado-cpf-compra",
+        "order_id": 27626,
+        "pago_em": 1791983595.9509876,
+        "estornado_em": null,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 5.147270202636719,
+        "order_paid": 4.095545291900635
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "cartao_parcelado-cpf-estorno_total",
+      "nome": "Estorno total · Cartão 3x · CPF",
+      "order_id": 27627,
+      "status_api": "estornado",
+      "execucao": {
+        "cenario": "cartao_parcelado-cpf-estorno_total",
+        "order_id": 27627,
+        "pago_em": 1791983600.2106376,
+        "estornado_em": 1791983602.920145,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 4.417675018310547,
+        "order_paid": 4.120577573776245,
+        "order_refund": 4.100851774215698
+      },
+      "extras": [
+        "order_pending_integration"
+      ]
+    },
+    {
+      "id": "cartao_parcelado-cpf-estorno_parcial",
+      "nome": "Estorno parcial · Cartão 3x · CPF",
+      "order_id": 27628,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "cartao_parcelado-cpf-estorno_parcial",
+        "order_id": 27628,
+        "pago_em": 1791983605.622745,
+        "estornado_em": 1791983608.6185343,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 3.875709295272827,
+        "order_paid": 3.592424154281616,
+        "order_partial_refund": 3.5194287300109863
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "cartao_parcelado-cnpj-compra",
+      "nome": "Compra · Cartão 3x · CNPJ",
+      "order_id": 27629,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "cartao_parcelado-cnpj-compra",
+        "order_id": 27629,
+        "pago_em": 1791983611.561582,
+        "estornado_em": null,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 6.118123769760132,
+        "order_paid": 5.7644782066345215
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "cartao_parcelado-cnpj-estorno_total",
+      "nome": "Estorno total · Cartão 3x · CNPJ",
+      "order_id": 27630,
+      "status_api": "estornado",
+      "execucao": {
+        "cenario": "cartao_parcelado-cnpj-estorno_total",
+        "order_id": 27630,
+        "pago_em": 1791983616.1255395,
+        "estornado_em": 1791983619.804225,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 3.866811752319336,
+        "order_paid": 3.599747657775879,
+        "order_refund": 5.454031229019165
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "cartao_parcelado-cnpj-estorno_parcial",
+      "nome": "Estorno parcial · Cartão 3x · CNPJ",
+      "order_id": 27631,
+      "status_api": "integrado",
+      "execucao": {
+        "cenario": "cartao_parcelado-cnpj-estorno_parcial",
+        "order_id": 27631,
+        "pago_em": 1791983622.7995276,
+        "estornado_em": 1791983626.0766046,
+        "erro": null,
+        "etapa": "concluído"
+      },
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 4.030287742614746,
+        "order_paid": 3.4137933254241943,
+        "order_partial_refund": 2.3428380489349365
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    }
+  ],
+  "resumo": "8 de 12 cenários passaram, 0 falharam, 0 ficaram inconclusivos e 4 não foram executados. Estorno total · Boleto não foi executado porque estornos para boletos não estão disponíveis pela API.\nEstorno parcial · Boleto não foi executado porque estornos para boletos não estão disponíveis pela API.",
+  "origem_resumo": "google/gemini-2.5-flash-lite",
+  "custo_resumo_usd": 5.04e-05,
+  "rejulgado_em": "14/10/2026 10:53"
+}

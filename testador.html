@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testador: Sandbox</title><style>
+:root{color-scheme:light;--bg:#f5f6fa;--pn:#fff;--pn2:#f3f4f9;--ln:#e4e6ee;--tx:#171a23;--tx2:#565d70;
+--tx3:#8b92a4;--ac:#6d4aff;--acb:#f4f1ff;--acl:#d9cfff;--tl:#0d9488;--tlb:#effcfa;--tll:#a7e8df;
+--bd:#c92a2a;--bdb:#fff1f1;--bdl:#f5c6c6;--gd:#15803d;--gdb:#f0fdf4;--gdl:#bbe7c9;--wn:#b45309;
+--wnb:#fff8eb;--wnl:#f3ddb0;--mono:ui-monospace,Menlo,Consolas,monospace;--lat:248px;
+--sm:0 1px 2px rgba(23,26,35,.04),0 1px 3px rgba(23,26,35,.04)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;
+font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.lat{position:fixed;top:0;bottom:0;left:0;width:var(--lat);z-index:20;background:var(--pn);
+border-right:1px solid var(--ln);display:flex;flex-direction:column;padding:20px 14px;overflow-y:auto}
+.marca{display:flex;align-items:center;gap:11px;padding:0 8px 18px;margin-bottom:14px;border-bottom:1px solid var(--ln);
+color:inherit;text-decoration:none}
+.marca svg{width:34px;height:34px;flex:none}
+.marca b{display:block;font-size:16px;line-height:1.2;letter-spacing:-.2px}
+.marca small{display:block;font-size:11.5px;line-height:1.3;color:var(--tx3)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .t{font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx3);padding:4px 10px 6px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--tx2);
+text-decoration:none;font-size:13.5px;font-weight:500;line-height:1.3;white-space:nowrap}
+.nav a::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acl);flex:none}
+.nav a:hover,.nav a:focus-visible{background:var(--acb);color:var(--ac);outline:0}
+.nav a:hover::before,.nav a:focus-visible::before{background:var(--ac)}
+.pr{margin-left:var(--lat);min-width:0}
+.topo{position:sticky;top:0;z-index:10;background:var(--pn);border-bottom:1px solid var(--ln);
+display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;padding:14px 28px}
+h1{margin:0;font-size:18px;line-height:1.3;letter-spacing:-.2px}
+.data{font-size:12.5px;color:var(--tx2);background:var(--pn2);border:1px solid var(--ln);border-radius:999px;padding:3px 12px}
+.w{max-width:1120px;margin:0 auto;padding:22px 28px 64px}
+.sub{color:var(--tx2);font-size:14.5px;max-width:760px;margin-top:14px}
+section{scroll-margin-top:72px}
+h2{font-size:17px;line-height:1.3;letter-spacing:-.2px;color:var(--tx);margin:38px 0 14px}
+h3{font-size:15.5px;margin:0 0 8px}
+p{margin:0 0 11px}
+.aviso{background:var(--wnb);border:1px solid var(--wnl);border-left:4px solid var(--wn);border-radius:10px;
+padding:13px 16px;font-size:13.5px;color:#6b3a06}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px}
+.kpi{background:var(--pn);border:1px solid var(--ln);border-top:3px solid var(--ac);border-radius:12px;padding:16px;box-shadow:var(--sm)}
+.kpi .n{font-size:25px;font-weight:680;letter-spacing:-.6px;color:var(--ac);line-height:1.2}
+.kpi .l{font-size:12.5px;color:var(--tx2);margin-top:5px;line-height:1.45}
+.kpi.r{border-top-color:var(--bd)}.kpi.g{border-top-color:var(--gd)}
+.kpi.r .n{color:var(--bd)}.kpi.g .n{color:var(--gd)}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:var(--sm)}
+.card p{font-size:14px;color:var(--tx2)}.card p:last-child{margin:0}
+.card.ac{border-left:3px solid var(--ac)}.card.g{border-left:3px solid var(--gd)}.card.r{border-left:3px solid var(--bd)}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr));gap:14px}
+.g2>*{min-width:0}
+.tw{overflow-x:auto;background:var(--pn);border:1px solid var(--ln);border-radius:12px;box-shadow:var(--sm)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+.tw.lg table{min-width:820px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--ln);vertical-align:top}
+th{background:var(--pn2);color:var(--tx2);font-size:10.5px;text-transform:uppercase;letter-spacing:1px}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#fafaff}
+td.n,th.n{text-align:right;font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.selo{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;
+line-height:1.5;white-space:nowrap;color:var(--tx2);background:var(--pn2);border:1px solid var(--ln)}
+.selo::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.selo.g{color:var(--gd);background:var(--gdb);border-color:var(--gdl)}
+.selo.r{color:var(--bd);background:var(--bdb);border-color:var(--bdl)}
+.selo.w{color:var(--wn);background:var(--wnb);border-color:var(--wnl)}
+.selo.a{color:var(--ac);background:var(--acb);border-color:var(--acl)}
+.ped{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:600;white-space:nowrap}
+.ped::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gd)}
+.ped.r::before{background:var(--bd)}
+code{font-family:var(--mono);font-size:12.5px;background:var(--pn2);border:1px solid var(--ln);border-radius:4px;padding:1px 5px}
+pre{background:#12141c;color:#e7e9f0;border-radius:8px;padding:14px;overflow-x:auto;font-family:var(--mono);font-size:13px}
+ul{margin:0 0 10px;padding-left:20px;color:var(--tx2);font-size:14px}li{margin-bottom:6px}li strong{color:var(--tx)}
+.fig{overflow-x:auto}.fig svg{display:block;width:100%;height:auto;min-width:560px}
+svg text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.rot{font-size:12.5px;fill:#171a23}.val{font-size:12px;fill:#565d70;font-family:ui-monospace,Menlo,Consolas,monospace}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--ln);font-size:12.5px;color:var(--tx3)}
+@media (max-width:900px){
+.lat{position:sticky;bottom:auto;width:auto;flex-direction:row;align-items:center;gap:14px;padding:8px 12px;
+border-right:0;border-bottom:1px solid var(--ln);overflow:visible}
+.marca{padding:0;margin:0;border:0;flex:none}
+.marca svg{width:30px;height:30px}
+.nav{flex-direction:row;flex:1;min-width:0;overflow-x:auto;gap:4px}
+.nav .t{display:none}
+.nav a{padding:7px 10px}
+.pr{margin-left:0}
+.topo{position:static;padding:12px 16px}
+.w{padding:16px 16px 56px}
+section{scroll-margin-top:62px}
+h2{margin-top:30px}
+}
+</style></head><body>
+<div class="pr" id="topo" style="margin-left:0">
+<header class="topo"><h1>Testador de homologação: resultado no sandbox</h1></header>
+<main class="w">
+<div class="sub"><strong>Execução real no ambiente de teste (sandbox) da plataforma,
+em 14/10/2026 10:16.</strong> Modo direto. O app testado é o receptor
+do próprio conferidor. Isto não é a homologação da plataforma e não dá aprovação: mostra o que dá para conferir de fora.</div>
+
+<section id="resumo">
+<h2>Resumo</h2>
+<div class="kpis">
+<div class="kpi g"><div class="n">8</div><div class="l">cenários passaram</div></div>
+<div class="kpi r"><div class="n">0</div><div class="l">cenários falharam</div></div>
+<div class="kpi"><div class="n">4</div><div class="l">inconclusivos (a plataforma ainda não processou)</div></div>
+<div class="kpi"><div class="n">0</div><div class="l">não foram executados</div></div>
+</div>
+<div class="card"><p>8 de 12 cenários passaram, 0 falharam, 4 ficaram inconclusivos e 0 não foram executados. Estorno total Pix inconclusivo porque a plataforma aceitou o pedido e o colocou em análise manual.
+Estorno parcial Pix inconclusivo porque o aviso não chegou e a API não mostra estorno parcial no status.</p>
+<p style="font-size:12px;opacity:.75">Resumo escrito por: google/gemini-2.5-flash-lite.
+Custo do resumo: US$ 0.000048. Chamadas à API nesta rodada: 110. O resultado de cada cenário foi decidido por regra fixa, antes do resumo.</p></div>
+</section>
+
+<section id="cenarios">
+<h2>Cenário a cenário</h2>
+<div class="tw lg"><table>
+<thead><tr><th>Cenário</th><th class=n>Pedido</th><th>Resultado</th><th>Tempo até cada aviso</th><th>Motivo</th></tr></thead>
+<tbody>
+<tr><td>Compra · Pix · CPF</td>
+<td class=n>27608</td>
+<td><span class="selo g">passou</span></td>
+<td>Pix gerado em 9 s, Pix pago em 12 s, pedido aprovado em 12 s</td>
+<td>nenhum</td></tr>
+<tr><td>Estorno total · Pix · CPF</td>
+<td class=n>27609</td>
+<td><span class="selo w">inconclusivo</span></td>
+<td>Pix gerado em 6 s, Pix pago em 11 s, pedido aprovado em 11 s</td>
+<td>a plataforma aceitou o pedido de estorno e o colocou em análise manual (status pendente_integracao_em_analise); o aviso order_refund só vem depois</td></tr>
+<tr><td>Estorno parcial · Pix · CPF</td>
+<td class=n>27610</td>
+<td><span class="selo w">inconclusivo</span></td>
+<td>Pix gerado em 6 s, Pix pago em 10 s, pedido aprovado em 9 s</td>
+<td>o aviso order_partial_refund não chegou em 10 min, e a API não mostra estorno parcial no status (continua aprovado); não dá para saber se a plataforma já processou</td></tr>
+<tr><td>Compra · Pix · CNPJ</td>
+<td class=n>27611</td>
+<td><span class="selo g">passou</span></td>
+<td>Pix gerado em 3 s, Pix pago em 13 s, pedido aprovado em 12 s</td>
+<td>nenhum</td></tr>
+<tr><td>Estorno total · Pix · CNPJ</td>
+<td class=n>27612</td>
+<td><span class="selo w">inconclusivo</span></td>
+<td>Pix gerado em 4 s, Pix pago em 12 s, pedido aprovado em 11 s</td>
+<td>a plataforma aceitou o pedido de estorno e o colocou em análise manual (status pendente_integracao_em_analise); o aviso order_refund só vem depois</td></tr>
+<tr><td>Estorno parcial · Pix · CNPJ</td>
+<td class=n>27613</td>
+<td><span class="selo w">inconclusivo</span></td>
+<td>Pix gerado em 3 s, Pix pago em 8 s, pedido aprovado em 8 s</td>
+<td>o aviso order_partial_refund não chegou em 10 min, e a API não mostra estorno parcial no status (continua aprovado); não dá para saber se a plataforma já processou</td></tr>
+<tr><td>Compra · Cartão 1x · CPF</td>
+<td class=n>27614</td>
+<td><span class="selo g">passou</span></td>
+<td>pedido aprovado em 6 s, pedido pago em 6 s</td>
+<td>nenhum</td></tr>
+<tr><td>Estorno total · Cartão 1x · CPF</td>
+<td class=n>27615</td>
+<td><span class="selo g">passou</span></td>
+<td>pedido aprovado em 4 s, pedido pago em 3 s, estorno em 5 s</td>
+<td>nenhum</td></tr>
+<tr><td>Estorno parcial · Cartão 1x · CPF</td>
+<td class=n>27616</td>
+<td><span class="selo g">passou</span></td>
+<td>pedido aprovado em 5 s, pedido pago em 4 s, estorno parcial em 5 s</td>
+<td>nenhum</td></tr>
+<tr><td>Compra · Cartão 1x · CNPJ</td>
+<td class=n>27617</td>
+<td><span class="selo g">passou</span></td>
+<td>pedido aprovado em 4 s, pedido pago em 4 s</td>
+<td>nenhum</td></tr>
+<tr><td>Estorno total · Cartão 1x · CNPJ</td>
+<td class=n>27618</td>
+<td><span class="selo g">passou</span></td>
+<td>pedido aprovado em 4 s, pedido pago em 3 s, estorno em 6 s</td>
+<td>nenhum</td></tr>
+<tr><td>Estorno parcial · Cartão 1x · CNPJ</td>
+<td class=n>27619</td>
+<td><span class="selo g">passou</span></td>
+<td>pedido aprovado em 5 s, pedido pago em 4 s, estorno parcial em 3 s</td>
+<td>nenhum</td></tr></tbody></table></div>
+<p style="font-size:13px">Janela de espera pelos avisos: 10 min. Aviso que não chegou nessa janela
+ainda pode chegar depois, por retentativa da plataforma. Só conta como falha quando a API mostra que o fato
+aconteceu e o aviso não chegou; se a plataforma ainda não processou o fato, o cenário fica inconclusivo.</p>
+</section>
+
+
+<section id="resistencia">
+<h2>Resistência do endereço de avisos</h2>
+<div class="card"><p>O testador fez o papel da plataforma e mandou avisos sintéticos direto para o endereço do app,
+em 14/10/2026 10:11: repetidos, fora de ordem e de um tipo que o app talvez não trate. Pedidos fictícios
+900458393 a 900458415. Endereço testado: http://127.0.0.1:8081/webhook. Mede só a resposta e o tempo; o que o app
+faz por dentro não é visível daqui. Endereço local mede o app sem a internet no meio; pelo túnel, o tempo inclui a rede.</p></div>
+<div class="tw lg"><table><thead><tr><th>Prova</th><th>Resultado</th><th>Detalhe</th></tr></thead>
+<tbody>
+<tr><td>Tempo de resposta (20 avisos)</td>
+<td><span class="selo g">passou</span></td>
+<td>20 de 20 com 2xx; mediana 0.01 s, pior 0.04 s; 0 acima de 5 s (limite da documentação; o painel do app fala em 10 s)</td></tr>
+<tr><td>Aviso repetido (reentrega)</td>
+<td><span class="selo g">passou</span></td>
+<td>primeiro envio: 200; repetição: 200. Responder 2xx à repetição evita retentativa à toa. Se o app processa duas vezes por dentro, isso não é visível daqui.</td></tr>
+<tr><td>Avisos fora de ordem</td>
+<td><span class="selo g">passou</span></td>
+<td>integrado, aprovado, pago e só depois Pix gerado: respostas 200, 200, 200, 200</td></tr>
+<tr><td>Tipo de aviso que o app talvez não trate (saque)</td>
+<td><span class="selo g">passou</span></td>
+<td>resposta 200. Não é exigência da documentação; responder erro faz a plataforma retentar.</td></tr></tbody></table></div>
+</section>
+
+<section id="fora">
+<h2>O que não dá para conferir de fora</h2>
+<div class="card"><ul><li><strong>Código de rastreio:</strong> A consulta de pedido não devolve o rastreio cadastrado.</li><li><strong>Descrição na fatura do cartão (soft descriptor):</strong> A consulta de pedido não devolve esse campo.</li><li><strong>IP do comprador:</strong> Coletado pelo script da plataforma no navegador; a consulta de pedido não devolve.</li><li><strong>URL de instalação:</strong> A plataforma já oferece uma ferramenta própria para testar (guia &quot;Valide sua URL de validação&quot;).</li><li><strong>Logo, descrição e e-mail de suporte do app:</strong> Conferência visual, feita pela equipe da plataforma.</li></ul></div>
+</section>
+<footer>Projeto independente. Sem vínculo com a plataforma. Cenários tirados da lista pública de homologação; cartão 1x e 3x representam "sem juros" e "com juros" (suposição: os juros dependem da configuração da loja).</footer>
+</main></div></body></html>

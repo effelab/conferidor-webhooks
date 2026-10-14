@@ -1,0 +1,211 @@
+{
+  "executado_em": "14/10/2026 10:03",
+  "modo": "direto",
+  "espera_s": 600,
+  "chamadas": 74,
+  "linhas": [
+    {
+      "id": "pix-cpf-compra",
+      "nome": "Compra · Pix · CPF",
+      "order_id": 27596,
+      "status_api": "aprovado",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_pix_created": 3.6775248050689697,
+        "order_paid_by_pix": 11.588133096694946,
+        "order_approved": 11.20164179801941
+      },
+      "extras": [
+        "order_paid"
+      ]
+    },
+    {
+      "id": "pix-cpf-estorno_total",
+      "nome": "Estorno total · Pix · CPF",
+      "order_id": 27597,
+      "status_api": "pendente_integracao_em_analise",
+      "resultado": "falhou",
+      "motivos": [
+        "o aviso order_refund não chegou em 10 min",
+        "a API informa status pendente_integracao_em_analise, o esperado era estornado"
+      ],
+      "atrasos": {
+        "order_pix_created": 3.474221706390381,
+        "order_paid_by_pix": 10.152493715286255,
+        "order_approved": 9.375139236450195
+      },
+      "extras": [
+        "order_paid"
+      ]
+    },
+    {
+      "id": "pix-cpf-estorno_parcial",
+      "nome": "Estorno parcial · Pix · CPF",
+      "order_id": 27598,
+      "status_api": "aprovado",
+      "resultado": "falhou",
+      "motivos": [
+        "o aviso order_partial_refund não chegou em 10 min"
+      ],
+      "atrasos": {
+        "order_pix_created": 2.207343101501465,
+        "order_paid_by_pix": 9.330112218856812,
+        "order_approved": 8.99459958076477
+      },
+      "extras": [
+        "order_paid"
+      ]
+    },
+    {
+      "id": "pix-cnpj-compra",
+      "nome": "Compra · Pix · CNPJ",
+      "order_id": 27599,
+      "status_api": "aprovado",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_pix_created": 2.8790876865386963,
+        "order_paid_by_pix": 10.375766515731812,
+        "order_approved": 10.092553615570068
+      },
+      "extras": [
+        "order_paid"
+      ]
+    },
+    {
+      "id": "pix-cnpj-estorno_total",
+      "nome": "Estorno total · Pix · CNPJ",
+      "order_id": 27600,
+      "status_api": "pendente_integracao_em_analise",
+      "resultado": "falhou",
+      "motivos": [
+        "o aviso order_refund não chegou em 10 min",
+        "a API informa status pendente_integracao_em_analise, o esperado era estornado"
+      ],
+      "atrasos": {
+        "order_pix_created": 3.5922064781188965,
+        "order_paid_by_pix": 9.182669639587402,
+        "order_approved": 8.900593042373657
+      },
+      "extras": [
+        "order_paid"
+      ]
+    },
+    {
+      "id": "pix-cnpj-estorno_parcial",
+      "nome": "Estorno parcial · Pix · CNPJ",
+      "order_id": 27601,
+      "status_api": "aprovado",
+      "resultado": "falhou",
+      "motivos": [
+        "o aviso order_partial_refund não chegou em 10 min"
+      ],
+      "atrasos": {
+        "order_pix_created": 2.2586748600006104,
+        "order_paid_by_pix": 10.12364935874939,
+        "order_approved": 9.6894371509552
+      },
+      "extras": [
+        "order_paid"
+      ]
+    },
+    {
+      "id": "cartao_avista-cpf-compra",
+      "nome": "Compra · Cartão 1x · CPF",
+      "order_id": 27602,
+      "status_api": "integrado",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 3.971750020980835,
+        "order_paid": 3.5851354598999023
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "cartao_avista-cpf-estorno_total",
+      "nome": "Estorno total · Cartão 1x · CPF",
+      "order_id": 27603,
+      "status_api": "estornado",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 5.547699689865112,
+        "order_paid": 4.9999659061431885,
+        "order_refund": 4.554144859313965
+      },
+      "extras": [
+        "order_pending_integration"
+      ]
+    },
+    {
+      "id": "cartao_avista-cpf-estorno_parcial",
+      "nome": "Estorno parcial · Cartão 1x · CPF",
+      "order_id": 27604,
+      "status_api": "integrado",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 4.202870607376099,
+        "order_paid": 3.801675319671631,
+        "order_partial_refund": 5.051794767379761
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "cartao_avista-cnpj-compra",
+      "nome": "Compra · Cartão 1x · CNPJ",
+      "order_id": 27605,
+      "status_api": "integrado",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 5.5925352573394775,
+        "order_paid": 4.775156497955322
+      },
+      "extras": [
+        "order_integrated"
+      ]
+    },
+    {
+      "id": "cartao_avista-cnpj-estorno_total",
+      "nome": "Estorno total · Cartão 1x · CNPJ",
+      "order_id": 27606,
+      "status_api": "estornado",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 5.92600154876709,
+        "order_paid": 5.254452228546143,
+        "order_refund": 3.0579891204833984
+      },
+      "extras": [
+        "order_pending_integration"
+      ]
+    },
+    {
+      "id": "cartao_avista-cnpj-estorno_parcial",
+      "nome": "Estorno parcial · Cartão 1x · CNPJ",
+      "order_id": 27607,
+      "status_api": "pendente_integracao",
+      "resultado": "passou",
+      "motivos": [],
+      "atrasos": {
+        "order_approved": 5.563926935195923,
+        "order_paid": 4.648269891738892,
+        "order_partial_refund": 3.071917772293091
+      },
+      "extras": [
+        "order_pending_integration"
+      ]
+    }
+  ],
+  "resumo": "8 de 12 cenários passaram, 4 falharam e 0 não foram executados. Primeiro problema encontrado: o aviso order_refund não chegou em 10 min.",
+  "origem_resumo": "texto fixo (sem OPENROUTER_API_KEY no .env)",
+  "custo_resumo_usd": 0.0
+}
