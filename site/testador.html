@@ -245,6 +245,31 @@ table.resp td.n::before{display:inline;font-size:13px}
 .duas-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
 .duas-col>div{min-width:0}
 @media (max-width:860px){.duas-col{grid-template-columns:1fr}}
+
+.sim-aviso{display:flex;gap:10px;align-items:flex-start;background:var(--atencao-f);color:var(--atencao);border:1px solid #f1d9a8;border-radius:12px;padding:12px 14px;margin:16px 0}
+.sim-passos{counter-reset:p;list-style:none;padding:0;margin:0 0 16px;display:grid;gap:8px}
+.sim-passos li{counter-increment:p;display:flex;gap:10px;align-items:baseline}
+.sim-passos li::before{content:counter(p);flex:0 0 26px;height:26px;border-radius:50%;background:var(--lilas);color:var(--roxo-escuro);font-weight:700;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.sim-controles{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0 18px}
+.sim-controles button{font:inherit;font-weight:600;font-size:14px;border-radius:10px;padding:10px 16px;cursor:pointer;border:1px solid transparent}
+.sim-primario{background:var(--roxo-forte);color:#fff}
+.sim-primario:hover{background:var(--roxo-escuro)}
+.sim-secundario{background:var(--lilas);color:var(--roxo-escuro)}
+.sim-chave{background:#fff;border-color:var(--linha)!important;color:var(--texto)}
+.sim-estado{margin:0 0 16px;padding:10px 14px;border-radius:12px;font-size:14px;display:flex;gap:8px;align-items:center}
+.sim-estado::before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor;flex:0 0 10px}
+.sim-estado.on{background:var(--ok-f);color:var(--ok)}
+.sim-estado.off{background:var(--erro-f);color:var(--erro)}
+.sim-colunas{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sim-colunas>div{min-width:0}
+.sim-lista{list-style:none;margin:0;padding:0;display:grid;gap:8px;min-height:60px}
+.sim-lista li{background:#fff;border:1px solid var(--linha);border-radius:12px;padding:10px 12px;font-size:14px}
+.sim-lista li.perdido{border-color:#f3c3be;background:var(--erro-f)}
+.sim-lista small{display:block;color:var(--texto-2);margin-top:2px}
+.sim-vazio{color:var(--texto-2);font-size:14px}
+.sim-resultado{margin-top:18px}
+.sim-log{font-family:var(--mono);font-size:12px;background:#151a2c;color:#d6dcf5;border-radius:12px;padding:12px;max-height:180px;overflow:auto;margin-top:14px;white-space:pre-wrap}
+@media (max-width:760px){.sim-colunas{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -252,7 +277,7 @@ table.resp td.n::before{display:inline;font-size:13px}
 <header class="barra">
 <div class="w barra-in">
 <a class="nome" href="index.html">Conferidor de avisos</a>
-<nav aria-label="Sessões"><ul><li><a href="index.html">Início</a></li><li><a href="conferidor.html">Conferidor</a></li><li><a href="testador.html" aria-current="page">Testador</a></li><li><a href="como-usar.html">Como usar</a></li><li><a href="limites.html">Limites</a></li></ul></nav>
+<nav aria-label="Sessões"><ul><li><a href="index.html">Início</a></li><li><a href="conferidor.html">Conferidor</a></li><li><a href="testador.html" aria-current="page">Testador</a></li><li><a href="experimente.html">Experimente</a></li><li><a href="como-usar.html">Como usar</a></li><li><a href="limites.html">Limites</a></li></ul></nav>
 <a class="btn" href="como-usar.html">Como usar</a>
 </div>
 </header>
@@ -280,7 +305,7 @@ A <a class="termo" href="limites.html#g-janela" title="Quanto tempo o testador e
 <details class="det "><summary>Como este relatório é feito</summary><div class="det-c"><p>Uma regra fixa decide o resultado de cada cenário, antes de qualquer resumo: só é falha quando a API mostra que o fato aconteceu e o aviso não chegou.</p><ul><li>Rodada de 14/10/2026 10:16: 12 cenários, 110 chamadas à API. Resumo em texto escrito por modelo de linguagem (google/gemini-2.5-flash-lite), custo US$ 0,000048. O modelo não conta nem decide.</li><li>Rodada de 14/10/2026 10:23: 12 cenários, 98 chamadas à API. Resumo em texto escrito por modelo de linguagem (google/gemini-2.5-flash-lite), custo US$ 0,000050. O modelo não conta nem decide.</li></ul><p>Uma rodada anterior (12 cenários, com regra antiga) não está nesta tabela.</p><p>Os segundos de cada aviso são contados a partir do pagamento feito pelo testador; para os avisos de estorno, a partir do pedido de estorno.</p></div></details>
 </div>
 </section>
-<nav class="w seguir" aria-label="Navegação entre sessões"><a class="card" href="conferidor.html"><span class="tag">Anterior</span><h3>Conferidor</h3></a><a class="card prox" href="como-usar.html"><span class="tag">Próxima</span><h3>Como usar</h3></a></nav>
+<nav class="w seguir" aria-label="Navegação entre sessões"><a class="card" href="conferidor.html"><span class="tag">Anterior</span><h3>Conferidor</h3></a><a class="card prox" href="experimente.html"><span class="tag">Próxima</span><h3>Experimente</h3></a></nav>
 </main>
 <footer class="rodape"><div class="w">
 <p><strong>Projeto independente de Jonas Victor Vieira Silva.</strong> Sem vínculo, patrocínio ou autorização da plataforma. Medido no sandbox do próprio app do autor, sem dado de cliente.</p>
@@ -288,6 +313,62 @@ A <a class="termo" href="limites.html#g-janela" title="Quanto tempo o testador e
 </div></footer>
 <script>document.querySelectorAll('.cmd').forEach(function(c){if(!navigator.clipboard)return;var b=document.createElement('button');
 b.type='button';b.className='copiar';b.textContent='Copiar';b.addEventListener('click',function(){navigator.clipboard.writeText(
-c.querySelector('code').textContent).then(function(){b.textContent='Copiado';setTimeout(function(){b.textContent='Copiar'},1600)})});c.appendChild(b);c.classList.add('tem-copiar')});</script>
+c.querySelector('code').textContent).then(function(){b.textContent='Copiado';setTimeout(function(){b.textContent='Copiar'},1600)})});c.appendChild(b);c.classList.add('tem-copiar')});
+(function(){
+var raiz=document.getElementById('simulador'); if(!raiz) return;
+var estado={pedidos:[],ligado:true,proximo:1001,conferirDepois:false};
+var AVISOS=['Pix gerado','Pix pago','Pedido aprovado'];
+function $(s){return raiz.querySelector(s)}
+function log(t){var l=$('#sim-log');var h=new Date().toLocaleTimeString('pt-BR');l.textContent=h+'  '+t+'\n'+l.textContent}
+function aviso(p,nome){
+  if(estado.ligado){p.recebidos.push(nome);log('aviso "'+nome+'" do pedido '+p.id+' chegou ao receptor')}
+  else{p.perdidos.push(nome);log('aviso "'+nome+'" do pedido '+p.id+' se perdeu (receptor desligado)')}
+  desenhar();
+}
+function criar(n){
+  for(var i=0;i<n;i++){
+    var p={id:estado.proximo++,status:'aguardando pagamento',recebidos:[],perdidos:[]};
+    estado.pedidos.push(p); log('pedido '+p.id+' criado');
+    aviso(p,AVISOS[0]);
+    (function(p,atraso){setTimeout(function(){p.status='pago';log('a plataforma confirmou o pagamento do pedido '+p.id);
+      aviso(p,AVISOS[1]);aviso(p,AVISOS[2]);
+      if(estado.conferirDepois&&!pendentes()){estado.conferirDepois=false;conferir()}},atraso)})(p,700+i*300);
+  }
+  $('#sim-resultado').innerHTML='';desenhar();
+}
+function desenhar(){
+  var api=$('#sim-api'),loja=$('#sim-loja');
+  if(!estado.pedidos.length){api.innerHTML=loja.innerHTML='<li class="sim-vazio">Nenhum pedido ainda.</li>';return}
+  api.innerHTML=estado.pedidos.map(function(p){return '<li><strong>Pedido '+p.id+'</strong><small>'+p.status+'</small></li>'}).join('');
+  loja.innerHTML=estado.pedidos.map(function(p){
+    var falta=p.perdidos.length>0;
+    return '<li class="'+(falta?'perdido':'')+'"><strong>Pedido '+p.id+'</strong><small>'+
+      (p.recebidos.length?'recebeu: '+p.recebidos.join(', '):'nenhum aviso recebido')+'</small></li>'}).join('');
+}
+function pendentes(){return estado.pedidos.filter(function(p){return p.status!=='pago'}).length}
+function mostrarEstado(){var e=$('#sim-estado'),c=$('#sim-chave');
+  e.className='sim-estado '+(estado.ligado?'on':'off');
+  e.innerHTML=estado.ligado?'<strong>Receptor ligado:</strong> os avisos chegam à loja.':'<strong>Receptor desligado:</strong> os avisos se perdem no caminho.';
+  c.textContent=estado.ligado?'Desligar o receptor':'Ligar o receptor';}
+function conferir(){
+  if(estado.pedidos.length&&pendentes()){estado.conferirDepois=true;
+    $('#sim-resultado').innerHTML='<p class="sim-vazio">Aguardando a plataforma confirmar '+pendentes()+' pagamento(s). O conferidor roda sozinho em seguida.</p>';return}
+  var pagos=estado.pedidos.filter(function(p){return p.status==='pago'});
+  var semAviso=pagos.filter(function(p){return p.recebidos.indexOf('Pix pago')<0||p.recebidos.indexOf('Pedido aprovado')<0});
+  var r=$('#sim-resultado');
+  if(!estado.pedidos.length){r.innerHTML='<p class="sim-vazio">Crie alguns pedidos primeiro.</p>';return}
+  log('conferidor perguntou à plataforma sobre '+estado.pedidos.length+' pedido(s) e comparou com os avisos');
+  if(!semAviso.length){r.innerHTML='<div class="card"><p><strong>Nenhum pedido pago sem aviso.</strong> Todos os avisos chegaram, então a loja sabe de todas as vendas pagas. Agora clique em Desligar o receptor, crie mais 3 pedidos e rode o conferidor de novo.</p></div>';return}
+  r.innerHTML='<div class="card" style="border-left:3px solid var(--erro);border-radius:0 12px 12px 0"><p><strong>'+semAviso.length+' pedido(s) pago(s) de que a loja não ficou sabendo:</strong> '+
+    semAviso.map(function(p){return p.id}).join(', ')+'.</p><p>A plataforma diz que foram pagos, mas os avisos não chegaram. Sem o conferidor, esses produtos não seriam enviados. Com a lista, a loja pode agir e pedir o reenvio ao suporte.</p></div>';
+}
+$('#sim-chave').addEventListener('click',function(){estado.ligado=!estado.ligado;mostrarEstado();log(estado.ligado?'receptor ligado':'receptor desligado')});
+$('#sim-criar').addEventListener('click',function(){criar(3)});
+$('#sim-conferir').addEventListener('click',conferir);
+$('#sim-zerar').addEventListener('click',function(){estado={pedidos:[],ligado:true,proximo:1001,conferirDepois:false};mostrarEstado();
+  $('#sim-resultado').innerHTML='';$('#sim-log').textContent='';desenhar()});
+mostrarEstado();desenhar();
+})();
+</script>
 </body>
 </html>

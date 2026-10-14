@@ -256,8 +256,10 @@ table.resp td.n::before{display:inline;font-size:13px}
 .sim-primario:hover{background:var(--roxo-escuro)}
 .sim-secundario{background:var(--lilas);color:var(--roxo-escuro)}
 .sim-chave{background:#fff;border-color:var(--linha)!important;color:var(--texto)}
-.sim-chave[aria-pressed=false]{background:var(--erro-f);color:var(--erro);border-color:#f3c3be!important}
-.sim-chave[aria-pressed=true]{background:var(--ok-f);color:var(--ok);border-color:#bfe3cd!important}
+.sim-estado{margin:0 0 16px;padding:10px 14px;border-radius:12px;font-size:14px;display:flex;gap:8px;align-items:center}
+.sim-estado::before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor;flex:0 0 10px}
+.sim-estado.on{background:var(--ok-f);color:var(--ok)}
+.sim-estado.off{background:var(--erro-f);color:var(--erro)}
 .sim-colunas{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .sim-colunas>div{min-width:0}
 .sim-lista{list-style:none;margin:0;padding:0;display:grid;gap:8px;min-height:60px}
@@ -314,7 +316,7 @@ b.type='button';b.className='copiar';b.textContent='Copiar';b.addEventListener('
 c.querySelector('code').textContent).then(function(){b.textContent='Copiado';setTimeout(function(){b.textContent='Copiar'},1600)})});c.appendChild(b);c.classList.add('tem-copiar')});
 (function(){
 var raiz=document.getElementById('simulador'); if(!raiz) return;
-var estado={pedidos:[],ligado:true,proximo:1001};
+var estado={pedidos:[],ligado:true,proximo:1001,conferirDepois:false};
 var AVISOS=['Pix gerado','Pix pago','Pedido aprovado'];
 function $(s){return raiz.querySelector(s)}
 function log(t){var l=$('#sim-log');var h=new Date().toLocaleTimeString('pt-BR');l.textContent=h+'  '+t+'\n'+l.textContent}
@@ -329,7 +331,8 @@ function criar(n){
     estado.pedidos.push(p); log('pedido '+p.id+' criado');
     aviso(p,AVISOS[0]);
     (function(p,atraso){setTimeout(function(){p.status='pago';log('a plataforma confirmou o pagamento do pedido '+p.id);
-      aviso(p,AVISOS[1]);aviso(p,AVISOS[2])},atraso)})(p,1200+i*500);
+      aviso(p,AVISOS[1]);aviso(p,AVISOS[2]);
+      if(estado.conferirDepois&&!pendentes()){estado.conferirDepois=false;conferir()}},atraso)})(p,700+i*300);
   }
   $('#sim-resultado').innerHTML='';desenhar();
 }
@@ -342,23 +345,29 @@ function desenhar(){
     return '<li class="'+(falta?'perdido':'')+'"><strong>Pedido '+p.id+'</strong><small>'+
       (p.recebidos.length?'recebeu: '+p.recebidos.join(', '):'nenhum aviso recebido')+'</small></li>'}).join('');
 }
+function pendentes(){return estado.pedidos.filter(function(p){return p.status!=='pago'}).length}
+function mostrarEstado(){var e=$('#sim-estado'),c=$('#sim-chave');
+  e.className='sim-estado '+(estado.ligado?'on':'off');
+  e.innerHTML=estado.ligado?'<strong>Receptor ligado:</strong> os avisos chegam à loja.':'<strong>Receptor desligado:</strong> os avisos se perdem no caminho.';
+  c.textContent=estado.ligado?'Desligar o receptor':'Ligar o receptor';}
 function conferir(){
+  if(estado.pedidos.length&&pendentes()){estado.conferirDepois=true;
+    $('#sim-resultado').innerHTML='<p class="sim-vazio">Aguardando a plataforma confirmar '+pendentes()+' pagamento(s). O conferidor roda sozinho em seguida.</p>';return}
   var pagos=estado.pedidos.filter(function(p){return p.status==='pago'});
   var semAviso=pagos.filter(function(p){return p.recebidos.indexOf('Pix pago')<0||p.recebidos.indexOf('Pedido aprovado')<0});
   var r=$('#sim-resultado');
   if(!estado.pedidos.length){r.innerHTML='<p class="sim-vazio">Crie alguns pedidos primeiro.</p>';return}
   log('conferidor perguntou à plataforma sobre '+estado.pedidos.length+' pedido(s) e comparou com os avisos');
-  if(!semAviso.length){r.innerHTML='<div class="card"><p><strong>Nenhum pedido pago sem aviso.</strong> A loja sabe de todas as vendas pagas. Desligue o receptor, crie mais pedidos e confira de novo.</p></div>';return}
+  if(!semAviso.length){r.innerHTML='<div class="card"><p><strong>Nenhum pedido pago sem aviso.</strong> Todos os avisos chegaram, então a loja sabe de todas as vendas pagas. Agora clique em Desligar o receptor, crie mais 3 pedidos e rode o conferidor de novo.</p></div>';return}
   r.innerHTML='<div class="card" style="border-left:3px solid var(--erro);border-radius:0 12px 12px 0"><p><strong>'+semAviso.length+' pedido(s) pago(s) de que a loja não ficou sabendo:</strong> '+
     semAviso.map(function(p){return p.id}).join(', ')+'.</p><p>A plataforma diz que foram pagos, mas os avisos não chegaram. Sem o conferidor, esses produtos não seriam enviados. Com a lista, a loja pode agir e pedir o reenvio ao suporte.</p></div>';
 }
-$('#sim-chave').addEventListener('click',function(){estado.ligado=!estado.ligado;this.setAttribute('aria-pressed',estado.ligado);
-  this.textContent=estado.ligado?'Receptor ligado':'Receptor desligado';log(estado.ligado?'receptor ligado':'receptor desligado')});
+$('#sim-chave').addEventListener('click',function(){estado.ligado=!estado.ligado;mostrarEstado();log(estado.ligado?'receptor ligado':'receptor desligado')});
 $('#sim-criar').addEventListener('click',function(){criar(3)});
 $('#sim-conferir').addEventListener('click',conferir);
-$('#sim-zerar').addEventListener('click',function(){estado={pedidos:[],ligado:true,proximo:1001};var c=$('#sim-chave');c.setAttribute('aria-pressed','true');c.textContent='Receptor ligado';
+$('#sim-zerar').addEventListener('click',function(){estado={pedidos:[],ligado:true,proximo:1001,conferirDepois:false};mostrarEstado();
   $('#sim-resultado').innerHTML='';$('#sim-log').textContent='';desenhar()});
-desenhar();
+mostrarEstado();desenhar();
 })();
 </script>
 </body>
