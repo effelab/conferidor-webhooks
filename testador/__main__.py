@@ -50,6 +50,19 @@ def recebidos(order_id):
             "SELECT evento, recebido_em FROM eventos WHERE order_id=?", (order_id,))}
 
 
+def entregas(order_id):
+    """Modo porteiro: como a aplicacao respondeu a cada aviso deste pedido ({} se o porteiro estava desligado)."""
+    with sqlite3.connect(BANCO) as db:
+        db.row_factory = sqlite3.Row
+        tabela = db.execute("SELECT name FROM sqlite_master WHERE name='entregas'").fetchone()
+        if not tabela:
+            return {}
+        primeira = {}
+        for linha in db.execute("SELECT * FROM entregas WHERE order_id=? ORDER BY recebido_em", (order_id,)):
+            primeira.setdefault(linha["evento"], dict(linha))
+        return primeira
+
+
 def esperados(cenario):
     return set(cenario.eventos_da_compra) | ({cenario.evento_do_estorno} - {""})
 
@@ -100,7 +113,7 @@ def julgar_rodada(pares, api, executor, espera_s):
             except ErroDaAPI as erro:
                 status = f"erro ao consultar: {erro}"
         veredito = julgar(cenario, execucao, recebidos(execucao["order_id"]) if execucao["order_id"] else {},
-                          status, espera_s)
+                          status, espera_s, entregas(execucao["order_id"]) if execucao["order_id"] else None)
         linhas.append({"id": cenario.id, "nome": cenario.nome, "order_id": execucao["order_id"],
                        "status_api": status, "execucao": execucao, **veredito})
     return linhas

@@ -34,20 +34,30 @@ faz por dentro não é visível daqui. Endereço local mede o app sem a internet
 </section>"""
 
 
+def _aplicacao(x):
+    itens = x.get("aplicacao") or []
+    if not itens:
+        return ""
+    ruins = [i for i in itens if not i["ok"]]
+    if not ruins:
+        return selo("respondeu bem", "g")
+    return "; ".join(escape(f"{i['evento']}: {i['texto']}") for i in ruins)
+
+
 def gerar(resultado, resistencia=None):
     linhas = resultado["linhas"]
+    porteiro = any(x.get("aplicacao") for x in linhas)
     conta = {r: sum(1 for x in linhas if x["resultado"] == r) for r in COR}
     tabela = "".join(f"""
 <tr><td>{escape(x['nome'])}</td>
 <td class=n>{x['order_id'] or 'n/d'}</td>
 <td>{selo(x['resultado'], COR[x['resultado']])}</td>
 <td>{escape(_tempos(x['atrasos']))}</td>
-<td>{escape('; '.join(x['motivos']) or 'nenhum')}</td></tr>""" for x in linhas)
+{f"<td>{_aplicacao(x)}</td>" if porteiro else ""}<td>{escape('; '.join(x['motivos']) or 'nenhum')}</td></tr>""" for x in linhas)
     fora = "".join(f"<li><strong>{escape(item)}:</strong> {escape(porque)}</li>" for item, porque in NAO_CONFERIVEIS)
     custo = resultado.get("custo_resumo_usd") or 0.0
     corpo = f"""<div class="sub"><strong>Execução real no ambiente de teste (sandbox) da plataforma,
-em {escape(resultado['executado_em'])}.</strong> Modo {escape(resultado['modo'])}. O app testado é o receptor
-do próprio conferidor. Isto não é a homologação da plataforma e não dá aprovação: mostra o que dá para conferir de fora.</div>
+em {escape(resultado['executado_em'])}.</strong> Modo {escape(resultado['modo'])}. {"Porteiro ligado: cada aviso foi entregue à sua aplicação e a resposta dela entrou no veredito." if porteiro else "O app testado é o receptor do próprio conferidor."} Isto não é a homologação da plataforma e não dá aprovação: mostra o que dá para conferir de fora.</div>
 
 <section id="resumo">
 <h2>Resumo</h2>
@@ -65,7 +75,7 @@ Custo do resumo: US$ {custo:.6f}. Chamadas à API nesta rodada: {resultado['cham
 <section id="cenarios">
 <h2>Cenário a cenário</h2>
 <div class="tw lg"><table>
-<thead><tr><th>Cenário</th><th class=n>Pedido</th><th>Resultado</th><th>Tempo até cada aviso</th><th>Motivo</th></tr></thead>
+<thead><tr><th>Cenário</th><th class=n>Pedido</th><th>Resultado</th><th>Tempo até cada aviso</th>{"<th>Sua aplicação</th>" if porteiro else ""}<th>Motivo</th></tr></thead>
 <tbody>{tabela}</tbody></table></div>
 <p style="font-size:13px">Janela de espera pelos avisos: {resultado['espera_s'] / 60:.0f} min. Aviso que não chegou nessa janela
 ainda pode chegar depois, por retentativa da plataforma. Só conta como falha quando a API mostra que o fato

@@ -9,6 +9,7 @@ Aviso que nao chegou na janela e reportado como "nao chegou em X min", nunca
 como perdido: a plataforma ainda pode reenviar por retentativa.
 """
 from conferidor.contrato import STATUS_PAGO
+from conferidor.porteiro import julgar_entrega
 
 PASSOU, FALHOU, INCONCLUSIVO, NAO_EXECUTADO = "passou", "falhou", "inconclusivo", "não executado"
 
@@ -17,8 +18,12 @@ ESTORNO_EM_ANALISE = "pendente_integracao_em_analise"
 PAGO_OU_DEPOIS = STATUS_PAGO | {"estornado"}
 
 
-def julgar(cenario, execucao, recebidos, status_api, espera_s):
-    """recebidos: {evento: instante em que chegou} para o pedido do cenario."""
+def julgar(cenario, execucao, recebidos, status_api, espera_s, entregas=None):
+    """recebidos: {evento: instante em que chegou} para o pedido do cenario.
+
+    entregas: so no modo porteiro, {evento: como a aplicacao respondeu}. Quando vem, o
+    cenario tambem exige que a aplicacao tenha recebido cada aviso e respondido 2xx a tempo.
+    """
     if execucao.get("erro"):
         return {"resultado": NAO_EXECUTADO, "motivos": [execucao["erro"]], "atrasos": {}, "extras": []}
 
@@ -54,6 +59,13 @@ def julgar(cenario, execucao, recebidos, status_api, espera_s):
         falhas.append(f"o aviso {evento} chegou, mas a API informa {status_api}")
 
     esperados = set(cenario.eventos_da_compra) | ({evento} - {""})
+    aplicacao = []
+    if entregas:  # modo porteiro: julga tambem a aplicacao, aviso por aviso
+        for nome in sorted(e for e in esperados if e in recebidos):
+            ok, texto = julgar_entrega(entregas.get(nome))
+            aplicacao.append({"evento": nome, "ok": ok, "texto": texto})
+            if not ok:
+                falhas.append(f"aviso {nome}: {texto}")
     resultado = FALHOU if falhas else INCONCLUSIVO if pendencias else PASSOU
     return {"resultado": resultado, "motivos": falhas + pendencias, "atrasos": atrasos,
-            "extras": sorted(set(recebidos) - esperados)}
+            "extras": sorted(set(recebidos) - esperados), "aplicacao": aplicacao}

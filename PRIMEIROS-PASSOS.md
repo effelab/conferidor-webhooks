@@ -153,6 +153,38 @@ start testador_rapido.html
 
 (No Mac: `open testador_rapido.html`.) O `--nome rapido` guarda este teste num arquivo próprio, sem apagar as rodadas maiores.
 
+## Passo 10: testar a SUA aplicação (modo porteiro)
+
+Até aqui, quem recebeu os avisos foi o receptor do projeto. Para testar a **sua** aplicação, o receptor vira um **porteiro**: ele anota cada aviso, entrega à sua aplicação e anota o que ela respondeu e em quanto tempo. Você não muda nada no código da sua aplicação, e o endereço cadastrado no painel do app continua o mesmo (`SEU_TUNEL/webhook`).
+
+```
+plataforma ──> túnel ──> porteiro (anota) ──> sua aplicação
+                              └── anota a resposta dela e o tempo
+```
+
+1. Deixe a sua aplicação rodando e anote o endereço onde ela recebe avisos, por exemplo `http://localhost:3000/webhook`.
+2. Na janela 2, pare o receptor (Ctrl+C) e ligue de novo como porteiro:
+   ```
+   python -m conferidor.receptor --repassar http://localhost:3000/webhook
+   ```
+3. Rode o teste rápido ou a lista completa, como no passo 9.
+
+No relatório aparece a coluna **Sua aplicação**. Com o porteiro ligado, um cenário só passa se a sua aplicação:
+
+- recebeu cada aviso esperado;
+- respondeu com um código de sucesso (200 a 299);
+- respondeu em até 5 segundos (o limite da documentação).
+
+**Antes de usar com a sua, experimente com a aplicação de exemplo**, que já vem no projeto. Numa quarta janela:
+
+```
+python exemplos/app_exemplo.py --modo estorno
+```
+
+Ela responde bem às compras e responde erro 500 aos estornos. Rode a lista completa e veja os estornos reprovados com o motivo "a aplicação respondeu 500". Outros modos: `saudavel`, `lento` (demora 7 s) e `quebrado`.
+
+**O que o porteiro não vê:** o que a sua aplicação faz por dentro com o aviso (por exemplo, se marcou o pedido como pago no seu banco). Ele vê se o aviso foi entregue e como ela respondeu.
+
 ---
 
 ## Depois do primeiro teste

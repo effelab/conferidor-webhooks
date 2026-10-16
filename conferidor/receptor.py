@@ -2,6 +2,7 @@
 
     python -m conferidor.receptor               grava cada aviso e responde 200
     python -m conferidor.receptor --falhar      responde 500 aos avisos e anota cada tentativa
+    python -m conferidor.receptor --repassar URL   porteiro: entrega cada aviso a sua aplicacao e anota a resposta
 
 Atende tres coisas:
     POST /validacao   o "health check" da instalacao: responde com um external_id novo
@@ -32,7 +33,7 @@ from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
-from . import config
+from . import config, porteiro
 from .registro import Registro
 
 BANCO = config.RAIZ / "eventos.db"
@@ -55,7 +56,7 @@ def _hora(instante):
     return datetime.fromtimestamp(instante).strftime("%H:%M:%S")
 
 
-def criar_handler(registro, falhar):
+def criar_handler(registro, falhar, repassar=None):
     primeira_tentativa = {}
     trava = threading.Lock()
 
@@ -138,7 +139,18 @@ def criar_handler(registro, falhar):
             if regra and regra.startswith("demorar:"):
                 anotar(agora, order_id, evento, regra, 200)
                 time.sleep(float(regra.split(":", 1)[1]))
-            print(f"{_hora(agora)}  {evento}  pedido {order_id}  {'gravado' if novo else 'repetido, ignorado'}  -> 200", flush=True)
+            situacao = "gravado" if novo else "repetido, ignorado"
+            if repassar:  # modo porteiro: entrega a aplicacao e devolve a resposta dela
+                codigo, segundos, erro = porteiro.repassar(repassar, corpo, self.headers)
+                with trava:
+                    registro.registrar_entrega(int(order_id) if order_id is not None else None, evento,
+                                               agora, codigo, segundos, erro)
+                    registro.db.commit()
+                resposta = porteiro.resposta_para_a_plataforma(codigo, erro)
+                print(f"{_hora(agora)}  {evento}  pedido {order_id}  {situacao}  -> aplicação respondeu "
+                      f"{codigo if codigo is not None else 'nada'} em {segundos:.2f} s  -> {resposta}", flush=True)
+                return self._responder(resposta, {})
+            print(f"{_hora(agora)}  {evento}  pedido {order_id}  {situacao}  -> 200", flush=True)
             self._responder(200, {})
 
         def log_message(self, *_):
@@ -152,14 +164,18 @@ def main():
     opcoes.add_argument("--porta", type=int, default=8080)
     opcoes.add_argument("--falhar", action="store_true", help="responde 500 aos avisos e registra cada tentativa")
     opcoes.add_argument("--banco", default=str(BANCO), help="arquivo SQLite (padrao: eventos.db)")
+    opcoes.add_argument("--repassar", metavar="URL",
+                        help="modo porteiro: entrega cada aviso a sua aplicacao (ex.: http://localhost:3000/webhook)")
     args = opcoes.parse_args()
 
     if args.falhar and not TENTATIVAS.exists():
         TENTATIVAS.write_text("recebido_em,order_id,evento,segundos_desde_a_primeira\n", encoding="utf-8")
     registro = None if args.falhar else Registro(args.banco)
     # varias threads (um aviso demorado nao trava os outros); o SQLite fica atras de uma trava
-    servidor = ThreadingHTTPServer(("0.0.0.0", args.porta), criar_handler(registro, args.falhar))
-    print(f"Escutando na porta {args.porta}. Modo: {'falhar de proposito' if args.falhar else 'gravar e responder 200'}.", flush=True)
+    servidor = ThreadingHTTPServer(("0.0.0.0", args.porta), criar_handler(registro, args.falhar, args.repassar))
+    modo = ("falhar de proposito" if args.falhar else
+            f"porteiro: grava e repassa a {args.repassar}" if args.repassar else "gravar e responder 200")
+    print(f"Escutando na porta {args.porta}. Modo: {modo}.", flush=True)
     try:
         servidor.serve_forever()
     except KeyboardInterrupt:

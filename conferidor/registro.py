@@ -32,6 +32,14 @@ CREATE TABLE IF NOT EXISTS eventos (
     payload     TEXT,
     PRIMARY KEY (order_id, evento)
 );
+CREATE TABLE IF NOT EXISTS entregas (
+    order_id     INTEGER,
+    evento       TEXT NOT NULL,
+    recebido_em  REAL NOT NULL,
+    status_app   INTEGER,
+    segundos_app REAL NOT NULL,
+    erro         TEXT
+);
 CREATE TABLE IF NOT EXISTS apontados (
     order_id INTEGER NOT NULL,
     evento   TEXT NOT NULL,
@@ -78,6 +86,20 @@ class Registro:
             "UPDATE pedidos SET status=?, estagio=?, fonte_status=?, prazo=?, n=0 WHERE order_id=?",
             (atual, estagio, fonte, recebido_em + silencio if silencio else None, order_id))
         return True
+
+    def registrar_entrega(self, order_id, evento, recebido_em, status_app, segundos_app, erro=None):
+        """Modo porteiro: como a aplicacao respondeu a este aviso. Cada tentativa vira uma linha."""
+        self.db.execute("INSERT INTO entregas VALUES (?, ?, ?, ?, ?, ?)",
+                        (order_id, evento, recebido_em, status_app, segundos_app, erro))
+
+    def entregas(self, order_id):
+        """{evento: primeira entrega} deste pedido, para o testador julgar a aplicacao."""
+        linhas = self.db.execute(
+            "SELECT * FROM entregas WHERE order_id=? ORDER BY recebido_em", (order_id,)).fetchall()
+        primeira = {}
+        for linha in linhas:
+            primeira.setdefault(linha["evento"], dict(linha))
+        return primeira
 
     def pedido(self, order_id):
         return self.db.execute("SELECT * FROM pedidos WHERE order_id=?", (order_id,)).fetchone()
