@@ -19,7 +19,7 @@ from datetime import datetime
 from html import escape
 from pathlib import Path
 
-from conferidor import site_experimente
+from conferidor import site_experimente, site_testar
 from conferidor.relatorio import NOMES_DE_EVENTO, reais
 from testador.cenarios import NAO_CONFERIVEIS
 
@@ -982,11 +982,11 @@ def _documento(titulo, corpo):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700&display=swap">
-<style>{CSS}{CSS_SESSOES}{site_experimente.CSS}</style>
+<style>{CSS}{CSS_SESSOES}{site_experimente.CSS}{site_testar.CSS}</style>
 </head>
 <body>
 {corpo}
-<script>{SCRIPT}{site_experimente.SCRIPT}</script>
+<script>{SCRIPT}{site_experimente.SCRIPT}{site_testar.SCRIPT}</script>
 </body>
 </html>
 """
@@ -1007,6 +1007,7 @@ def gerar(dados=None):
 
 SESSOES = [  # (arquivo, ancora da secao, rotulo no menu)
     ("index.html", "problema", "Início"),
+    ("testar.html", "testar", "Testar minha aplicação"),
     ("conferidor.html", "conferidor", "Conferidor"),
     ("testador.html", "testador", "Testador"),
     ("experimente.html", "experimente", "Experimente"),
@@ -1081,6 +1082,7 @@ def gerar_sessoes(dados=None):
     d = dados if dados is not None else carregar()
     conteudo = {
         "index.html": topo(d) + problema(),
+        "testar.html": site_testar.testar(icone, escape),
         "conferidor.html": conferidor(d),
         "testador.html": testador(d),
         "experimente.html": site_experimente.experimente(icone),
@@ -1088,7 +1090,7 @@ def gerar_sessoes(dados=None):
         "limites.html": limites(d),
     }
     titulos = {"index.html": "Conferidor de avisos", "conferidor.html": "Conferidor · resultados",
-               "testador.html": "Testador · resultados", "experimente.html": "Experimente", "como-usar.html": "Como usar",
+               "testador.html": "Testador · resultados", "experimente.html": "Experimente", "testar.html": "Testar minha aplicação", "como-usar.html": "Como usar",
                "limites.html": "Limites e glossário"}
     paginas = {}
     for i, (arq, _, _) in enumerate(SESSOES):

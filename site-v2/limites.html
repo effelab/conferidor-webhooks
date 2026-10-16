@@ -270,6 +270,38 @@ table.resp td.n::before{display:inline;font-size:13px}
 .sim-resultado{margin-top:18px}
 .sim-log{font-family:var(--mono);font-size:12px;background:#151a2c;color:#d6dcf5;border-radius:12px;padding:12px;max-height:180px;overflow:auto;margin-top:14px;white-space:pre-wrap}
 @media (max-width:760px){.sim-colunas{grid-template-columns:1fr}}
+
+.tm-passo{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:22px 0;border-top:1px solid var(--linha)}
+.tm-passo:first-of-type{border-top:0}
+.tm-num{width:40px;height:40px;border-radius:50%;background:var(--roxo-forte);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:17px}
+.tm-passo h3{margin:6px 0 6px}
+.tm-passo ol,.tm-passo ul{margin:8px 0 8px 20px;padding:0}
+.tm-passo li{margin:4px 0}
+.tm-prints{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:12px 0}
+.tm-prints a{display:block;border:1px solid var(--linha);border-radius:12px;overflow:hidden;background:#fff}
+.tm-prints img{display:block;width:100%;height:auto}
+.tm-prints figcaption{font-size:12.5px;color:var(--texto-2);padding:6px 10px}
+.tm-nota{font-size:13.5px;color:var(--texto-2)}
+.tm-caixa{background:var(--lilas-2);border:1px solid var(--lilas);border-radius:14px;padding:16px;margin:12px 0}
+.tm-linha{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tm-linha input{flex:1 1 320px;min-width:0;font:inherit;font-size:15px;padding:11px 12px;border:1px solid var(--linha);border-radius:10px;background:#fff;color:var(--texto)}
+.tm-linha button,.tm-btn{font:inherit;font-weight:600;font-size:14.5px;border-radius:10px;padding:11px 16px;cursor:pointer;border:0;background:var(--roxo-forte);color:#fff}
+.tm-linha button.sec,.tm-btn.sec{background:var(--lilas);color:var(--roxo-escuro)}
+.tm-endereco{font-family:var(--mono);font-size:14px;word-break:break-all;background:#fff;border:1px solid var(--linha);border-radius:10px;padding:10px 12px;flex:1 1 320px;min-width:0}
+.tm-erro{color:var(--erro);font-size:14px;margin-top:8px}
+.tm-status{display:flex;gap:10px;align-items:center;padding:14px 16px;border-radius:14px;font-weight:600;margin:12px 0}
+.tm-status::before{content:"";width:12px;height:12px;border-radius:50%;background:currentColor;flex:0 0 12px}
+.tm-status.esperando{background:var(--atencao-f);color:var(--atencao)}
+.tm-status.ok{background:var(--ok-f);color:var(--ok)}
+.tm-status.ruim{background:var(--erro-f);color:var(--erro)}
+.tm-avisos{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tm-avisos li{background:#fff;border:1px solid var(--linha);border-left:4px solid var(--ok);border-radius:0 12px 12px 0;padding:12px 14px}
+.tm-avisos li.ruim{border-left-color:var(--erro)}
+.tm-avisos li.lento{border-left-color:var(--atencao)}
+.tm-avisos .meta{font-size:12.5px;color:var(--texto-2)}
+.tm-avisos .corrigir{margin-top:8px;font-size:13.5px}
+.tm-prompt{font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;background:#151a2c;color:#d6dcf5;border-radius:12px;padding:14px;margin:8px 0;max-height:320px;overflow:auto}
+@media (max-width:640px){.tm-passo{grid-template-columns:1fr}.tm-num{width:34px;height:34px}}
 </style>
 </head>
 <body>
@@ -277,7 +309,7 @@ table.resp td.n::before{display:inline;font-size:13px}
 <header class="barra">
 <div class="w barra-in">
 <a class="nome" href="index.html">Conferidor de avisos</a>
-<nav aria-label="Sessões"><ul><li><a href="index.html">Início</a></li><li><a href="conferidor.html">Conferidor</a></li><li><a href="testador.html">Testador</a></li><li><a href="experimente.html">Experimente</a></li><li><a href="como-usar.html">Como usar</a></li><li><a href="limites.html" aria-current="page">Limites</a></li></ul></nav>
+<nav aria-label="Sessões"><ul><li><a href="index.html">Início</a></li><li><a href="testar.html">Testar minha aplicação</a></li><li><a href="conferidor.html">Conferidor</a></li><li><a href="testador.html">Testador</a></li><li><a href="experimente.html">Experimente</a></li><li><a href="como-usar.html">Como usar</a></li><li><a href="limites.html" aria-current="page">Limites</a></li></ul></nav>
 <a class="btn" href="como-usar.html">Como usar</a>
 </div>
 </header>
@@ -357,6 +389,79 @@ $('#sim-conferir').addEventListener('click',conferir);
 $('#sim-zerar').addEventListener('click',function(){estado={pedidos:[],ligado:true,proximo:1001,conferirDepois:false};mostrarEstado();
   $('#sim-resultado').innerHTML='';$('#sim-log').textContent='';desenhar()});
 mostrarEstado();desenhar();
+})();
+
+(function(){
+var raiz=document.getElementById('testar'); if(!raiz) return;
+var $=function(s){return raiz.querySelector(s)};
+var NOMES={OrderPixCreated:'Pix gerado',OrderPaidByPix:'Pix pago',OrderPaid:'Pedido pago',OrderApproved:'Pedido aprovado',
+  OrderRefund:'Pedido estornado',OrderPartialRefund:'Pedido estornado parcialmente',CustomerCreated:'Cliente criado',
+  OrderBilletCreated:'Boleto gerado',OrderIntegrated:'Pedido integrado',order_pix_created:'Pix gerado',order_paid_by_pix:'Pix pago',
+  order_paid:'Pedido pago',order_approved:'Pedido aprovado',order_refund:'Pedido estornado',order_partial_refund:'Pedido estornado parcialmente',
+  customer_created:'Cliente criado'};
+var LIMITE=5000, id=null, timer=null;
+function guardar(v){try{localStorage.setItem('porteiro_id',v)}catch(e){}}
+function lembrar(){try{return localStorage.getItem('porteiro_id')}catch(e){return null}}
+function copiar(texto,botao){if(!navigator.clipboard){return}navigator.clipboard.writeText(texto).then(function(){var t=botao.textContent;botao.textContent='Copiado';setTimeout(function(){botao.textContent=t},1500)})}
+function diagnostico(a){
+  if(a.status_app===null||a.status_app===undefined){return {cls:'ruim',txt:'Sua aplicação não respondeu'+(a.erro?' ('+a.erro+')':'')+'.',
+    fazer:'Confira se a aplicação está publicada e se o endereço está certo (abra-o no navegador). Peça à sua IA: "minha rota de webhook não está acessível pela internet; verifique se ela está publicada e aceita POST".'}}
+  if(a.status_app>=200&&a.status_app<300){
+    if(a.ms_app>LIMITE){return {cls:'lento',txt:'Sua aplicação respondeu '+a.status_app+', mas demorou '+(a.ms_app/1000).toFixed(1)+' s (a documentação pede até 5 s).',
+      fazer:'Peça à sua IA: "minha rota de webhook demora mais de 5 segundos; faça ela responder 200 na hora e processar o aviso depois".'}}
+    return {cls:'',txt:'Sua aplicação respondeu '+a.status_app+' em '+a.ms_app+' ms. Tudo certo.'}}
+  if(a.status_app===404){return {cls:'ruim',txt:'Sua aplicação respondeu 404: o endereço não existe.',fazer:'Confira o endereço da rota (troque abaixo) ou peça à sua IA para criar a rota com o prompt deste passo.'}}
+  if(a.status_app===401||a.status_app===403){return {cls:'ruim',txt:'Sua aplicação respondeu '+a.status_app+': ela está pedindo login ou token.',
+    fazer:'A Appmax não manda token. Peça à sua IA: "libere a rota de webhook sem login; para confiar no aviso, consulte o pedido na API da Appmax".'}}
+  if(a.status_app===405){return {cls:'ruim',txt:'Sua aplicação respondeu 405: a rota não aceita POST.',fazer:'Peça à sua IA: "a rota de webhook precisa aceitar POST com JSON".'}}
+  return {cls:'ruim',txt:'Sua aplicação respondeu '+a.status_app+' (erro).',
+    fazer:'Peça à sua IA: "minha rota de webhook respondeu '+a.status_app+' ao receber o aviso '+a.evento+' da Appmax; responda 200 na hora, processe depois e registre o erro sem quebrar a resposta".'}}
+function hora(iso){return new Date(iso).toLocaleTimeString('pt-BR')}
+function desenhar(dados){
+  var lista=$('#tm-lista'), st=$('#tm-status'), av=dados.avisos||[];
+  if(!av.length){st.className='tm-status esperando';st.textContent='Esperando o primeiro aviso. Clique em Testar na Appmax (passo 5) ou faça uma compra de teste.';lista.innerHTML='';return}
+  var ruins=av.filter(function(a){return diagnostico(a).cls}).length;
+  st.className='tm-status '+(ruins?'ruim':'ok');
+  st.textContent=ruins?(ruins+' de '+av.length+' aviso(s) com problema na sua aplicação. Veja o que fazer em cada um.'):(av.length+' aviso(s) recebido(s) e entregue(s) à sua aplicação. A configuração está certa.');
+  lista.innerHTML=av.map(function(a){var d=diagnostico(a);
+    return '<li class="'+d.cls+'"><strong>'+(NOMES[a.evento]||a.evento)+'</strong> '+(a.order_id?'· pedido '+a.order_id:'')+
+      '<div>'+d.txt+'</div><div class="meta">'+hora(a.recebido_em)+' · nome técnico: '+a.evento+(a.status_pedido?' · status: '+a.status_pedido:'')+'</div>'+
+      (d.fazer?'<div class="corrigir"><strong>O que fazer:</strong> '+d.fazer+'</div>':'')+'</li>'}).join('');
+}
+function acompanhar(){
+  clearTimeout(timer); if(!id) return;
+  fetch('/api/avisos?id='+encodeURIComponent(id),{cache:'no-store'}).then(function(r){return r.json().then(function(j){return [r.status,j]})}).then(function(x){
+    if(x[0]!==200){$('#tm-status').className='tm-status ruim';$('#tm-status').textContent='Este endereço de teste não existe mais (eles valem 24 horas). Crie outro no passo 4.';return}
+    $('#tm-validade').textContent='Vale até '+new Date(x[1].endereco.expira_em).toLocaleString('pt-BR')+'. Depois disso, tudo é apagado.';
+    $('#tm-app-atual').textContent=x[1].endereco.app_url;
+    desenhar(x[1]); timer=setTimeout(acompanhar,4000);
+  }).catch(function(){timer=setTimeout(acompanhar,8000)});
+}
+function mostrar(novoId,endereco){
+  id=novoId; guardar(id);
+  var url=new URL(location.href); url.searchParams.set('id',id); history.replaceState(null,'',url);
+  $('#tm-pronto').hidden=false; $('#tm-endereco').textContent=endereco||(location.origin+'/api/p/'+id);
+  acompanhar();
+}
+function criar(appUrl,trocar){
+  var erro=$('#tm-erro'); erro.textContent='';
+  if(!/^https:\/\//i.test(appUrl)){erro.textContent='Use o endereço público da sua aplicação, começando com https://';return}
+  var corpo={app_url:appUrl}; if(trocar&&id) corpo.id=id;
+  fetch('/api/criar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(corpo)}).then(function(r){return r.json().then(function(j){return [r.status,j]})}).then(function(x){
+    if(x[0]!==200){erro.textContent=x[1].erro||'Não deu certo. Tente de novo.';return}
+    if(trocar&&id){acompanhar();return}
+    mostrar(x[1].id,x[1].endereco_webhook);
+  }).catch(function(){erro.textContent='Sem conexão. Tente de novo.'});
+}
+$('#tm-criar').addEventListener('click',function(){criar($('#tm-app').value.trim(),false)});
+$('#tm-exemplo').addEventListener('click',function(){$('#tm-app').value=location.origin+'/api/exemplo/saudavel';criar($('#tm-app').value,false)});
+$('#tm-copiar').addEventListener('click',function(){copiar($('#tm-endereco').textContent,this)});
+$('#tm-copiar-prompt').addEventListener('click',function(){copiar($('#tm-prompt').textContent,this)});
+$('#tm-trocar').addEventListener('click',function(){criar($('#tm-app-novo').value.trim(),true)});
+$('#tm-novo').addEventListener('click',function(){id=null;try{localStorage.removeItem('porteiro_id')}catch(e){};$('#tm-pronto').hidden=true;clearTimeout(timer);
+  var url=new URL(location.href);url.searchParams.delete('id');history.replaceState(null,'',url)});
+var inicial=new URL(location.href).searchParams.get('id')||lembrar();
+if(inicial&&/^[0-9a-f]{18}$/.test(inicial)) mostrar(inicial);
 })();
 </script>
 </body>

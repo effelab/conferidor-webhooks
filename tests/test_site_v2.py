@@ -69,7 +69,12 @@ class TestSiteV2(unittest.TestCase):
 
     def test_sem_link_externo_alem_das_fontes_e_do_codigo(self):
         externos = set(re.findall(r'(?:href|src)="(https?://[^"/]+)', self.html))
-        self.assertEqual(externos, {"https://fonts.googleapis.com", "https://fonts.gstatic.com", "https://github.com"})
+        permitidos = {"https://fonts.googleapis.com", "https://fonts.gstatic.com", "https://github.com",
+                      "https://appstore.appmax.com.br"}
+        self.assertLessEqual(externos, permitidos)
+        from conferidor import site_v2
+        for html in site_v2.gerar_sessoes().values():
+            self.assertLessEqual(set(re.findall(r'(?:href|src)="(https?://[^"/]+)', html)), permitidos)
 
     def test_estado_vazio_sem_resultados(self):
         with tempfile.TemporaryDirectory() as pasta:
@@ -93,7 +98,7 @@ class Sessoes(unittest.TestCase):
             self.assertEqual(html.count('aria-current="page"'), 1, arq)
             self.assertIn("Projeto independente", html)
             for href in re.findall(r'href="([^"]+)"', html):
-                if href.startswith("http") or href.endswith((".ico", ".png")):
+                if href.startswith("http") or href.endswith((".ico", ".png", ".jpg")):
                     continue
                 alvo, _, ancora = href.partition("#")
                 alvo = alvo or arq
