@@ -5,3 +5,6 @@ tentativas.csv
 .env
 *.log
 site/.vercel/
+comportamento.json
+testador_resultado_painel.json
+testador_painel.html

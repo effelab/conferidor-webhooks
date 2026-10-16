@@ -167,9 +167,7 @@ def provar_resistencia(args):
     for prova in dados["provas"]:
         marca = "passou" if prova["passou"] else ("atenção" if prova.get("informativo") else "falhou")
         print(f"{marca:>8}  {prova['nome']}: {prova['detalhe']}")
-    for saida in config.RAIZ.glob("testador_resultado*.json"):
-        nome = saida.stem.removeprefix("testador_resultado").removeprefix("_")
-        regravar(argparse.Namespace(nome=nome))
+    print(f"\nResultado gravado em {RESISTENCIA.name}. Para incluir no relatório: python -m testador relatorio")
 
 
 def regravar(args):

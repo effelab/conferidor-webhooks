@@ -7,9 +7,8 @@
     python -m conferidor.sandbox pix --pendente     cria um Pix que fica sem pagamento
     python -m conferidor.sandbox conferir           cruza os avisos recebidos com a API
 
-AINDA NAO TESTADO contra o sandbox real: foi escrito pela documentacao e
-testado so contra uma plataforma falsa local. Se algum passo responder
-diferente do esperado, o comando mostra a resposta para ajustarmos.
+Rodado contra o sandbox real em 13, 14 e 16/10/2026. Se algum passo responder
+diferente do esperado, o comando mostra a resposta da plataforma.
 """
 import argparse
 import sys
@@ -139,20 +138,20 @@ def verificar(_):
             return False
 
     print("Configuração (arquivo .env):")
-    item(config.ARQUIVO.exists(), "arquivo .env existe", "copie .env.exemplo para .env (passo 4 do guia)")
-    for chave, dica in (("APP_UUID", "copie do painel do app, em Consultar Aplicativo > Desenvolver (passo 3)"),
-                        ("APP_CLIENT_ID", "idem, credenciais do app (passo 3)"),
-                        ("APP_CLIENT_SECRET", "idem, credenciais do app (passo 3)"),
-                        ("URL_PAINEL", "endereço da sua loja de teste, por exemplo https://minhaloja.sandboxappmax.com.br (passo 3)"),
-                        ("URL_PUBLICA", "endereço que o túnel mostrou, terminado em trycloudflare.com (passo 5)")):
+    item(config.ARQUIVO.exists(), "arquivo .env existe", "copie .env.exemplo para .env (passo 6 do guia)")
+    for chave, dica in (("APP_UUID", "copie do painel do app, em Meus aplicativos > Exibir credenciais (passo 5)"),
+                        ("APP_CLIENT_ID", "idem, credenciais do app (passo 5)"),
+                        ("APP_CLIENT_SECRET", "idem, credenciais do app (passo 5)"),
+                        ("URL_PAINEL", "endereço da sua loja de teste, por exemplo https://minhaloja.sandboxappmax.com.br (passo 5)"),
+                        ("URL_PUBLICA", "endereço que o túnel mostrou, terminado em trycloudflare.com (passo 3)")):
         item(bool(dados.get(chave)), f"{chave} preenchido", dica)
 
     print("\nPeças ligadas:")
     item(responde("http://127.0.0.1:8080/"), "receptor ligado na porta 8080",
-         "abra outro PowerShell, entre na pasta e rode: python -m conferidor.receptor (passo 6)")
+         "abra outro PowerShell, entre na pasta e rode: python -m conferidor.receptor (passo 4)")
     if dados.get("URL_PUBLICA"):
         item(responde(dados["URL_PUBLICA"].rstrip("/") + "/"), "túnel no ar e chegando ao receptor",
-             "ligue o túnel (passo 5); se ele reiniciou, o endereço mudou: atualize URL_PUBLICA e as URLs no painel do app")
+             "ligue o túnel (passo 3); se ele reiniciou, o endereço mudou: atualize URL_PUBLICA e as URLs no painel do app")
 
     print("\nLoja de teste:")
     if item(bool(dados.get("MERCHANT_CLIENT_ID") and dados.get("MERCHANT_CLIENT_SECRET")),
@@ -169,6 +168,8 @@ def verificar(_):
           " (sem ela, o resumo sai de texto fixo)")
     print("\n" + ("Tudo pronto. Faça o teste rápido: python -m testador rodar --meios pix --documentos cpf --acoes compra --espera 3 --nome rapido"
                   if not faltas else f"{faltas} item(ns) faltando. Resolva de cima para baixo e rode verificar de novo."))
+    if faltas:
+        raise SystemExit(1)
 
 
 def main():

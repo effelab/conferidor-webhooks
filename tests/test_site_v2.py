@@ -63,7 +63,7 @@ class TestSiteV2(unittest.TestCase):
         self.assertIn("Sem vínculo, patrocínio ou autorização da plataforma", self.texto)
 
     def test_ressalvas_visiveis(self):
-        for trecho in ("não é a homologação", "Um app só", "Janela de reentrega ainda aberta", "Em observação",
+        for trecho in ("não é a homologação", "Um app só", "Janela de reentrega observada só em parte", "Observação parcial",
                        "Causa desconhecida", "Segundo a documentação pública", "suposição"):
             self.assertIn(trecho, self.texto)
 

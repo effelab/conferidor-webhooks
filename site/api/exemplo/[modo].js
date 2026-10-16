@@ -4,7 +4,8 @@
 // POST /api/exemplo/quebrado   responde 500 a todo aviso
 // POST /api/exemplo/estorno    responde 500 so aos avisos de estorno
 
-const ESTORNOS = new Set(["order_refund", "order_partial_refund"]);
+// Os dois formatos: aplicativo (order_refund) e webhook do painel da loja (OrderRefund).
+const ESTORNOS = new Set(["order_refund", "order_partial_refund", "OrderRefund", "OrderPartialRefund"]);
 const MODOS = new Set(["saudavel", "lento", "quebrado", "estorno"]);
 
 module.exports = async (req, res) => {

@@ -69,7 +69,7 @@ Nenhum modelo de linguagem participa. É comparação de conjuntos e relógio.
 | `conferidor/simulador.py` | A bancada: plataforma simulada, endpoint instável e o gabarito do que foi descartado |
 | `conferidor/relatorio.py` | Gera o relatório em HTML |
 | `conferidor/receptor.py` | Receptor real de webhook, com um modo que falha de propósito para medir as retentativas |
-| `conferidor/api.py` | Adaptador da API real. **Ainda não testado contra o sandbox** |
+| `conferidor/api.py` | Adaptador da API real, usado contra o sandbox desde 13/10/2026 |
 | `conferidor/sandbox.py` | Comandos para instalar o app, criar Pix de teste e conferir, no sandbox |
 
 ## Detalhes do contrato que o código respeita
@@ -78,7 +78,7 @@ Nenhum modelo de linguagem participa. É comparação de conjuntos e relógio.
 - **Reentrega.** A chave `(order_id, evento)` torna a gravação idempotente.
 - **Resposta em menos de 5 segundos.** O receptor grava e responde, sem processar nada pesado.
 - **Limite de 5 requisições por segundo e quota de 100.000 por mês.** O adaptador espaça as chamadas e respeita o `Retry-After`.
-- **Pedidos originados na Yampi não geram webhook, de propósito.** O conferidor acompanha esses pedidos por consulta e não dá alarme. No mês simulado isso evita 3.870 alarmes falsos.
+- **Pedidos originados na Yampi não geram webhook, de propósito.** O conferidor acompanha esses pedidos por consulta e não dá alarme. No mês simulado isso evita 3.877 alarmes falsos.
 - **Valores no webhook vêm em reais com decimal. Na API, em centavos.**
 
 ## Limites, ditos antes que perguntem

@@ -5,8 +5,8 @@
     python exemplos/app_exemplo.py --modo quebrado       responde 500 a todo aviso
     python exemplos/app_exemplo.py --modo estorno        responde 500 so aos avisos de estorno
 
-Ouve em http://localhost:3000/webhook (troque com --porta). Use com o porteiro:
-    python -m conferidor.receptor --repassar http://localhost:3000/webhook
+Ouve em http://127.0.0.1:3000/webhook (troque com --porta). Use com o porteiro:
+    python -m conferidor.receptor --repassar http://127.0.0.1:3000/webhook
 
 Serve para ver o testador apontando problema numa aplicacao. Nao guarda nada.
 """
@@ -15,7 +15,7 @@ import json
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-ESTORNOS = {"order_refund", "order_partial_refund"}
+ESTORNOS = {"order_refund", "order_partial_refund", "OrderRefund", "OrderPartialRefund"}  # aplicativo e painel
 
 
 def criar_handler(modo, espera_s=7.0):
@@ -46,7 +46,7 @@ def main():
     opcoes.add_argument("--porta", type=int, default=3000)
     opcoes.add_argument("--modo", choices=("saudavel", "lento", "quebrado", "estorno"), default="saudavel")
     args = opcoes.parse_args()
-    print(f"Aplicação de exemplo em http://localhost:{args.porta}/webhook, modo {args.modo}.", flush=True)
+    print(f"Aplicação de exemplo em http://127.0.0.1:{args.porta}/webhook, modo {args.modo}.", flush=True)
     ThreadingHTTPServer(("127.0.0.1", args.porta), criar_handler(args.modo)).serve_forever()
 
 

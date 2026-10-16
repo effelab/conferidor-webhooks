@@ -1,6 +1,6 @@
 """Porteiro: o receptor repassa cada aviso para a SUA aplicacao e anota como ela respondeu.
 
-    python -m conferidor.receptor --repassar http://localhost:3000/webhook
+    python -m conferidor.receptor --repassar http://127.0.0.1:3000/webhook
 
 A plataforma manda o aviso para o receptor (pelo tunel); o receptor grava, entrega
 o mesmo corpo para a aplicacao e devolve a plataforma a resposta da aplicacao. Assim
@@ -21,6 +21,7 @@ def repassar(url, corpo, cabecalhos, abrir=urllib.request.urlopen, relogio=time.
     """Entrega o aviso. Devolve (codigo HTTP ou None, segundos, erro ou None)."""
     enviados = {"Content-Type": cabecalhos.get("Content-Type", "application/json"),
                 "User-Agent": cabecalhos.get("User-Agent", "porteiro")}
+    url = url.replace("://localhost:", "://127.0.0.1:").replace("://localhost/", "://127.0.0.1/")  # Windows: evita ~2 s
     inicio = relogio()
     try:
         with abrir(urllib.request.Request(url, corpo, enviados), timeout=TEMPO_MAXIMO_S) as r:

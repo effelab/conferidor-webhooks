@@ -43,13 +43,14 @@ CSS = """
 
 PROMPT_APP = """Crie na minha aplicação uma rota para receber avisos de pagamento (webhooks) da Appmax:
 
-1. Rota POST pública, por exemplo /api/webhooks/appmax, que aceita JSON.
-2. Responda 200 imediatamente (em menos de 5 segundos) e faça o processamento depois. Nunca deixe um erro no processamento virar resposta 500.
-3. Aceite os dois formatos de aviso da Appmax: o do painel da loja ({"environment", "event": "OrderPaid", "data": {...}}) e o de aplicativo ({"event": "order_paid", "event_type": "order", "data": {...}}). O número do pedido vem em data.id ou data.order_id.
-4. O mesmo aviso pode chegar mais de uma vez: guarde evento + número do pedido e ignore repetidos.
-5. Os avisos não têm assinatura. Antes de liberar um produto, confirme o status do pedido consultando a API da Appmax (GET /v1/orders/{id}) com as minhas credenciais guardadas em variáveis de ambiente.
-6. Não grave nem registre em log dados pessoais do cliente que vierem no aviso.
-7. Esta rota não pode exigir login nem token: a Appmax não envia nenhum."""
+1. Rota POST pública que aceita JSON. Se o projeto usa Supabase (Lovable, Bolt), crie uma Edge Function chamada appmax-webhook e desative a verificação de JWT (verify_jwt = false). Se usa Next.js ou parecido, use /api/webhooks/appmax.
+2. A rota não pode exigir login nem token, e não pode redirecionar (nada de 301 ou 302). A Appmax não envia token nenhum.
+3. Ao receber, grave o aviso numa tabela (evento, número do pedido, status, data) e responda 200 em menos de 5 segundos. Processe depois, a partir da tabela. Um erro no processamento nunca pode virar resposta 500.
+4. Aceite os dois formatos da Appmax: o do painel da loja ({"environment", "event": "OrderPaid", "data": {...}}) e o de aplicativo ({"event": "order_paid", "event_type": "order", "data": {...}}). O número do pedido vem em data.id ou data.order_id. Responda 200 também para eventos que você não usa.
+5. O mesmo aviso pode chegar mais de uma vez: use evento + número do pedido para ignorar repetidos.
+6. Os avisos não têm assinatura. Deixe preparada uma consulta ao pedido na API da Appmax antes de liberar um produto, lendo as credenciais de variáveis de ambiente. Se elas ainda não estiverem configuradas, só registre o aviso e responda 200; não me peça as chaves agora.
+7. Não grave nem registre em log dados pessoais do cliente.
+8. No final, publique e me diga o endereço completo da rota na versão publicada, começando com https://."""
 
 SCRIPT = r"""
 (function(){
@@ -60,13 +61,18 @@ var NOMES={OrderPixCreated:'Pix gerado',OrderPaidByPix:'Pix pago',OrderPaid:'Ped
   OrderBilletCreated:'Boleto gerado',OrderIntegrated:'Pedido integrado',order_pix_created:'Pix gerado',order_paid_by_pix:'Pix pago',
   order_paid:'Pedido pago',order_approved:'Pedido aprovado',order_refund:'Pedido estornado',order_partial_refund:'Pedido estornado parcialmente',
   customer_created:'Cliente criado'};
-var LIMITE=5000, id=null, timer=null;
+var LIMITE=5000, id=null, timer=null, inicioEspera=Date.now();
 function guardar(v){try{localStorage.setItem('porteiro_id',v)}catch(e){}}
 function lembrar(){try{return localStorage.getItem('porteiro_id')}catch(e){return null}}
 function copiar(texto,botao){if(!navigator.clipboard){return}navigator.clipboard.writeText(texto).then(function(){var t=botao.textContent;botao.textContent='Copiado';setTimeout(function(){botao.textContent=t},1500)})}
 function diagnostico(a){
-  if(a.status_app===null||a.status_app===undefined){return {cls:'ruim',txt:'Sua aplicação não respondeu'+(a.erro?' ('+a.erro+')':'')+'.',
-    fazer:'Confira se a aplicação está publicada e se o endereço está certo (abra-o no navegador). Peça à sua IA: "minha rota de webhook não está acessível pela internet; verifique se ela está publicada e aceita POST".'}}
+  if(a.status_app===null||a.status_app===undefined){
+    if(a.erro&&a.erro.indexOf('9 s')>=0){return {cls:'ruim',txt:'Sua aplicação demorou mais de 9 segundos e não chegou a responder. A Appmax espera só 5. Isso é comum em planos grátis que "dormem" quando ninguém usa.',
+      fazer:'Mande o aviso de novo. Se passar na segunda vez, a aplicação estava dormindo. Peça à sua IA: "minha rota de webhook demora mais de 5 segundos; faça ela responder 200 na hora e processar o aviso depois".'}}
+    return {cls:'ruim',txt:'Não conseguimos chegar na sua aplicação. O endereço pode estar errado ou a aplicação não está publicada.',
+      fazer:'Confira se o endereço é o da versão publicada (não o do preview). Não adianta abrir no navegador: rotas de aviso costumam dar erro quando abertas assim, e isso é normal. Peça à sua IA: "minha rota de webhook não está acessível pela internet na versão publicada; confira se ela foi publicada e aceita POST sem login, e me diga o endereço completo".'}}
+  if(a.status_app>=300&&a.status_app<400){return {cls:'ruim',txt:'Sua aplicação respondeu '+a.status_app+': ela mandou o aviso para outro endereço. A Appmax não segue esse desvio, e o aviso se perde.',
+    fazer:'Use o endereço final, exatamente como aparece no navegador (com ou sem www, com ou sem barra no final). Ou peça à sua IA: "minha rota de webhook está redirecionando; ela precisa responder 200 direto, sem redirecionar".'}}
   if(a.status_app>=200&&a.status_app<300){
     if(a.ms_app>LIMITE){return {cls:'lento',txt:'Sua aplicação respondeu '+a.status_app+', mas demorou '+(a.ms_app/1000).toFixed(1)+' s (a documentação pede até 5 s).',
       fazer:'Peça à sua IA: "minha rota de webhook demora mais de 5 segundos; faça ela responder 200 na hora e processar o aviso depois".'}}
@@ -80,10 +86,15 @@ function diagnostico(a){
 function hora(iso){return new Date(iso).toLocaleTimeString('pt-BR')}
 function desenhar(dados){
   var lista=$('#tm-lista'), st=$('#tm-status'), av=dados.avisos||[];
-  if(!av.length){st.className='tm-status esperando';st.textContent='Esperando o primeiro aviso. Clique em Testar na Appmax (passo 5) ou faça uma compra de teste.';lista.innerHTML='';return}
+  if(!av.length){st.className='tm-status esperando';st.textContent='Esperando o primeiro aviso. Clique em Testar na Appmax (passo 5) ou use o botão Mandar um aviso de teste (passo 4).';lista.innerHTML='';
+    if(Date.now()-inicioEspera>120000){$('#tm-ajuda').open=true}return}
   var ruins=av.filter(function(a){return diagnostico(a).cls}).length;
   st.className='tm-status '+(ruins?'ruim':'ok');
-  st.textContent=ruins?(ruins+' de '+av.length+' aviso(s) com problema na sua aplicação. Veja o que fazer em cada um.'):(av.length+' aviso(s) recebido(s) e entregue(s) à sua aplicação. A configuração está certa.');
+    var compra=av.some(function(a){return a.order_id&&a.order_id>1&&a.tipo&&a.tipo.indexOf('teste daqui')<0});
+  st.textContent=ruins?(ruins+' de '+av.length+' aviso(s) com problema na sua aplicação. Veja o que fazer em cada um.'):
+    (compra?('Funcionando: '+av.length+' aviso(s) chegaram e a sua aplicação respondeu bem, inclusive de uma compra de teste. Agora siga para o passo 8.'):
+    ('O caminho está funcionando: '+av.length+' aviso(s) chegaram e a sua aplicação respondeu bem. Falta a compra de teste (passo 7).'));
+  $('#tm-ajuda').open=false;
   lista.innerHTML=av.map(function(a){var d=diagnostico(a);
     return '<li class="'+d.cls+'"><strong>'+(NOMES[a.evento]||a.evento)+'</strong> '+(a.order_id?'· pedido '+a.order_id:'')+
       '<div>'+d.txt+'</div><div class="meta">'+hora(a.recebido_em)+' · nome técnico: '+a.evento+(a.status_pedido?' · status: '+a.status_pedido:'')+'</div>'+
@@ -117,6 +128,10 @@ function criar(appUrl,trocar){
 $('#tm-criar').addEventListener('click',function(){criar($('#tm-app').value.trim(),false)});
 $('#tm-exemplo').addEventListener('click',function(){$('#tm-app').value=location.origin+'/api/exemplo/saudavel';criar($('#tm-app').value,false)});
 $('#tm-copiar').addEventListener('click',function(){copiar($('#tm-endereco').textContent,this)});
+$('#tm-aviso-teste').addEventListener('click',function(){var b=this;b.disabled=true;b.textContent='Mandando...';
+  fetch($('#tm-endereco').textContent,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({environment:'teste daqui',event:'OrderPaid',data:{id:1,status:'aprovado'}})})
+  .finally(function(){b.disabled=false;b.textContent='Mandar um aviso de teste';acompanhar()})});
 $('#tm-copiar-prompt').addEventListener('click',function(){copiar($('#tm-prompt').textContent,this)});
 $('#tm-trocar').addEventListener('click',function(){criar($('#tm-app-novo').value.trim(),true)});
 $('#tm-novo').addEventListener('click',function(){id=null;try{localStorage.removeItem('porteiro_id')}catch(e){};$('#tm-pronto').hidden=true;clearTimeout(timer);
@@ -139,15 +154,18 @@ def testar(icone, escape):
 <div class="w">
 <p class="olho">Testar minha aplicação</p>
 <h2>A sua aplicação recebe os avisos de pagamento da Appmax?</h2>
-<p class="sub">Descubra em poucos minutos, sem instalar nada. Você cola dois endereços e acompanha tudo nesta tela.</p>
+<p class="sub">Sem instalar nada: você cola dois endereços e acompanha tudo nesta tela.</p>
 
 <div class="card">
+<p><strong>Antes de começar.</strong> Leva cerca de 30 minutos na primeira vez, a maior parte no cadastro da Appmax. Depois, testar de novo leva 2 minutos.</p>
 <p><strong>Você vai precisar de:</strong></p>
 <ul>
-<li>uma conta de desenvolvedor na Appmax. <strong>Ela pede CNPJ ou MEI</strong>; sem isso não dá para seguir;</li>
-<li>a sua aplicação publicada na internet, com um endereço <code>https://</code> que recebe avisos. Ainda não tem essa rota? O passo 4 traz um texto pronto para pedir à sua IA (Lovable, Bolt, Cursor, Replit...).</li>
+<li><strong>CNPJ ou MEI e um e-mail</strong> para a conta de desenvolvedor da Appmax. Sem CNPJ ou MEI não dá para seguir;</li>
+<li><strong>a sua aplicação publicada</strong> (não vale o link de preview do Lovable ou do Bolt);</li>
+<li><strong>uma rota que recebe avisos</strong> na sua aplicação. Ainda não tem? Faça isto primeiro: copie o texto pronto do passo 4 para a sua IA e anote o endereço que ela devolver.</li>
 </ul>
-<p class="tm-nota">{icone("info")} <strong>Você nunca cola chave nem senha aqui</strong>, só endereços. Guardamos só o nome do aviso, o número do pedido, o status e a resposta da sua aplicação, nada de dados de cliente, e <strong>apagamos tudo em 24 horas</strong>. Use só o sandbox (ambiente de teste) da Appmax. Projeto independente, sem vínculo com a Appmax; as telas abaixo são da plataforma, usadas só para orientar.</p>
+<p>Quer só ver como a tela funciona? No passo 4, clique em "Usar a aplicação de exemplo".</p>
+<p class="tm-nota">{icone("info")} <strong>Você nunca cola chave nem senha aqui</strong>, só endereços. Guardamos só o nome do aviso, o número do pedido, o status e a resposta da sua aplicação, nada de dados de cliente, e <strong>apagamos tudo em 24 horas</strong>. Use só o ambiente de teste (sandbox) da Appmax. Ferramenta gratuita e independente, sem vínculo com a Appmax; as telas abaixo são da plataforma, usadas só para orientar.</p>
 </div>
 
 <div class="tm-passo"><div class="tm-num">1</div><div>
@@ -163,9 +181,9 @@ def testar(icone, escape):
 <ol><li>No topo, clique em <strong>Criar um Aplicativo</strong> e escolha <strong>Aplicativo privado</strong> (não precisa de aprovação).</li>
 <li><strong>Nome</strong>, <strong>e-mail de suporte</strong> e <strong>descrição</strong>: pode escrever qualquer coisa, por exemplo "Teste da minha loja".</li>
 <li><strong>Imagem</strong>: precisa ser quadrada, 1200 x 1200. <a href="imagem-app-1200.png" download>Baixe esta pronta</a>.</li>
-<li><strong>Configurações</strong>: os campos Host, URL do sistema e URL de validação não são usados neste caminho, mas o formulário pede. Coloque o endereço da sua aplicação nos três. Nos eventos, pode clicar em <strong>Selecionar todas</strong>.</li>
-<li>Conclua o cadastro.</li></ol>
-{_prints(("print-02-criar-app-privado.jpg", "Criar um Aplicativo: escolha Aplicativo privado"))}
+<li><strong>Configurações</strong>: o formulário pede Host, URL do sistema e URL de validação, mas este teste não usa nenhum deles. Coloque nos três o endereço principal do seu site (por exemplo <code>https://minha-loja.lovable.app</code>). Nos eventos, clique em <strong>Selecionar todas</strong>.</li>
+<li>Conclua o cadastro. O app aparece em <strong>Meus aplicativos</strong>; a situação pode ser "Publicado" ou outra, e para este teste tanto faz.</li></ol>
+{_prints(("print-02-criar-app-privado.jpg", "Tela 1 de 3: escolha Aplicativo privado. Imagem e endereços ficam nas telas 2 e 3"))}
 </div></div>
 
 <div class="tm-passo"><div class="tm-num">3</div><div>
@@ -173,6 +191,11 @@ def testar(icone, escape):
 <ol><li>Em <strong>Meus aplicativos</strong>, clique na <strong>setinha</strong> da linha do seu app e em <strong>Exibir credenciais</strong>.</li>
 <li>Desça até <strong>Dados de acesso</strong>: lá estão o <strong>endereço da sua loja de teste</strong>, o <strong>e-mail</strong> e uma <strong>senha gerada</strong> (use o botão de copiar; não é a senha da sua conta).</li>
 <li>Abra o endereço da loja de teste e entre com esse e-mail e essa senha.</li></ol>
+<p><strong>Cuidados neste passo:</strong></p>
+<ul><li>Se aparecer "Client secret já visualizado", tudo bem: você não precisa dele para este teste.</li>
+<li>A janela também mostra credenciais de <strong>Produção</strong>, mais abaixo. Não mexa nelas agora.</li>
+<li>A tela de login da loja de teste é igual à da Appmax normal. Entre com o e-mail e a senha de <strong>Dados de acesso</strong> e não clique em "Criar conta agora".</li>
+<li>Se aparecer uma verificação da Cloudflare, é normal; espere ela ficar verde.</li></ul>
 {_prints(("print-03-meus-aplicativos.jpg", "Meus aplicativos: setinha > Exibir credenciais"),
           ("print-04-credenciais.jpg", "Dados de acesso: e-mail e senha do sandbox (borrados aqui)"),
           ("print-05-login-sandbox.jpg", "Login da loja de teste"))}
@@ -180,23 +203,25 @@ def testar(icone, escape):
 
 <div class="tm-passo"><div class="tm-num">4</div><div>
 <h3>Crie o seu endereço de teste</h3>
-<p>Cole o endereço da rota da sua aplicação que recebe avisos. Nós criamos um endereço que fica no meio: ele anota cada aviso, entrega para a sua aplicação e mostra como ela respondeu.</p>
+<p><strong>Primeiro: peça a rota para a sua IA.</strong> Se a sua aplicação ainda não tem um endereço que recebe avisos, copie este texto para o Lovable, Bolt, Cursor ou Replit. No fim, ela devolve o endereço da rota.</p>
+<div class="tm-prompt" id="tm-prompt">{escape(PROMPT_APP)}</div>
+<button type="button" class="tm-btn sec" id="tm-copiar-prompt">Copiar texto</button>
+<p style="margin-top:16px">Agora cole o endereço dessa rota. Nós criamos um endereço que fica no meio: ele anota cada aviso, entrega para a sua aplicação e mostra como ela respondeu.</p>
 <div class="tm-caixa">
 <label for="tm-app"><strong>Endereço da sua aplicação</strong></label>
 <div class="tm-linha" style="margin-top:6px"><input id="tm-app" type="url" placeholder="https://minha-loja.lovable.app/api/webhooks/appmax" autocomplete="off">
 <button type="button" id="tm-criar">Criar meu endereço</button></div>
-<p class="tm-nota" style="margin:8px 0 0">Ainda não tem aplicação? <button type="button" class="tm-btn sec" id="tm-exemplo" style="padding:6px 10px;font-size:13px">Usar a aplicação de exemplo</button></p>
+<p class="tm-nota" style="margin:8px 0 0">Ainda não tem aplicação? <button type="button" class="tm-btn sec" id="tm-exemplo" style="padding:6px 10px;font-size:13px">Usar a aplicação de exemplo</button>
+A aplicação de exemplo é de mentira e sempre responde OK. Serve só para você ver como esta tela funciona.</p>
 <div class="tm-erro" id="tm-erro" role="alert"></div>
 <div id="tm-pronto" hidden>
 <p style="margin:14px 0 6px"><strong>Seu endereço de teste</strong> (é ele que vai na Appmax):</p>
 <div class="tm-linha"><span class="tm-endereco" id="tm-endereco"></span><button type="button" id="tm-copiar">Copiar</button></div>
 <p class="tm-nota" id="tm-validade"></p>
+<p style="margin:12px 0 6px"><strong>Quer testar já, sem a Appmax?</strong> Nós mandamos para a sua aplicação um aviso de exemplo, no mesmo formato da Appmax ("Pedido pago", pedido de teste). O resultado aparece no passo 6. Isso confere se a sua rota responde; não confere se a Appmax está configurada (para isso, siga os passos 1, 2, 3 e 5).</p>
+<button type="button" class="tm-btn" id="tm-aviso-teste">Mandar um aviso de teste</button>
 </div>
 </div>
-<details><summary><strong>Ainda não tem a rota que recebe avisos? Copie este texto para a sua IA</strong></summary>
-<div class="tm-prompt" id="tm-prompt">{escape(PROMPT_APP)}</div>
-<button type="button" class="tm-btn sec" id="tm-copiar-prompt">Copiar texto</button>
-</details>
 </div></div>
 
 <div class="tm-passo"><div class="tm-num">5</div><div>
@@ -215,6 +240,12 @@ def testar(icone, escape):
 <p>Esta parte atualiza sozinha a cada 4 segundos. Quando o aviso do botão Testar chegar, fica verde.</p>
 <div class="tm-status esperando" id="tm-status" aria-live="polite">Crie o seu endereço no passo 4 para começar.</div>
 <ul class="tm-avisos" id="tm-lista"></ul>
+<details id="tm-ajuda" style="margin-top:12px"><summary><strong>Ainda nada? Confira, nesta ordem</strong></summary>
+<ol><li>Na Appmax, em Webhooks cadastrados, a URL começa com <code>https://conferidor-webhooks.vercel.app/api/p/</code>? Se aparecer o endereço da sua aplicação, você colou o endereço errado: apague e cadastre de novo com o endereço de teste do passo 4.</li>
+<li>Você clicou em <strong>Salvar webhook</strong> antes de Testar? O webhook precisa aparecer na lista de cadastrados.</li>
+<li>A loja escolhida é a sua loja de teste?</li>
+<li>O endereço de teste ainda vale? Veja a data em "Vale até", no passo 4.</li></ol>
+<p>Se tudo estiver certo, clique em Testar de novo e espere 10 segundos.</p></details>
 <details style="margin-top:12px"><summary>Trocar o endereço da aplicação ou começar de novo</summary>
 <p class="tm-nota">Endereço atual da aplicação: <span id="tm-app-atual"></span></p>
 <div class="tm-linha"><input id="tm-app-novo" type="url" placeholder="https://..." autocomplete="off"><button type="button" id="tm-trocar">Trocar</button>
@@ -224,9 +255,19 @@ def testar(icone, escape):
 
 <div class="tm-passo"><div class="tm-num">7</div><div>
 <h3>Faça uma compra de teste</h3>
-<p>Com o botão Testar funcionando, faça uma compra de verdade no ambiente de teste, pelo checkout da sua aplicação, pagando com <strong>Pix</strong>. No sandbox, o Pix é aprovado sozinho em cerca de 5 segundos com qualquer CPF válido (por exemplo <code>19100000000</code>), sem pagar nada.</p>
-<p>Você deve ver chegar, em segundos: <strong>Pix gerado</strong>, <strong>Pedido pago</strong>, <strong>Pedido aprovado</strong> e <strong>Pix pago</strong>. Cada um mostra se a sua aplicação recebeu e em quanto tempo respondeu.</p>
-<p class="tm-nota">Medido pelo autor no sandbox em 16/10/2026: compra com Pix, quatro avisos em 8 segundos, todos entregues. O endereço de teste acrescenta cerca de 1 segundo ao caminho (ele consulta e grava no banco); o tempo mostrado é só o da sua aplicação.</p>
+<p>Com o botão Testar funcionando, faça uma compra no ambiente de teste pelo checkout da sua aplicação, pagando com <strong>Pix</strong>. No teste, o Pix é aprovado sozinho em cerca de 5 segundos com qualquer CPF válido (por exemplo <code>19100000000</code>), sem pagar nada.</p>
+<p>Em menos de 10 segundos devem chegar aqui: <strong>Pix gerado</strong>, <strong>Pedido pago</strong>, <strong>Pedido aprovado</strong> e <strong>Pix pago</strong>. Cada um mostra se a sua aplicação recebeu e em quanto tempo respondeu.</p>
+<p class="tm-nota">Sua aplicação ainda não tem checkout? Use o botão "Mandar um aviso de teste" do passo 4 para conferir a rota, e faça a compra quando o checkout existir.</p>
+</div></div>
+
+<div class="tm-passo"><div class="tm-num">8</div><div>
+<h3>Deu certo? Agora troque o endereço na Appmax</h3>
+<p>O endereço de teste só vale 24 horas. Depois disso, os avisos param de chegar e ninguém é avisado.</p>
+<ol><li>Na loja de teste, volte em <strong>API</strong> e depois <strong>Webhooks</strong>.</li>
+<li>Em <strong>Webhooks cadastrados</strong>, apague o que aponta para <code>conferidor-webhooks.vercel.app</code> (ícone da lixeira).</li>
+<li>Cadastre de novo com a <strong>URL de destino</strong> igual ao endereço da sua aplicação (o mesmo que você colou no passo 4), com os mesmos eventos.</li>
+<li>Clique em <strong>Testar</strong> e confira no painel da sua aplicação que o aviso chegou.</li></ol>
+<p>Quando for vender de verdade, repita isso na sua loja de produção.</p>
 </div></div>
 
 </div>

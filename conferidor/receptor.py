@@ -165,7 +165,7 @@ def main():
     opcoes.add_argument("--falhar", action="store_true", help="responde 500 aos avisos e registra cada tentativa")
     opcoes.add_argument("--banco", default=str(BANCO), help="arquivo SQLite (padrao: eventos.db)")
     opcoes.add_argument("--repassar", metavar="URL",
-                        help="modo porteiro: entrega cada aviso a sua aplicacao (ex.: http://localhost:3000/webhook)")
+                        help="modo porteiro: entrega cada aviso a sua aplicacao (ex.: http://127.0.0.1:3000/webhook)")
     args = opcoes.parse_args()
 
     if args.falhar and not TENTATIVAS.exists():

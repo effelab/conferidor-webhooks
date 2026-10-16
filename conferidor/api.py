@@ -1,7 +1,6 @@
 """Adaptador da API real, usado pelo conferidor e pelos comandos de sandbox.
 
-ATENCAO: escrito a partir da documentacao publica e AINDA NAO TESTADO contra
-o sandbox. Segue os guias de autenticacao, instalacao e rate limit e a
+Escrito a partir da documentacao publica e usado contra o sandbox real desde 13/10/2026. Segue os guias de autenticacao, instalacao e rate limit e a
 referencia "Consultar dados de um pedido".
 
 Aponta para o SANDBOX por padrao. As credenciais vem do arquivo .env.

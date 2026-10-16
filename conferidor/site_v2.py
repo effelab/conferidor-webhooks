@@ -409,9 +409,12 @@ def conferidor(d):
     com_falha = sum(grupos[k]["pedidos"] for k in COM_FALHA if k in grupos)
     minutos = round(r["horas_desde_a_criacao"] * 60)
     aberta = r["horas_desde_a_criacao"] < DOC_JANELA_H
-    estado = (f'{selo_livre("atencao", "Em observação")}<p>Conferido {minutos} minutos depois dos pedidos, às {hora(r["avaliado_em"])}. '
-              f'A documentação fala em tentativas até 6h30. Antes disso, zero nova tentativa ainda não é conclusão.</p>'
-              f'<p class="mini">Próxima conferência: {PROXIMA_CONFERENCIA} (horário estimado, não medido).</p>'
+    # Fonte: eventos.db do receptor. Ultimo aviso gravado em 14/10 as 14h19 (prova de que o receptor estava no ar);
+    # os pedidos com falha sao de 11h19 a 11h30. Depois disso o receptor foi desligado, sem registro da hora exata.
+    estado = (f'{selo_livre("atencao", "Observação parcial")}<p>Nenhuma nova tentativa em cerca de <strong>3 horas</strong> com o receptor '
+              f'comprovadamente no ar (último aviso recebido às 14h19; pedidos com falha criados entre 11h19 e 11h30). '
+              f'Pela documentação, as tentativas de +30 min e de +2 h já deveriam ter chegado nesse intervalo.</p>'
+              f'<p class="mini">A janela completa de 6h30 não foi observada: o receptor foi desligado depois, sem registro da hora exata.</p>'
               if aberta else
               f'{selo_livre("neutro", "Janela fechada")}<p>Conferido {minutos} minutos depois dos pedidos, às {hora(r["avaliado_em"])}, '
               f'depois do fim da janela de 6h30 descrita na documentação.</p>')
@@ -475,7 +478,7 @@ O conferidor apontou os {pedidos_afetados} pedidos.</p>
 <div class="duas">
 <div class="card" id="reentrega">
 <h3>A plataforma tentou entregar de novo?</h3>
-<p class="sub2">Ainda em observação. Veja o estado abaixo.</p>
+<p class="sub2">Em duas medições, nenhuma nova tentativa.</p>
 <div class="estado">{estado}</div>
 <p><strong>{novas} novas tentativas</strong> em {com_falha} pedidos com falha (servidor desligado ou respondendo erro).</p>
 <p class="hist-l">Histórico, 13/10: {len(M1310_DESLIGADOS)} pedidos, erro 502, <strong>nenhuma nova tentativa em {h}h{resto:02d}</strong> com o receptor de volta no ar.
@@ -703,7 +706,7 @@ def limites(d):
         "Tudo foi medido no <strong>sandbox</strong>, que pode se comportar diferente da produção.",
         "<strong>Um app só</strong>, o do próprio autor.",
         "<strong>Uma rodada</strong> de cada experimento (o testador teve uma rodada anterior com regra antiga, não exibida).",
-        (f"<strong>Janela de reentrega ainda aberta</strong> na conferência de 14/10 (feita cerca de {minutos} min após os pedidos). Zero nova tentativa ainda não é conclusão."
+        ("<strong>Janela de reentrega observada só em parte</strong> em 14/10: cerca de 3 horas com o receptor comprovadamente no ar, sem nenhuma nova tentativa; a janela completa de 6h30 não foi observada."
          if exp and exp["resumo"]["horas_desde_a_criacao"] < DOC_JANELA_H else
          "A conferência de reentrega de 14/10 foi feita depois do fim da janela descrita na documentação."),
         f"A observação de reentrega de 13/10 tem <strong>{len(M1310_DESLIGADOS)} pedidos</strong> e a falha foi um <strong>502</strong>; a documentação não diz se 502 gera nova tentativa.",
@@ -733,7 +736,7 @@ def limites(d):
 def rodape():
     return """<footer class="rodape"><div class="w">
 <p><strong>Projeto independente de Jonas Victor Vieira Silva.</strong> Sem vínculo, patrocínio ou autorização da plataforma. Medido no sandbox do próprio app do autor, sem dado de cliente.</p>
-<p class="mini">As regras de reentrega citadas vêm da documentação pública da Appmax. Nenhuma marca, imagem ou texto da plataforma é usado neste site.</p>
+<p class="mini">Os prints da sessão "Testar minha aplicação" mostram telas da Appmax só para orientar o passo a passo. As regras de reentrega citadas vêm da documentação pública da Appmax.</p>
 </div></footer>"""
 
 

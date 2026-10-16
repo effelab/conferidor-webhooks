@@ -43,7 +43,7 @@ O projeto não precisa de nenhuma biblioteca extra.
 
 ## Passo 2: baixar o código
 
-Na página do repositório no GitHub, clique em **Code > Download ZIP** e descompacte numa pasta, por exemplo `Documentos\conferidor-webhooks`. Ou, se você usa git:
+Na página do repositório no GitHub, clique em **Code > Download ZIP** e descompacte numa pasta. O ZIP cria a pasta `conferidor-webhooks-main`; renomeie para `conferidor-webhooks` (ou use o nome que ficou nos comandos abaixo). Ou, se você usa git:
 
 ```
 git clone https://github.com/effelab/conferidor-webhooks.git
@@ -52,7 +52,7 @@ git clone https://github.com/effelab/conferidor-webhooks.git
 Daqui para a frente, **todo comando roda de dentro dessa pasta**. Ao abrir um PowerShell, entre nela primeiro (troque pelo seu caminho):
 
 ```
-cd C:\Users\SEU_USUARIO\Documentos\conferidor-webhooks
+cd C:\Users\SEU_USUARIO\Documents\conferidor-webhooks
 ```
 
 ## Passo 3: instalar e ligar o túnel (janela 1)
@@ -64,7 +64,7 @@ cd C:\Users\SEU_USUARIO\Documentos\conferidor-webhooks
    No Mac: `brew install cloudflared`. Feche e abra o PowerShell depois de instalar.
 2. Ligue o túnel e **deixe esta janela aberta**:
    ```
-   cloudflared tunnel --url http://localhost:8080
+   cloudflared tunnel --url http://127.0.0.1:8080
    ```
 3. Na saída, procure um endereço terminado em **trycloudflare.com** (algo como `https://palavras-aleatorias.trycloudflare.com`). **Copie e guarde.** Vamos chamá-lo de SEU_TUNEL.
 
@@ -99,7 +99,11 @@ Deve aparecer `Escutando na porta 8080`. **Deixe esta janela aberta.** Cada avis
 
 ## Passo 6: preencher o arquivo .env
 
-1. Na pasta do projeto, copie o arquivo `.env.exemplo` e renomeie a cópia para `.env`.
+1. Na pasta do projeto, crie o `.env` a partir do exemplo:
+   ```
+   copy .env.exemplo .env
+   ```
+   (No Mac: `cp .env.exemplo .env`.)
 2. Abra o `.env` no Bloco de Notas:
    ```
    notepad .env
@@ -162,10 +166,10 @@ plataforma ──> túnel ──> porteiro (anota) ──> sua aplicação
                               └── anota a resposta dela e o tempo
 ```
 
-1. Deixe a sua aplicação rodando e anote o endereço onde ela recebe avisos, por exemplo `http://localhost:3000/webhook`.
+1. Deixe a sua aplicação rodando e anote o endereço onde ela recebe avisos, por exemplo `http://127.0.0.1:3000/webhook`. Use `127.0.0.1` e não `localhost`: no Windows, `localhost` acrescenta cerca de 2 segundos a cada aviso e o tempo medido fica falso.
 2. Na janela 2, pare o receptor (Ctrl+C) e ligue de novo como porteiro:
    ```
-   python -m conferidor.receptor --repassar http://localhost:3000/webhook
+   python -m conferidor.receptor --repassar http://127.0.0.1:3000/webhook
    ```
 3. Rode o teste rápido ou a lista completa, como no passo 9.
 
